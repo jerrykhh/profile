@@ -126,7 +126,7 @@ function Home() {
                 <Image src={picHA} width={64} height={64} alt='Hospital Authority' />
               </div>
               <div className="grow">
-                <h4>Placement Stydebt Origranner</h4>
+                <h4>Placement Student Programmer</h4>
                 <span>Hospital Authority · Internship</span>
                 <div className="date"><i>Jul 2021 - Jun 2022 · 1 yr</i></div>
                 <p className="subtitle">Revamp SQL Server Agent jobs(PowerShell) to Bash Script
