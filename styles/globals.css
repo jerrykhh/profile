@@ -3,162 +3,82 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
 
-  body {
-    @apply m-0 p-0
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
   }
 
-  h1 {
-    @apply text-2xl font-bold
-  }
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
 
-  h2 {
-    @apply text-xl font-bold
-  }
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
 
-  h4 {
-    @apply text-lg font-bold
-  }
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
 
-  h6 {
-    @apply text-base font-bold
-  }
-  
-  p {
-    @apply py-1 text-justify
-  }
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
 
-  iframe {
-    @apply absolute top-0 left-0 w-full h-full
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
   }
 }
 
-@layer components {
-
-  .nav-menu {
-    @apply block
+@layer base {
+  * {
+    @apply border-border;
   }
-
-  .nav-menu li {
-    @apply -rotate-90 text-center block my-20 text-sm py-2
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
-
-  .nav-menu li:hover {
-    border-bottom: 3px solid rebeccapurple;
-    color: rebeccapurple !important;
-    transition: all 0.5s;
+  p {
+    @apply my-2 text-justify
   }
-
-  .nav-item {
-    @apply text-gray-700 text-sm block px-6 py-2;
-  }
-
-  .nav-item:hover {
-    @apply bg-gray-200
-  }
-
-  .page-title-box {
-    @apply border-l-4 divide-solid border-rebeccapurple;
-  }
-
-  .page-title-box .content {
-    @apply ml-4 p-2
-  }
-
-  .page-title-box h4 {
-    @apply capitalize
-  }
-
-  .row {
-    @apply py-8
-  }
-
-  .profile-link svg {
-    @apply w-5 h-5 text-neutral-400 hover:text-white cursor-pointer fill-current
-  }
-
-  .blog .row {
-    @apply py-4
-  }
-
-  .blog img {
-    @apply rounded w-full
-  }
-
-  .subtitle {
-    @apply text-neutral-400
-  }
-
-  .img-center {
-    @apply block ml-auto mr-auto w-1/2;
-  }
-
-  .about-col {
-    @apply flex items-center
-  }
-
-  .about-col span {
-    @apply ml-4 text-neutral-300
-  }
-
-  .profile-exp .date {
-    @apply italic  text-gray-500
-  }
-
-  .tech-card {
-    @apply p-5 my-5 pb-2 bg-gray-800
-  }
-
-  .profile-project {
-    @apply bg-gray-800 p-5
-  }
-
-  .profile-project-card{
-    @apply p-5 border rounded cursor-pointer
-  }
-
-  .profile-project-card:hover {
-    @apply bg-gray-700
-  }
-
-  .repo-language {
-    @apply py-2 flex items-center
-  }
-
-  .repo-language-color {
-    @apply w-[15px] h-[15px] mr-2 inline-block rounded-lg
-  }
-
-  .tech-card:hover {
-    @apply bg-gray-700
-  }
-
-  .tech-card-content {
-    @apply bg-white p-[0.5rem]
-  }
-
-  .gallery img {
-    @apply rounded mb-4
-  }
-
-  .project-card, .blog-card {
-    @apply flex flex-col
-  }
-
-  .project-card {
-    @apply bg-zinc-800
-  }
-
-  .project-card img, .blog-card img {
-    @apply rounded-t
-  }
-
-  .project-card .content, .blog-card .content {
-    @apply p-8
-  }
-
-  .iframe-container {
-    @apply h-0 overflow-hidden max-w-full w-full
-  }
-
 }

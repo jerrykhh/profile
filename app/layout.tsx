@@ -1,27 +1,54 @@
-import Nav from '../components/nav'
-import '../styles/globals.css'
+import "@/styles/globals.css"
+import { Metadata } from "next"
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode
-}) {
-    return (
-        <html>
-            <head></head>
-            <body>
-                <div className='bg-black text-white md:grid md:grid-cols-12 min-h-screen'>
-                    <div className="max-h-screen">
-                        <div className='md:col-start-1 md:col-end-1 md:top-[25%] md:fixed md:left-[2%]'>
-                            <Nav />
-                        </div>
-                    </div>
+import { siteConfig } from "@/config/site"
+import { fontSans } from "@/lib/fonts"
+import { cn } from "@/lib/utils"
+import { SiteHeader } from "@/components/nav/site-header"
+import { TailwindIndicator } from "@/components/tailwind-indicator"
+import { ThemeProvider } from "@/components/theme-provider"
 
-                    <div className='w-full md:col-start-2 md:col-end-12 px-4 py-16'>
-                        {children}
-                    </div>
-                </div>
-            </body>
-        </html>
-    )
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+}
+
+interface RootLayoutProps {
+  children: React.ReactNode
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
+  return (
+    <>
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <div className="relative flex min-h-screen flex-col">
+              <SiteHeader />
+              <div className="flex-1">{children}</div>
+            </div>
+            <TailwindIndicator />
+          </ThemeProvider>
+        </body>
+      </html>
+    </>
+  )
 }

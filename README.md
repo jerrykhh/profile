@@ -1,27 +1,22 @@
-# Profile Page
-Next.js 13 (app dir) + TailwindCSS 
+# next-template
 
-## Installation
-```
-npm install
-```
+A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
 
-## Directory Structure
-```
-/app        Next.js 13 app dir
-/components Nav and Header components
-/posts      Blog posts (Markdown)
-/projects   Project page (Markdown)
-/lib
- /convert   Convert Programming language to color code
- /get       Get blog posts and project page logic
+## Usage
+
+```bash
+npx create-next-app -e https://github.com/shadcn/next-template
 ```
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 13 App Directory
+- Radix UI Primitives
+- Tailwind CSS
+- Icons from [Lucide](https://lucide.dev)
+- Dark mode with `next-themes`
+- Tailwind CSS class sorting, merging and linting.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Licensed under the [MIT license](https://github.com/shadcn/ui/blob/main/LICENSE.md).
