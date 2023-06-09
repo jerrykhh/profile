@@ -68,17 +68,32 @@
 
     --radius: 0.5rem;
   }
+
+  .prose h1, .prose h2, .prose h3,.prose h4, .prose p{
+    @apply dark:text-primary 
+  }
+
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
   p {
     @apply my-2 text-justify
+  }
+
+  iframe {
+    @apply absolute top-0 left-0 w-full h-full
+  }
+
+  pre {
+    @apply whitespace-pre-wrap break-all
   }
 }

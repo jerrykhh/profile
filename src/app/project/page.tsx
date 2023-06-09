@@ -17,26 +17,26 @@ const ProjectPage = () => {
 
     return (
         <React.Fragment>
-            <div className="flex">
-                
-                <div>
-                    <MessageBox
-                        icon={<Terminal className="w-6 h-6" />}
-                        title="My Projects"
-                        description=" Some code of project may not be good due to the time limited, even contains some security problems." />
+            <MessageBox
+                icon={<Terminal className="w-6 h-6" />}
+                title="My Projects"
+                description=" Some code of project may not be good due to the time limited, even contains some security problems." />
 
 
-                    <div className="h-[80vh] flex place-items-center">
-                        <div className="grid grid-cols-4 gap-5">
-                            <OverviewProjects
-                                projectKeys={allProjectKeys}
-                                showFullDesc={true} />
+            <div className="mt-[10rem] md:mt-0  h-[70vh] flex place-items-center place-content-center">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+                    <OverviewProjects
+                        projectKeys={allProjectKeys}
+                        showFullDesc={true} />
 
-                        </div>
-                    </div>
                 </div>
             </div>
-        </React.Fragment>
+
+            <div className="w-full">
+
+            </div>
+
+        </React.Fragment >
     )
 }
 
