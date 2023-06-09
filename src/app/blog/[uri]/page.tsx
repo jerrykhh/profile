@@ -4,7 +4,7 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import Markdown from "markdown-to-jsx"
 
-import { getBlog } from "@/lib/get/blog/getBlog"
+import { getBlog, getBlogsMetadata } from "@/lib/get/blog/getBlog"
 import { Button } from "@/components/ui/button"
 
 type BlogDetailPageProps = {
@@ -52,6 +52,13 @@ const BlogDetailPage = ({ params: { uri } }: BlogDetailPageProps) => {
       </div>
     </React.Fragment>
   )
+}
+
+export async function generateStaticParams() {
+  const posts = getBlogsMetadata()
+  return posts.map((post) => ({
+    title: post.uri,
+  }))
 }
 
 export default BlogDetailPage
