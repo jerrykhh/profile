@@ -20,8 +20,6 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
   },
 }
 
@@ -33,7 +31,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <head />
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
@@ -44,7 +41,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="relative flex min-h-screen flex-col">
               <SiteHeader />
               <div className="flex-1">
-                <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10 place-content-center">
+                <section className="container grid place-content-center items-center gap-6 pb-8 pt-6 md:py-10">
                   {children}
                 </section>
               </div>

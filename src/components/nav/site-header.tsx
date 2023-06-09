@@ -2,8 +2,8 @@ import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
-import { Icons } from "@/components/utils/icons"
 import { MainNav } from "@/components/nav/main-nav"
+import { Icons } from "@/components/utils/icons"
 import { ThemeToggle } from "@/components/utils/theme-toggle"
 
 export function SiteHeader() {

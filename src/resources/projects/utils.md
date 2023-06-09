@@ -1,33 +1,37 @@
 ---
-icon: 'icon.png'
-uri: 'utils'
-title: 'utils'
-name: 'utils'
-description: 'converter/ It combines many convertor-related projects, such as the filename, website to a book, etc.'
-date: '2022-08-04'
-tag: ''
-repository: 'https://github.com/jerrykhh/utils'
-language: 'Python'
+icon: "icon.png"
+uri: "utils"
+title: "utils"
+name: "utils"
+description: "converter/ It combines many convertor-related projects, such as the filename, website to a book, etc."
+date: "2022-08-04"
+tag: ""
+repository: "https://github.com/jerrykhh/utils"
+language: "Python"
 ---
 
 # utils
+
 ## Convertor
 
-| Project | Description |
-| ------- | ----------- |
-| FNC | Convert all folder/file names, including convert to another Chinese (Traditional/Simplified Chinese), delete specific words. |
-| acgn.convert| convert the comic.acgn.cc view page to the .pdf like a book |
-| product_img_to_jpg | convert product images to .JPG |
+| Project            | Description                                                                                                                  |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| FNC                | Convert all folder/file names, including convert to another Chinese (Traditional/Simplified Chinese), delete specific words. |
+| acgn.convert       | convert the comic.acgn.cc view page to the .pdf like a book                                                                  |
+| product_img_to_jpg | convert product images to .JPG                                                                                               |
 
 ## File Name Convertor(FNC)
+
 Convert all folder/file names, including convert to another Chinese (Traditional/Simplified Chinese), delete specific words.
 
 ### Installation
+
 ```
 pip install -r requirements.txt
 ```
 
 ### Usage
+
 Convert Chinese filename
 
 ```
@@ -44,21 +48,22 @@ python main.py remove [word] [paths..]
 ```
 
 ### OpenCC
-| Mode | Description |
-| ---- | ----------- |
-| hk2s | 繁體中文 (香港) -> 簡體中文 |
-| s2hk | 簡體中文 -> 繁體中文 (香港) |
-| s2t | 簡體中文 -> 繁體中文 |
-| s2tw | 簡體中文 -> 繁體中文 (台灣) |
-| s2twp | 簡體中文 -> 繁體中文 (台灣, 包含慣用詞轉換) |
-| t2hk | 繁體中文 -> 繁體中文 (香港) |
-| t2s | 繁體中文 -> 簡體中文 |
-| t2tw | 繁體中文 -> 繁體中文 (台灣) |
-| tw2s | 繁體中文 (台灣) -> 簡體中文 |
+
+| Mode  | Description                                   |
+| ----- | --------------------------------------------- |
+| hk2s  | 繁體中文 (香港) -> 簡體中文                   |
+| s2hk  | 簡體中文 -> 繁體中文 (香港)                   |
+| s2t   | 簡體中文 -> 繁體中文                          |
+| s2tw  | 簡體中文 -> 繁體中文 (台灣)                   |
+| s2twp | 簡體中文 -> 繁體中文 (台灣, 包含慣用詞轉換)   |
+| t2hk  | 繁體中文 -> 繁體中文 (香港)                   |
+| t2s   | 繁體中文 -> 簡體中文                          |
+| t2tw  | 繁體中文 -> 繁體中文 (台灣)                   |
+| tw2s  | 繁體中文 (台灣) -> 簡體中文                   |
 | tw2sp | 繁體中文 (台灣) -> 簡體中文 (包含慣用詞轉換 ) |
 
-
 ## Acgn.cc Convertor
+
 This program will convert the comic.acgn.cc view page to the .pdf like a book. The following output will show when the program finish
 
 ```
@@ -70,6 +75,7 @@ This program will convert the comic.acgn.cc view page to the .pdf like a book. T
 ```
 
 ### Installation
+
 ```
 git clone https://github.com/jerrykhh/acgn.convert.git
 cd acgn.convert
@@ -77,6 +83,7 @@ pip install -r requirements.txt
 ```
 
 ### Usage
+
 ```
 python main.py
 ```
@@ -93,7 +100,9 @@ Please Enter the URL: [If Enter "EXIT" it will start to generate the Book pdf]
 ```
 
 ## product_img_to_jpg
+
 ### Image to JPG
+
 It will convert all image file to JPG, the following is more details
 
 Directory structure:

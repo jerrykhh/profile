@@ -1,26 +1,21 @@
 export type SiteConfig = typeof siteConfig
 
-
 export const siteConfig = {
-  name: "Jerry Kwok Profile",
+  name: "Jerry Kwok profile",
   description:
     "Beautifully designed components built with Radix UI and Tailwind CSS.",
   mainNav: [
     {
-      title: "Profile",
+      title: "About",
       href: "/",
     },
     {
       title: "Project",
-      href: "/project"
+      href: "/project",
     },
-    {
-      title: "Blog",
-      href: "/blog"
-    }
   ],
   links: {
     github: "https://github.com/jerrykhh/profile",
     docs: "https://ui.shadcn.com",
-  }
+  },
 }

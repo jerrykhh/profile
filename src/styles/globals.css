@@ -69,10 +69,18 @@
     --radius: 0.5rem;
   }
 
-  .prose h1, .prose h2, .prose h3,.prose h4, .prose p{
-    @apply dark:text-primary 
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose p,
+  .blog {
+    @apply text-black dark:text-primary;
   }
 
+  .blog img {
+    @apply w-full rounded;
+  }
 }
 
 @layer base {
@@ -86,14 +94,17 @@
   }
 
   p {
-    @apply my-2 text-justify
+    @apply my-2 text-justify;
   }
 
   iframe {
-    @apply absolute top-0 left-0 w-full h-full
+    @apply absolute left-0 top-0 h-full w-full;
   }
 
   pre {
-    @apply whitespace-pre-wrap break-all
+    @apply whitespace-pre-wrap break-all;
   }
+}
+
+@layer components {
 }

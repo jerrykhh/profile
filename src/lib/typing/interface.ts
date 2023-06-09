@@ -1,11 +1,11 @@
 export interface Metadata {
-    uri: string,
-    title: string,
-    description: string,
-    date: string
+  uri: string
+  title: string
+  description: string
+  date: string
 }
 
 export interface Data {
-    metadata: Metadata,
-    content: string
+  metadata: Metadata
+  content: string
 }

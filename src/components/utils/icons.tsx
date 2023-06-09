@@ -1,12 +1,12 @@
+import { ReactNode } from "react"
+import Image from "next/image"
 import {
   LucideProps,
-  Moon,
   Mail,
+  Moon,
   SunMedium,
   type Icon as LucideIcon,
 } from "lucide-react"
-import Image from "next/image"
-import { ReactNode } from "react"
 
 export type Icon = LucideIcon
 
@@ -33,32 +33,169 @@ export const Icons: {
   ),
   linkedin: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
-      <path fill="currentColor" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
+      <path
+        fill="currentColor"
+        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+      />
+    </svg>
   ),
-  email: Mail
-
+  email: Mail,
 }
 
-
-
-export const techIcons : {
+export const techIcons: {
   [key: string]: ReactNode
 } = {
-  python: <Image src={"/profile/tech/python.png"} width={100} height={100} alt="Python Image" className="rounded-sm"/>,
-  java: <Image src={"/profile/tech/java.png"} width={100} height={100} alt="Java Image" />,
-  android: <Image src={"/profile/tech/android.png"} width={100} height={100} alt="Android Image" />,
-  typescript: <Image src={"/profile/tech/typescript.jpg"} width={100} height={100} alt="TypeScript Image" />,
-  javascript: <Image src={"/profile/tech/javascript.jpg"} width={100} height={100} alt="JavaScript Image" />,
-  nodejs: <Image src={"/profile/tech/node_js.png"} width={100} height={100} alt="Node.js Image" />,
-  react: <Image src={"/profile/tech/react.png"} width={100} height={100} alt="React Image" />,
-  nextjs: <Image src={"/profile/tech/nextjs.png"} width={100} height={100} alt="Next.js Image" />,
-  reactnative: <Image src={"/profile/tech/react_native.jpg"} width={100} height={100} alt="React Native Image" />,
-  php: <Image src={"/profile/tech/php.jpg"} width={100} height={100} alt="PHP Image" />,
-  mysql: <Image src={"/profile/tech/mysql.png"} width={100} height={100} alt="MySql Image" />,
-  github: <Image src={"/profile/tech/github.jpg"} width={100} height={100} alt="Github Image" />,
-  graphql: <Image src={"/profile/tech/graphql.png"} width={100} height={100} alt="GraphQL Image" />,
-  flask: <Image src={"/profile/tech/flask.png"} width={100} height={100} alt="Flask Image" />,
-  aws: <Image src={"/profile/tech/aws.jpg"} width={100} height={100} alt="Python Image" />,
-  awscdk: <Image src={"/profile/tech/aws_cdk.png"} width={100} height={100} alt="AWS-CDK Image" />,
-  tailwindcss: <Image src={"/profile/tech/tailwindcss.png"} width={100} height={100} alt="TailwindCSS Image" />,
+  python: (
+    <Image
+      src={"/profile/tech/python.png"}
+      width={80}
+      height={80}
+      alt="Python Image"
+      className="rounded-sm"
+    />
+  ),
+  java: (
+    <Image
+      src={"/profile/tech/java.png"}
+      width={80}
+      height={80}
+      alt="Java Image"
+      className="rounded-sm"
+    />
+  ),
+  android: (
+    <Image
+      src={"/profile/tech/android.png"}
+      width={80}
+      height={80}
+      alt="Android Image"
+      className="rounded-sm"
+    />
+  ),
+  typescript: (
+    <Image
+      src={"/profile/tech/typescript.jpg"}
+      width={80}
+      height={80}
+      alt="TypeScript Image"
+      className="rounded-sm"
+    />
+  ),
+  javascript: (
+    <Image
+      src={"/profile/tech/javascript.jpg"}
+      width={80}
+      height={80}
+      alt="JavaScript Image"
+      className="rounded-sm"
+    />
+  ),
+  nodejs: (
+    <Image
+      src={"/profile/tech/node_js.png"}
+      width={80}
+      height={80}
+      alt="Node.js Image"
+      className="rounded-sm"
+    />
+  ),
+  react: (
+    <Image
+      src={"/profile/tech/react.png"}
+      width={80}
+      height={80}
+      alt="React Image"
+      className="rounded-sm"
+    />
+  ),
+  nextjs: (
+    <Image
+      src={"/profile/tech/nextjs.png"}
+      width={80}
+      height={80}
+      alt="Next.js Image"
+      className="rounded-sm"
+    />
+  ),
+  reactnative: (
+    <Image
+      src={"/profile/tech/react_native.jpg"}
+      width={80}
+      height={80}
+      alt="React Native Image"
+      className="rounded-sm"
+    />
+  ),
+  php: (
+    <Image
+      src={"/profile/tech/php.jpg"}
+      width={80}
+      height={80}
+      alt="PHP Image"
+      className="rounded-sm"
+    />
+  ),
+  mysql: (
+    <Image
+      src={"/profile/tech/mysql.png"}
+      width={80}
+      height={80}
+      alt="MySql Image"
+      className="rounded-sm"
+    />
+  ),
+  github: (
+    <Image
+      src={"/profile/tech/github.jpg"}
+      width={80}
+      height={80}
+      alt="Github Image"
+      className="rounded-sm"
+    />
+  ),
+  graphql: (
+    <Image
+      src={"/profile/tech/graphql.png"}
+      width={80}
+      height={80}
+      alt="GraphQL Image"
+      className="rounded-sm"
+    />
+  ),
+  flask: (
+    <Image
+      src={"/profile/tech/flask.png"}
+      width={80}
+      height={80}
+      alt="Flask Image"
+      className="rounded-sm"
+    />
+  ),
+  aws: (
+    <Image
+      src={"/profile/tech/aws.jpg"}
+      width={80}
+      height={80}
+      alt="Python Image"
+      className="rounded-sm"
+    />
+  ),
+  awscdk: (
+    <Image
+      src={"/profile/tech/aws_cdk.png"}
+      width={80}
+      height={80}
+      alt="AWS-CDK Image"
+      className="rounded-sm"
+    />
+  ),
+  tailwindcss: (
+    <Image
+      src={"/profile/tech/tailwindcss.png"}
+      width={80}
+      height={80}
+      alt="TailwindCSS Image"
+      className="rounded-sm"
+    />
+  ),
 }

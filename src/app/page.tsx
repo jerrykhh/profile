@@ -1,109 +1,135 @@
-import Image from "next/image"
-import { Vccard } from "@/components/profile/vccard"
-import { profileConfig } from "@/config/profile"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Pin } from "lucide-react"
-import TodoCard from "@/components/profile/todocard"
-import { OverviewBlogs } from "@/components/blog/blogcard"
-import { Separator } from "@/components/ui/separator"
-import { OverviewProjects } from "@/components/project/projectcard"
 import React from "react"
+import Image from "next/image"
+import { Pin } from "lucide-react"
+
+import { profileConfig } from "@/config/profile"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { OverviewBlogs } from "@/components/blog/blogcard"
 import { TechsCard } from "@/components/profile/techcard"
-
-
-
+import TodoCard from "@/components/profile/todocard"
+import { Vccard } from "@/components/profile/vccard"
+import { OverviewProjects } from "@/components/project/projectcard"
 
 export default function IndexPage() {
-
-
   return (
-
     <React.Fragment>
       <div className="md:w-fit">
-        <div className="md:flex justify-center gap-8">
+        <div className="justify-center gap-8 md:flex">
           <div className="flex justify-center">
-            <div className="flex-col min-w-[300px]">
-              <Image src={profileConfig.profileIcon} alt="Jerry Profile Icon" width={300} height={300} className="object-cover rounded-sm" />
-              <div className="p-2">
+            <div className="min-w-[300px] flex-col">
+              <Image
+                src={profileConfig.profileIcon}
+                alt="Jerry Profile Icon"
+                width={300}
+                height={300}
+                className="rounded-sm object-cover"
+              />
+              <div className="mt-3 p-2">
                 <Vccard items={profileConfig.profileExtendUrls} />
               </div>
             </div>
           </div>
-          <div className="w-full mt-4 md:mt-0 lg:max-w-3xl">
+          <div className="mt-4 w-full md:mt-0 lg:max-w-3xl">
             <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-              Hi, I'm Jerry.
+              Hi, I&apos;m Jerry.
             </h1>
-            <p>I am a passionate IT professional with a strong background in web development and a focus on problem-solving through programming. I hold an MSc in Information Technology from PolyU, a BSc in Computer Science from CityU, and a Higher Diploma in Software Engineering from IVE.</p>
-            <p>My interest in System Design and Cloud Solution has led me to become certified in both Azure and AWS, with a current goal of attaining AWS Solution Architecture certification. I have experience building applications using the 3-tier architecture and have even developed some applications using serverless architecture.</p>
-            <p>In the past, I have participated in various competitions such as Hackathons, CTF, and so on. Although I didn't win many of them, I gained a lot of experience in areas such as generating ideas, technical skills, teamwork, and more.</p>
+            <p>
+              I am a passionate IT professional with a strong background in web
+              development and a focus on problem-solving through programming. I
+              hold an MSc in Information Technology from PolyU, a BSc in
+              Computer Science from CityU, and a Higher Diploma in Software
+              Engineering from IVE.
+            </p>
+            <p>
+              My interest in System Design and Cloud Solution has led me to
+              become certified in both Azure and AWS, with a current goal of
+              attaining AWS Solution Architecture certification. I have
+              experience building applications using the 3-tier architecture and
+              have even developed some applications using serverless
+              architecture.
+            </p>
+            <p>
+              In the past, I have participated in various competitions such as
+              Hackathons, CTF, and so on. Although I didn&apos;t win many of
+              them, I gained a lot of experience in areas such as generating
+              ideas, technical skills, teamwork, and more.
+            </p>
 
-            {profileConfig.todos && (profileConfig.todos.length > 0) ?
+            {profileConfig.todos && profileConfig.todos.length > 0 ? (
               <div className="mt-8">
                 <TodoCard todolist={profileConfig.todos} />
               </div>
-              : <></>
-            }
+            ) : (
+              <></>
+            )}
           </div>
         </div>
-        {profileConfig.projects && profileConfig.projects.length > 0 ?
-          <div className="w-full mt-6">
+        {profileConfig.projects && profileConfig.projects.length > 0 ? (
+          <div className="mt-6 w-full">
             <h5 className="text-xl font-bold">Projects</h5>
             <div className="mt-4">
-              <div className="flex gap-8">
-                <OverviewProjects 
+              <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                <OverviewProjects
                   projectKeys={profileConfig.projects}
-                  showFullDesc={false} />
+                  showFullDesc={false}
+                />
               </div>
             </div>
           </div>
-          : <></>
-        }
+        ) : (
+          <></>
+        )}
 
-        {profileConfig.blogs && profileConfig.blogs.length > 0 ?
-          <div className="w-full mt-6">
+        {profileConfig.blogs && profileConfig.blogs.length > 0 ? (
+          <div className="mt-6 w-full">
             <h5 className="text-xl font-bold">Blogs</h5>
             <div className="mt-4">
-              <OverviewBlogs blogKeys={profileConfig.blogs} />
+              <div className="grid grid-cols-3 gap-8 lg:grid-cols-5">
+                <OverviewBlogs
+                  blogKeys={profileConfig.blogs}
+                  showFullDesc={false}
+                />
+              </div>
             </div>
           </div>
-          : <></>
+        ) : (
+          <></>
+        )}
 
-        }
-
-
-        {profileConfig.techs && Object.keys(profileConfig.techs).length > 0 ?
+        {profileConfig.techs && Object.keys(profileConfig.techs).length > 0 ? (
           <React.Fragment>
             <Separator className="my-4" />
 
             <div className="my-8">
-              <h4 className="text-xl font-bold text-center ">Tech Stack</h4>
+              <h4 className="text-center text-xl font-bold ">Tech Stack</h4>
 
               {Object.keys(profileConfig.techs).map((key: string) => {
-
-                const techs = profileConfig.techs[key];
+                const techs = profileConfig.techs[key]
 
                 return (
-                  <div className="mt-8 mb-2">
-                    <h6 className=" font-semibold">{key.toLocaleUpperCase()}</h6>
+                  <div className="mb-2 mt-8">
+                    <h6 className=" font-semibold">
+                      {key.toLocaleUpperCase()}
+                    </h6>
                     <div className="my-4">
                       <TechsCard techs={techs} />
                     </div>
                   </div>
                 )
-              })
-
-              }
-
+              })}
             </div>
           </React.Fragment>
-          : <></>
-
-
-        }
-
-
+        ) : (
+          <></>
+        )}
       </div>
-
     </React.Fragment>
   )
 }
