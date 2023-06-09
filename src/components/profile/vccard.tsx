@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Icons } from "../icons"
+import { Icon, Icons } from "../utils/icons"
 import Link from "next/link";
 
 export const Vccard = (props: {

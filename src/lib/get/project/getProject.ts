@@ -6,7 +6,7 @@ import { getMDFile, getMDFilesMetadata } from '../Get';
 const _convertmatter2MetaData = <ProjectMetadata>(matterData: matter.GrayMatterFile<string>): ProjectMetadata => {
     const metadata = {...matterData.data}
     metadata.icon = `/project/${matterData.data.uri}/${matterData.data.icon}`
-    metadata.language = convertGitHubLangColor(matterData.data.language)
+    // metadata.language = convertGitHubLangColor(matterData.data.language)
     return metadata as ProjectMetadata;
 }
 

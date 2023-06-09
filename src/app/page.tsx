@@ -17,8 +17,8 @@ export default function IndexPage() {
 
 
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10 place-content-center">
 
+    <React.Fragment>
       <div className="md:w-fit">
         <div className="md:flex justify-center gap-8">
           <div className="flex justify-center">
@@ -49,7 +49,11 @@ export default function IndexPage() {
           <div className="w-full mt-6">
             <h5 className="text-xl font-bold">Projects</h5>
             <div className="mt-4">
-              <OverviewProjects projectKeys={profileConfig.projects} />
+              <div className="flex gap-8">
+                <OverviewProjects 
+                  projectKeys={profileConfig.projects}
+                  showFullDesc={false} />
+              </div>
             </div>
           </div>
           : <></>
@@ -86,7 +90,6 @@ export default function IndexPage() {
                     </div>
                   </div>
                 )
-
               })
 
               }
@@ -101,6 +104,6 @@ export default function IndexPage() {
 
       </div>
 
-    </section>
+    </React.Fragment>
   )
 }

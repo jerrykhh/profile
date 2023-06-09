@@ -5,8 +5,8 @@ import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/nav/site-header"
-import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { ThemeProvider } from "@/components/theme-provider"
+import { TailwindIndicator } from "@/components/utils/tailwind-indicator"
+import { ThemeProvider } from "@/components/utils/theme-provider"
 
 export const metadata: Metadata = {
   title: {
@@ -43,7 +43,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="relative flex min-h-screen flex-col">
               <SiteHeader />
-              <div className="flex-1">{children}</div>
+              <div className="flex-1">
+                <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10 place-content-center">
+                  {children}
+                </section>
+              </div>
             </div>
             <TailwindIndicator />
           </ThemeProvider>

@@ -3,12 +3,12 @@ import matter from 'gray-matter';
 import { Data, Metadata } from '../typing/interface';
 
 const getMatter = (filePath: string): matter.GrayMatterFile<string> => {
-    return matter(fs.readFileSync(`${filePath}`, 'utf-8'))
+    return matter(fs.readFileSync(`src/resources/${filePath}`, 'utf-8'))
 }
 
 
 const getMDFilesMetadata = <T extends Metadata>(folder: string, fn:<T>(file:matter.GrayMatterFile<string>) => T): T[]  => {
-    const files = fs.readdirSync(folder).filter((file) => file.endsWith('.md'));
+    const files = fs.readdirSync(`src/resources/${folder}`).filter((file) => file.endsWith('.md'));
     const decodedFiles: T[] = files.map((fileName) => {
         return fn(getMatter(`${folder}/${fileName}`));
     })

@@ -5,10 +5,10 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui
 import Image from "next/image";
 import Link from "next/link";
 
-export const OverviewProjects = (props: { projectKeys: Array<string> }) => {
+export const OverviewProjects = (props: { projectKeys: Array<string>, showFullDesc: boolean }) => {
 
     return (
-        <div className="flex gap-8">
+        <React.Fragment>
             {props.projectKeys.map((key: string) => {
                 const project = getProject(key);
                 return (
@@ -23,13 +23,12 @@ export const OverviewProjects = (props: { projectKeys: Array<string> }) => {
                                 <h6 className="text-sm font-bold">
                                     {project.metadata.name}
                                 </h6>
-                                <p className="truncate text-xs">{project.metadata.description}</p>
+                                <p className={`text-xs ` + (!props.showFullDesc ? "truncate" : "")}>{project.metadata.description}</p>
                             </div>
                         </div>
                     </Link>
                 )
             })}
-        </div>
+        </React.Fragment>
     )
-
 }

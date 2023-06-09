@@ -1,5 +1,5 @@
 import React from "react";
-import { techIcons } from "../icons"
+import { techIcons } from "../utils/icons"
 import { Card } from "../ui/card"
 
 export const TechsCard = (props: { techs: string[] }): JSX.Element => {
@@ -10,7 +10,7 @@ export const TechsCard = (props: { techs: string[] }): JSX.Element => {
                 const techImg = techIcons[tech.toLowerCase().replace("-", "")];
                 return <div>
                     <div className="self-center">{techImg}</div>
-                    <p className="text-center">{tech}</p>
+                    <p className="text-center text-sm">{tech}</p>
                 </div>
             })
             }
