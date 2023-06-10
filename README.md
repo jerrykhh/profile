@@ -1,27 +1,42 @@
-# Profile Page
-Next.js 13 (app dir) + TailwindCSS 
+# Profile
 
-## Installation
-```
+## Features
+
+- Next.js 13 App Directory
+- Radix UI Primitives
+- Tailwind CSS
+- Icons from [Lucide](https://lucide.dev)
+- Dark mode with `next-themes`
+- Tailwind CSS class sorting, merging and linting.
+
+## Usage
+
+```bash
 npm install
+npm run preview
 ```
 
 ## Directory Structure
 ```
-/app        Next.js 13 app dir
-/components Nav and Header components
-/posts      Blog posts (Markdown)
-/projects   Project page (Markdown)
-/lib
- /convert   Convert Programming language to color code
- /get       Get blog posts and project page logic
+├──src
+    ├─app           // Next.js 13 app dir
+    │  ├─blog       // Blog Post (not contain List blog posts now)
+    │  │  └─[uri]   // Blog Details
+    │  └─project    // List Projects
+    │      └─[uri]  // Project Details
+    ├─components    // client side components
+    │  ├─blog
+    │  ├─nav
+    │  ├─profile
+    │  ├─project
+    │  ├─ui         // ui.shadcn ui components (Radix UI + Tailwind CSS)
+    │  └─utils
+    ├─config        // about page configuration
+    ├─lib
+    │  ├─convert
+    │  ├─get        // For Get Markdown Contents
+    │  │  ├─blog
+    │  │  └─project
+    │  └─typing
+    └─styles        // Tailwind CSS
 ```
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!

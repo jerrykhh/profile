@@ -1,9 +1,9 @@
 ---
-icon: 'cover.png'
-uri: 'lcsd'
-title: 'Review the Captcha Challenge in Leisure Link e-Services System(康體通)'
-description: 'I want to analyze the Leisure Link (康體通) Web Application which is the booking system for leisure venues in Hong Kong, and try to build a bot to book a Badminton Court for me.'
-date: '2022-06-28'
+icon: "cover.png"
+uri: "lcsd"
+title: "Review the Captcha Challenge in Leisure Link e-Services System(康體通)"
+description: "I want to analyze the Leisure Link (康體通) Web Application which is the booking system for leisure venues in Hong Kong, and try to build a bot to book a Badminton Court for me."
+date: "2022-06-28"
 ---
 
 In my Final Leave at HA, I want to analyze the Leisure Link (康體通) Web Application which is the booking system for leisure venues in Hong Kong, and try to build a bot to book a Badminton Court for me.
@@ -65,19 +65,19 @@ import threading
 
 
 output_file = open("./captcha.dat", mode="a+")
-lock = threading.Lock() 
+lock = threading.Lock()
 
 
 def get_code():
     # create the session
     session = HTMLSession()
     r = session.post('https://w2.leisurelink.lcsd.gov.hk/leisurelink/humanTest/tsvkb')
-    
+
     # get the img html element
     base64_image_src = r.html.xpath('//img/@src')[0]
-    
+
     base64_image = base64_image_src.replace("data:image/jpg;base64,", "")
-    
+
     # get the mapvs which is the character whitelist
     mapvs = r.html.xpath("//div[@class='kbLeftColumn'][1]//div[contains(@class, 'kbkey')]/@mapv")
     codes = r.html.xpath("//div[@class='kbLeftColumn'][1]//div[contains(@class, 'kbkey')]/text()")
@@ -89,18 +89,18 @@ def get_code():
     # save the base64 image to jpg
     image_fp.write(base64.b64decode(base64_image))
     image_fp.close()
-    
+
     lock.acquire()
-    
+
     # write the image name and the character whitelist to datafile
     output_file.write(f"{id}.jpg|{''.join(codes)}|{''.join(mapvs)}\n")
     lock.release()
-    
+
     return f"{id}.jpg"
-    
+
 # num: how many image you want to collect
 def main(num: int):
-    
+
     # multi thread for collect the image
     threads = []
     threadPool = ThreadPoolExecutor(max_workers=6)
@@ -108,7 +108,7 @@ def main(num: int):
 
     for _ in range(num):
         threads.append(threadPool.submit(get_code))
-        
+
     for future in as_completed(threads):
         print(future.result())
     output_file.close()
@@ -145,7 +145,7 @@ opening = cv2.GaussianBlur(opening, (5,5), 1)
 _, opening = cv2.threshold(opening, 175, 295, cv2.THRESH_BINARY)
 result_1 = cv2.resize(cv2.erode(opening, np.ones((2,2), np.uint8), iterations = 1), ( 81*2, 34*2))
 
-    
+
 # result 2
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,1))
 opening = cv2.morphologyEx(new_img, cv2.MORPH_OPEN, kernel)
@@ -185,7 +185,7 @@ The procvkb() cannot search in the HTML Element, which means this method is impo
 
 <img src="/blog/lcsd/developtool-provkb.png" class="rounded"/>
 
-Most code is changed to Address, which needs much time to reverse, and I cannot find the generator for key X-V4kL2cSl-*. Therefore, I give up creating the backend bot. The selenium web driver will use to render the HTML and execute the JavaScript. The below code will click the captcha key button and call the onSubmiteForm() method.
+Most code is changed to Address, which needs much time to reverse, and I cannot find the generator for key X-V4kL2cSl-\*. Therefore, I give up creating the backend bot. The selenium web driver will use to render the HTML and execute the JavaScript. The below code will click the captcha key button and call the onSubmiteForm() method.
 
 ```
 # clear selected key
@@ -198,13 +198,13 @@ driver.execute_script('''
 
 # click the captcha key
 js_img_codes = ",".join([ f"'{c}'" for c in predict_img_code]
-            
-driver.execute_script('''                  
+
+driver.execute_script('''
     for(const ele of document.getElementsByClassName("kbkey")){{
      if([{js_img_codes}].includes(ele.innerText)){{
          ele.click();
      }}
-                                        
+
     }}
 '''.format(js_img_codes=js_img_codes)))
 
@@ -238,7 +238,7 @@ If you find_element directly, the webdriver will throw the not found exception. 
 
 ```
 driver.switch_to.frame(driver.find_element_by_xpath('/html/frameset/frame[@name="main"]')
-            
+
 WebDriverWait(driver, 10).until(
     EC.presence_of_all_elements_located((By.CLASS_NAME, "kbkey"))
 ))
@@ -248,22 +248,22 @@ We can use the previous approach to convert the image to text. But the differenc
 
 ```
 driver.execute_script('''
-                                      
+
      let tmp_obj = {{}};
      for(const ele of document.getElementsByClassName("kbkey")){{
          tmp_obj[ele.innerText] = ele;
      }};
-                                    
+
 
       for(const value of [{js_img_codes}]){{
-                                        
+
           if(value in tmp_obj)
               tmp_obj[value].click();
           else if (value.toLowerCase() in tmp_obj)
               tmp_obj[value.toLowerCase()].click();
           else if (value.toUpperCase() in tmp_obj)
               tmp_obj[value.toUpperCase()].click();
-                                        
+
       }}
 '''.format(js_img_codes=js_img_codes))
 ```
@@ -292,7 +292,7 @@ driver.execute_script('''
                                         form.hkId.value = "D361918";
                                         form.hkIdCheckDigit.value = "5";
                                         form.telephoneNo.value = "65492342";
-                                    
+
                                         onSubmit(document.getElementsByTagName('form')[0]);
                                     ''');
 ```
@@ -321,15 +321,15 @@ import uuid
         driver.get(f"https://w1.leisurelink.lcsd.gov.hk/index/index.jsp;jsessionid={uuid.uuid1()}?lang=en")
 
 
-        
+
         driver.get("https://w1.leisurelink.lcsd.gov.hk/application/CheckChannelSuspension.do?applicationId=LCSD_11&language=en&country=US")
         print("wait")
         captcha_check = True
-               
+
         while captcha_check:
-            
+
             print("captcha check True")
-           
+
             WebDriverWait(driver, 300).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "kbkey"))
             )
@@ -342,20 +342,20 @@ import uuid
             code_elements = driver.find_elements_by_xpath("//div[@class='kbLeftColumn'][1]//div[contains(@class, 'kbkey')]")
             codes = [str(code.text) for code in code_elements]
             print("codes", codes)
-            
+
             predict_img_code = use_lcsd_captcha(captcha_img, codes, size=4)
             print("predict_img_code", predict_img_code)
-            
+
             if predict_img_code is None or len(predict_img_code) != 4:
                 print("regenerate_visual_captcha")
                 driver.execute_script("document.getElementsByClassName('kbLeftColumn')[0].innerHTML = ''; regenerate_visual_captcha()")
                 continue
-            
-            
+
+
             print("return Code",predict_img_code)
 
 
-            
+
             driver.execute_script('''
                                     for(const ele of document.getElementsByClassName("red_selected")){
                                         ele.click();
@@ -365,43 +365,43 @@ import uuid
                                 ''')
 
 
-            
+
             js_img_codes = ",".join([ f"'{c}'" for c in predict_img_code])
-            
+
             driver.execute_script('''
-                                
+
                                 for(const ele of document.getElementsByClassName("kbkey")){{
-                                        
+
                                         if([{js_img_codes}].includes(ele.innerText)){{
                                             ele.click();
                                         }}
-                                        
+
                                     }}
                                 '''.format(js_img_codes=js_img_codes))
             time.sleep(2.12312)
-            
+
             driver.execute_script('''
                                   const form = document.getElementById('huForm');
                                   onSubmitForm(form);
                                   form.submit();
                                   ''')
-            
+
             print("loading")
             if "lcsd/leisurelink/dispatchFlow.do?" in driver.current_url:
                 captcha_check = False
 
 
-           
-                
-                
-                
-        
-        
-        
+
+
+
+
+
+
+
         # dispatchFlow (login)
-        
+
         login_captcha_check = True
-        
+
         print("dispatchFlow")
         while login_captcha_check:
             print("dispatchFlow wair")
@@ -410,62 +410,62 @@ import uuid
                     EC.url_contains("lcsd/leisurelink/dispatchFlow.do?")
                  )
             driver.switch_to.frame(driver.find_element_by_xpath('/html/frameset/frame[@name="main"]'))
-            
+
             print("switched")
-            
+
             WebDriverWait(driver, 10).until(
                     EC.presence_of_all_elements_located((By.CLASS_NAME, "kbkey"))
                 )
-            
-            
+
+
             print("point2 ")
 
 
             try:
-                
+
                 captcha_img_element = driver.find_element_by_xpath('//*[@id="inputTextWrapper"]/div/img')
                 captcha_img = Image.base64_uri_to_cv2_img(captcha_img_element.get_attribute("src"))
                 code_elements = driver.find_elements_by_xpath("//div[@id='virtualKeysWrapper']/div[contains(@class, 'kbkey')]")
                 codes = [str(code.text) for code in code_elements]
                 print("codes", codes)
-                
+
                 predict_img_code = use_lcsd_captcha(captcha_img, codes, size=5)
                 print("predict_img_code", predict_img_code)
-                
+
                 if predict_img_code is None or len(predict_img_code) != 5:
                     print("regenerate_visual_captcha")
                     driver.execute_script("document.getElementById('virtualKeyboardLarge').innerHTML='';regenerateCaptcha();")
                     driver.switch_to.parent_frame()
                     continue
-            
+
                 print("predict_img_code", predict_img_code)
                 js_img_codes = ",".join([ f"'{c}'" for c in predict_img_code])
                 print("js_img_codes", js_img_codes)
-                
-                
+
+
                 driver.execute_script('''
-                                      
+
                                     let tmp_obj = {{}};
                                     for(const ele of document.getElementsByClassName("kbkey")){{
                                         tmp_obj[ele.innerText] = ele;
                                     }};
-                                    
+
 
 
                                     for(const value of [{js_img_codes}]){{
-                                        
+
                                         if(value in tmp_obj)
                                             tmp_obj[value].click();
                                         else if (value.toLowerCase() in tmp_obj)
                                             tmp_obj[value.toLowerCase()].click();
                                         else if (value.toUpperCase() in tmp_obj)
                                             tmp_obj[value.toUpperCase()].click();
-                                        
+
                                     }}
-                                    
+
                                     '''.format(js_img_codes=js_img_codes))
-                
-                
+
+
                 time.sleep(8)
                 driver.execute_script('''
                                     let form = document.forms[0];
@@ -475,13 +475,13 @@ import uuid
                                     form.telephoneNo.value = "65492342";
                                     onSubmit(document.getElementsByTagName('form')[0]);
                                     ''');
-                
-                
+
+
                 if "lcsd/leisurelink/dispatchFlow.do?" in driver.current_url:
                     driver.switch_to.parent_frame()
                 else:
                     break
-                
+
             except Exception as e:
                 print(e)
                 print("regenerate_visual_captcha")
