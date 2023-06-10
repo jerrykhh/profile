@@ -69,13 +69,13 @@
     --radius: 0.5rem;
   }
 
-  .prose h1,
-  .prose h2,
-  .prose h3,
-  .prose h4,
-  .prose p,
+  .prose *,
   .blog {
     @apply text-black dark:text-primary;
+  }
+
+  .prose li::marker{
+    @apply text-primary
   }
 
   .blog img {

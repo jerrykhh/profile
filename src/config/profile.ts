@@ -46,7 +46,10 @@ export const profileConfig: {
 
   projects: ["ig-follower", "Goodstify", "grading-accelerator", "USTHack21"],
 
-  blogs: ["lcsd"],
+  blogs: [
+    "stable-diffusion-lora-training",
+    "lcsd",
+  ],
 
   techs: {
     application: [

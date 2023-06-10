@@ -74,7 +74,7 @@ export default function IndexPage() {
           <div className="mt-6 w-full">
             <h5 className="text-xl font-bold">Blogs</h5>
             <div className="mt-4">
-              <div className="grid grid-cols-3 gap-8 lg:grid-cols-5">
+              <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
                 <OverviewBlogs
                   blogKeys={profileConfig.blogs}
                   showFullDesc={false}

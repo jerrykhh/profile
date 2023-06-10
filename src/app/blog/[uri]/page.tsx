@@ -45,7 +45,7 @@ const BlogDetailPage = ({ params: { uri } }: BlogDetailPageProps) => {
             />
           </div>
 
-          <div className="row max-2xl: lg:px-44">
+          <div className="row max-2xl: mt-8 lg:px-44">
             <article className="prose prose-stone min-w-full text-white marker:text-white prose-h1:border-b prose-h1:py-3">
               <Markdown>{blog.content}</Markdown>
             </article>
