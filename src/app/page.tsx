@@ -38,30 +38,13 @@ export default function IndexPage() {
           </div>
           <div className="mt-4 w-full md:mt-0 lg:max-w-3xl">
             <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-              Hi, I&apos;m Jerry.
+              Hi, I&apos;m {profileConfig.nickname}.
             </h1>
-            <p>
-              I am a passionate IT professional with a strong background in web
-              development and a focus on problem-solving through programming. I
-              hold an MSc in Information Technology from PolyU, a BSc in
-              Computer Science from CityU, and a Higher Diploma in Software
-              Engineering from IVE.
-            </p>
-            <p>
-              My interest in System Design and Cloud Solution has led me to
-              become certified in both Azure and AWS, with a current goal of
-              attaining AWS Solution Architecture certification. I have
-              experience building applications using the 3-tier architecture and
-              have even developed some applications using serverless
-              architecture.
-            </p>
-            <p>
-              In the past, I have participated in various competitions such as
-              Hackathons, CTF, and so on. Although I didn&apos;t win many of
-              them, I gained a lot of experience in areas such as generating
-              ideas, technical skills, teamwork, and more.
-            </p>
-
+            {profileConfig.intro && profileConfig.intro.length > 0 ?
+              profileConfig.intro.map((ctx) => (
+                <p>{ctx}</p>
+              )) : <></>
+            }
             {profileConfig.todos && profileConfig.todos.length > 0 ? (
               <div className="mt-8">
                 <TodoCard todolist={profileConfig.todos} />

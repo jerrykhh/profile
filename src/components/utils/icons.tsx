@@ -155,7 +155,7 @@ export const techIcons: {
   ),
   graphql: (
     <Image
-      src={"/profile/tech/graphql.png"}
+      src={"/profile/tech/graphQL.png"}
       width={80}
       height={80}
       alt="GraphQL Image"

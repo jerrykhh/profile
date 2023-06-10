@@ -31,7 +31,7 @@ npm run preview
     │  ├─project
     │  ├─ui         // ui.shadcn ui components (Radix UI + Tailwind CSS)
     │  └─utils
-    ├─config
+    ├─config        // about page configuration
     ├─lib
     │  ├─convert
     │  ├─get        // For Get Markdown Contents
