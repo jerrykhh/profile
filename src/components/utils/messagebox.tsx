@@ -16,17 +16,17 @@ export const MessageBox = ({ icon, title, description }: MessageBoxProps) => {
   return !closeAnnoun ? (
     <Alert>
       {icon}
-      <div className="flex justify-between">
+      <div className="ml-2 flex justify-between">
         <div>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>{description}</AlertDescription>
         </div>
-        <div
+        {/* <div
           className="cursor-pointer self-center"
           onClick={() => setCloseAnnoun(!closeAnnoun)}
         >
           <X className="h-4 w-4" />
-        </div>
+        </div> */}
       </div>
     </Alert>
   ) : (

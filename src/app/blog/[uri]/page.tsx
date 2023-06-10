@@ -6,6 +6,7 @@ import Markdown from "markdown-to-jsx"
 
 import { getBlog, getBlogsMetadata } from "@/lib/get/blog/getBlog"
 import { Button } from "@/components/ui/button"
+import { ScrollTooltip } from "@/components/utils/scrollTooltip"
 
 type BlogDetailPageProps = {
   params: {
@@ -18,6 +19,7 @@ const BlogDetailPage = ({ params: { uri } }: BlogDetailPageProps) => {
 
   return (
     <React.Fragment>
+      <ScrollTooltip />
       <div className="flex-col">
         <Link href="/">
           <Button variant="link" className="p-0">
@@ -54,11 +56,11 @@ const BlogDetailPage = ({ params: { uri } }: BlogDetailPageProps) => {
   )
 }
 
+export default BlogDetailPage
+
 export async function generateStaticParams() {
   const posts = getBlogsMetadata()
   return posts.map((post) => ({
-    title: post.uri,
+    uri: post.uri,
   }))
 }
-
-export default BlogDetailPage

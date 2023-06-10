@@ -29,7 +29,7 @@ const ProjectPage = () => {
         description=" Some code of project may not be good due to the time limited, even contains some security problems."
       />
 
-      <div className="mt-[10rem] flex  h-[70vh] place-content-center place-items-center md:mt-0">
+      <div className="flex place-content-center place-items-center ">
         <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
           <OverviewProjects projectKeys={allProjectKeys} showFullDesc={true} />
         </div>

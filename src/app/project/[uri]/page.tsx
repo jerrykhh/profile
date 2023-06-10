@@ -14,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { ScrollTooltip } from "@/components/utils/scrollTooltip"
 
 type ProjectPageProps = {
   params: {
@@ -26,6 +27,7 @@ const ProjectDetailPage = ({ params: { uri } }: ProjectPageProps) => {
 
   return (
     <React.Fragment>
+      <ScrollTooltip />
       <div className="flex-col">
         <Link href="../project">
           <Button variant="link" className="p-0">
@@ -33,7 +35,6 @@ const ProjectDetailPage = ({ params: { uri } }: ProjectPageProps) => {
             <p>back</p>
           </Button>
         </Link>
-
         <div className="mt-8 flex flex-col place-content-center items-center gap-4 lg:flex-row lg:items-start">
           <article className="prose-md prose mt-[4rem] self-center dark:text-gray-200 lg:mt-0">
             <Markdown>{project.content}</Markdown>
@@ -77,6 +78,6 @@ export default ProjectDetailPage
 export async function generateStaticParams() {
   const projects = getProjectsMetadata()
   return projects.map((project) => ({
-    title: project.uri,
+    uri: project.uri,
   }))
 }
