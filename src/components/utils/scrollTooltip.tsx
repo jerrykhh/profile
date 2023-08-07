@@ -29,8 +29,7 @@ export const ScrollTooltip = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true })
 
-    if (window.pageYOffset != 0)
-      scrollToTop()
+    if (window.pageYOffset != 0) scrollToTop()
 
     return () => {
       window.removeEventListener("scroll", handleScroll)

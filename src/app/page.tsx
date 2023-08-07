@@ -40,11 +40,11 @@ export default function IndexPage() {
             <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
               Hi, I&apos;m {profileConfig.nickname}.
             </h1>
-            {profileConfig.intro && profileConfig.intro.length > 0 ?
-              profileConfig.intro.map((ctx) => (
-                <p>{ctx}</p>
-              )) : <></>
-            }
+            {profileConfig.intro && profileConfig.intro.length > 0 ? (
+              profileConfig.intro.map((ctx) => <p>{ctx}</p>)
+            ) : (
+              <></>
+            )}
             {profileConfig.todos && profileConfig.todos.length > 0 ? (
               <div className="mt-8">
                 <TodoCard todolist={profileConfig.todos} />

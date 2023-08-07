@@ -81,6 +81,11 @@
   .blog img {
     @apply w-full rounded;
   }
+
+  .blinking-cursor {
+    @apply ml-[4px] bg-gray-600 text-gray-600 dark:bg-white;
+    animation: blink 1s infinite;
+  }
 }
 
 @layer base {

@@ -58,10 +58,23 @@ const ProjectDetailPage = ({ params: { uri } }: ProjectPageProps) => {
                   </CardDescription>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full" variant="secondary" asChild>
-                    <Link href={project.metadata.repository} target="_blank">
-                      View repository
-                    </Link>
+                  <Button
+                    className={
+                      project.metadata.repository === ""
+                        ? "w-full cursor-not-allowed"
+                        : "w-full"
+                    }
+                    variant="secondary"
+                    asChild
+                    disabled={project.metadata.repository !== "" ? false : true}
+                  >
+                    {project.metadata.repository !== "" ? (
+                      <Link href={project.metadata.repository} target="_blank">
+                        View repository
+                      </Link>
+                    ) : (
+                      <span>repository unavailable</span>
+                    )}
                   </Button>
                 </CardFooter>
               </Card>

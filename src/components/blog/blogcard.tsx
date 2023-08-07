@@ -26,7 +26,7 @@ export const OverviewBlogs = (props: {
             <div className=" max-w-[12rem]">
               <Card>
                 <CardHeader className="space-y-0 p-0">
-                  <div className="relative w-full h-[12rem]">
+                  <div className="relative h-[12rem] w-full">
                     <Image
                       className="absolute left-0 top-0 h-full w-full rounded-sm object-cover"
                       src={`${blog.metadata.icon}`}
