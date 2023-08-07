@@ -6,7 +6,7 @@ import TypeWriter from "@/components/ui/typewriter"
 
 const ExtLinkPage = () => {
   return (
-    <div className="flex h-[100vh] items-center justify-center">
+    <div className="items-center justify-center">
       <div className="w-96 2xl:w-[30rem]">
         <h1 className="font-blod my-4 text-center text-xl">
           {"LinkTr".toLocaleUpperCase()}
@@ -18,7 +18,7 @@ const ExtLinkPage = () => {
             alt="Jerry Icon (Generative AI Gen)"
             width={500}
             height={500}
-            className="h-full w-full rounded-md object-cover"
+            className="rounded-md object-cover"
           />
         </div>
 
