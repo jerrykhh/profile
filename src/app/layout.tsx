@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import { useLocale } from 'next-intl';
 import { Inter } from 'next/font/google';
+
+import { cn } from '@/lib/utils';
 
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,9 +18,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = useLocale();
+  console.log('page locale', locale);
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang={locale}>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          inter.variable
+        )}
+      >
+        {children}
+      </body>
     </html>
   );
 }

@@ -10,20 +10,31 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.427.0",
     "next": "14.2.5",
+    "next-intl": "^3.17.2",
     "profile": "file:",
+    "ramda": "^0.30.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/js-cookie": "^3",
     "@types/node": "^20",
+    "@types/ramda": "^0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
+    "@typescript-eslint/parser": "^8.0.1",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
