@@ -1,4 +1,8 @@
-const config = {
+import type { Config } from 'tailwindcss';
+
+import { BREAKPOINT } from './src/constants/screen';
+
+const config: Config = {
   darkMode: ['class'],
   content: [
     './components/**/*.{ts,tsx}',
@@ -109,7 +113,7 @@ const config = {
       },
     },
   },
-  plugins: [import('tailwindcss-animate')],
+  plugins: [],
 };
 
 export default config;
