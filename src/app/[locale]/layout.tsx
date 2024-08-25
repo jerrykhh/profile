@@ -2,6 +2,7 @@ import { NextIntlClientProvider, useMessages, useTimeZone } from 'next-intl';
 import { Inter } from 'next/font/google';
 
 import { BaseLayout } from '@/components/BaseLayout';
+import { BaseLayoutProvider } from '@/contexts/BaseLayout';
 import { cn } from '@/lib/utils';
 
 interface LocaleLayoutProps {
@@ -20,8 +21,6 @@ export default function LocaleLayout({
   const timeZone = useTimeZone();
   const messages = useMessages();
 
-  console.log('LocaleLayout', locale);
-
   return (
     <html lang={locale}>
       <body
@@ -32,7 +31,9 @@ export default function LocaleLayout({
           timeZone={timeZone}
           messages={messages}
         >
-          <BaseLayout>{children}</BaseLayout>
+          <BaseLayoutProvider>
+            <BaseLayout>{children}</BaseLayout>
+          </BaseLayoutProvider>
         </NextIntlClientProvider>
       </body>
     </html>

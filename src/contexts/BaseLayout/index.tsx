@@ -4,12 +4,12 @@ import { createContext, useContext, useState } from 'react';
 
 interface BaseLayoutState {
   isNavDrawerOpen: boolean;
-  handleToggleNavDrawer: (isOpen: boolean) => void;
+  toggleNavDrawer: () => void;
 }
 
 const initialState: BaseLayoutState = {
   isNavDrawerOpen: false,
-  handleToggleNavDrawer: () => {},
+  toggleNavDrawer: () => {},
 };
 
 const BaseLayoutContext = createContext<BaseLayoutState>(initialState);
@@ -21,14 +21,12 @@ export const BaseLayoutProvider = ({
 }) => {
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
 
-  const handleToggleNavDrawer = (isOpen: boolean) => {
-    setIsNavDrawerOpen(isOpen);
+  const toggleNavDrawer = () => {
+    setIsNavDrawerOpen(!isNavDrawerOpen);
   };
 
   return (
-    <BaseLayoutContext.Provider
-      value={{ isNavDrawerOpen, handleToggleNavDrawer }}
-    >
+    <BaseLayoutContext.Provider value={{ isNavDrawerOpen, toggleNavDrawer }}>
       {children}
     </BaseLayoutContext.Provider>
   );

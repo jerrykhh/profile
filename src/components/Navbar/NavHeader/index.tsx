@@ -1,5 +1,5 @@
-import { MenuIcon } from '../icons/MenuIcon';
-import { Button } from '../ui/button';
+import { MenuIcon } from '../../icons/MenuIcon';
+import { Button } from '../../ui/button';
 
 interface NavHeaderProps {
   onToggle?: () => void;
@@ -7,7 +7,7 @@ interface NavHeaderProps {
 
 export const NavHeader = ({ onToggle }: NavHeaderProps) => {
   return (
-    <div className="border-b p-2">
+    <div className="border-b p-2 xsOnly:hidden">
       <Button
         variant="outline"
         size="icon"
