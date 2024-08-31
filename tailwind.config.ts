@@ -1,56 +1,52 @@
-const config = {
-  darkMode: ['class'],
-  content: [
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-  ],
-  screens: {
-    xs: `${BREAKPOINT.XS_MIN}`, //Phone
-    sm: `${BREAKPOINT.SM_MIN}px`, //Tablet-sm
-    md: `${BREAKPOINT.MD_MIN}px`, //Tablet-l
-    lg: `${BREAKPOINT.LG_MIN}px`, //Desktop
-    xsOnly: {
-      min: `${BREAKPOINT.XS_MIN}`,
-      max: `${BREAKPOINT.SM_MIN - 1}px`,
-    },
-    smOnly: {
-      min: `${BREAKPOINT.SM_MIN}`,
-      max: `${BREAKPOINT.MD_MIN - 1}px`,
-    },
-    mdOnly: {
-      min: `${BREAKPOINT.MD_MIN}`,
-      max: `${BREAKPOINT.LG_MIN - 1}px`,
-    },
-    xsOrSm: {
-      min: `${BREAKPOINT.XS_MIN}`,
-      max: `${BREAKPOINT.MD_MIN - 1}px`,
-    },
-    smOrMd: {
-      min: `${BREAKPOINT.SM_MIN}`,
-      max: `${BREAKPOINT.LG_MIN - 1}px`,
-    },
-    xsToMd: {
-      min: `${BREAKPOINT.XS_MIN}`,
-      max: `${BREAKPOINT.LG_MIN - 1}px`,
-    },
-    'touch-device': { raw: '(hover:none) and (pointer:coarse)' },
-    'hover-device': { raw: '(hover:hover) and (pointer:fine)' },
-    'short-device': {
-      raw: `(max-height: 600px) and (min-width: 660px) and (max-width: ${
-        BREAKPOINT.LG_MIN - 1
-      }px)`,
-    },
-    'small-device': { raw: '(max-height: 599px) and (max-width: 659px)' },
-  },
+import type { Config } from 'tailwindcss';
+
+import { BREAKPOINT } from './src/constants/screen';
+
+const config: Config = {
+  content: ['./src/**/*.{mjs,js,ts,jsx,tsx,mdx}'],
   prefix: '',
   theme: {
     container: {
       center: true,
       padding: '2rem',
-      screens: {
-        '2xl': '1400px',
+    },
+    screens: {
+      xs: `${BREAKPOINT.XS_MIN}`, //Phone
+      sm: `${BREAKPOINT.SM_MIN}px`, //Tablet-sm
+      md: `${BREAKPOINT.MD_MIN}px`, //Tablet-l
+      lg: `${BREAKPOINT.LG_MIN}px`, //Desktop
+      xsOnly: {
+        min: `${BREAKPOINT.XS_MIN}`,
+        max: `${BREAKPOINT.SM_MIN - 1}px`,
       },
+      smOnly: {
+        min: `${BREAKPOINT.SM_MIN}`,
+        max: `${BREAKPOINT.MD_MIN - 1}px`,
+      },
+      mdOnly: {
+        min: `${BREAKPOINT.MD_MIN}`,
+        max: `${BREAKPOINT.LG_MIN - 1}px`,
+      },
+      xsOrSm: {
+        min: `${BREAKPOINT.XS_MIN}`,
+        max: `${BREAKPOINT.MD_MIN - 1}px`,
+      },
+      smOrMd: {
+        min: `${BREAKPOINT.SM_MIN}`,
+        max: `${BREAKPOINT.LG_MIN - 1}px`,
+      },
+      xsToMd: {
+        min: `${BREAKPOINT.XS_MIN}`,
+        max: `${BREAKPOINT.LG_MIN - 1}px`,
+      },
+      'touch-device': { raw: '(hover:none) and (pointer:coarse)' },
+      'hover-device': { raw: '(hover:hover) and (pointer:fine)' },
+      'short-device': {
+        raw: `(max-height: 600px) and (min-width: 660px) and (max-width: ${
+          BREAKPOINT.LG_MIN - 1
+        }px)`,
+      },
+      'small-device': { raw: '(max-height: 599px) and (max-width: 659px)' },
     },
     extend: {
       colors: {
@@ -109,7 +105,7 @@ const config = {
       },
     },
   },
-  plugins: [import('tailwindcss-animate')],
+  plugins: [],
 };
 
 export default config;
