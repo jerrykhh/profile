@@ -128,3 +128,17 @@ export const Lead = forwardRef<
   );
 });
 Lead.displayName = 'Lead';
+
+export const Muted = forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+  return (
+    <p
+      ref={ref}
+      className={cn('text-sm text-muted-foreground', className)}
+      {...props}
+    />
+  );
+});
+Muted.displayName = 'Muted';

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import { H3, Muted } from '@/components/ui/typography';
 import { BlogPostMetadata } from '@/types/blog';
 
 interface BlogPostCardProps {
@@ -18,8 +19,8 @@ export const BlogPostCard = ({ metadata }: BlogPostCardProps) => {
           className="w-full h-full object-cover rounded-lg"
         />
       </div>
-      <h3 className="text-lg font-medium">{metadata.title}</h3>
-      <p className="text-sm text-muted-foreground">{metadata.description}</p>
+      <H3 className="text-lg">{metadata.title}</H3>
+      <Muted>{metadata.description}</Muted>
     </div>
   );
 };
