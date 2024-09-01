@@ -27,7 +27,7 @@ export const BaseLayout = ({ children }: Props) => {
           <Navbar />
         </div>
         <div className="w-full">
-          <div className="sm:container py-2">{children}</div>
+          <div className="sm:container py-4 px-4 ">{children}</div>
         </div>
       </div>
       <div className="sm:hidden fixed w-full h-14 bottom-0 p-2 border bg-background">
