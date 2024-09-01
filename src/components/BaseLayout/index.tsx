@@ -30,7 +30,7 @@ export const BaseLayout = ({ children }: Props) => {
           <div className="sm:container py-2">{children}</div>
         </div>
       </div>
-      <div className="sm:hidden fixed w-full h-14 bottom-0 p-2 border">
+      <div className="sm:hidden fixed w-full h-14 bottom-0 p-2 border bg-background">
         <Navbar />
       </div>
     </React.Fragment>
