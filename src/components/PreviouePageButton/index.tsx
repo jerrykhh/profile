@@ -1,5 +1,9 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { useRouter } from '@/navigation';
+
+import { P } from '../ui/typography';
 
 type PreviousPageButtonProps = {
   onClick?: () => void;
@@ -14,7 +18,7 @@ export const PreviousPageButton = ({ onClick }: PreviousPageButtonProps) => {
       className="p-0"
       onClick={onClick ?? (() => router.back())}
     >
-      <p className="text-lg sm:text-base">&lt; back</p>
+      <P>&lt; back</P>
     </Button>
   );
 };
