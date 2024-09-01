@@ -2,6 +2,7 @@ import { NextIntlClientProvider, useMessages, useTimeZone } from 'next-intl';
 import { Inter } from 'next/font/google';
 
 import { BaseLayout } from '@/components/BaseLayout';
+import { Toaster } from '@/components/ui/toaster';
 import { BaseLayoutProvider } from '@/contexts/BaseLayout';
 import { cn } from '@/lib/utils';
 
@@ -32,6 +33,7 @@ export default function LocaleLayout({
           messages={messages}
         >
           <BaseLayoutProvider>
+            <Toaster />
             <BaseLayout>{children}</BaseLayout>
           </BaseLayoutProvider>
         </NextIntlClientProvider>
