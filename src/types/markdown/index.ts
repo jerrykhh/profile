@@ -3,7 +3,7 @@ export interface IMarkdownMetadata {
   title: string;
   image: string;
   description: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 export interface IMarkdown {

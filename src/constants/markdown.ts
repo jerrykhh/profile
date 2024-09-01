@@ -1,1 +1,1 @@
-export const MARKDOWN_ROOT_DIR = 'src/markdown';
+export const MARKDOWN_ROOT_DIR = 'src/content';

@@ -14,6 +14,8 @@ const nextConfig = {
     ],
     dangerouslyAllowSVG: true,
   },
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js', 'mdx'],
+  transpilePackages: ['next-mdx-remote'],
 };
 
 export default withNextIntl(nextConfig);
