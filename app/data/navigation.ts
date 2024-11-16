@@ -1,16 +1,11 @@
 import {
   GalleryHorizontalEndIcon,
   HouseIcon,
-  type LucideIcon,
   PresentationIcon,
   TvMinimalIcon,
 } from 'lucide-react';
 
-export interface NavigationItem {
-  name: string;
-  route: string;
-  icon: LucideIcon;
-}
+import { NavigationItem } from '@/types/navigation';
 
 export const navItems: NavigationItem[] = [
   {
