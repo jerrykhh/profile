@@ -7,6 +7,8 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
+import { BaseLayout } from '@/components/BaseLayout';
+
 import styles from './tailwind.css?url';
 
 export const links: LinksFunction = () => [
@@ -33,7 +35,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <BaseLayout>{children}</BaseLayout>
+
         <ScrollRestoration />
         <Scripts />
       </body>
