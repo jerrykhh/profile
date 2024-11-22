@@ -1,3 +1,4 @@
+import { DevicePlatformProvider } from '@/contexts/DevicePlatform';
 import { navItems } from '@/data/navigation';
 import { cn } from '@/lib/utils';
 
@@ -17,7 +18,9 @@ export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="w-full md:content md:ml-auto p-4">
           <div className="flex flex-col items-center">
-            <div className="max-w-5xl">{children}</div>
+            <div className="max-w-5xl">
+              <DevicePlatformProvider>{children}</DevicePlatformProvider>
+            </div>
           </div>
         </div>
       </div>
