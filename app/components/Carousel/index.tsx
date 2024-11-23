@@ -17,14 +17,9 @@ export const CarouselItem = ({
   className,
   ...props
 }: CarouselItemProps) => {
+  console.log('className', className);
   return (
-    <div
-      className={clsx(
-        'grid grid-cols-3 justify-start flex-shrink-0 w-full',
-        className
-      )}
-      {...props}
-    >
+    <div className={className} {...props}>
       {children}
     </div>
   );
@@ -56,9 +51,14 @@ export const Carousel = ({ children }: CarouselProps) => {
       {/* Previous Button */}
       <button
         onClick={handlePrev}
-        className="border rounded-full p-2 text-muted-foreground border-muted-foreground/50 hover:text-primary-foreground hover:border-primary-foreground transition-colors duration-200"
+        className={clsx(
+          'border rounded-full p-2 text-muted-foreground border-muted-foreground/50 transition-colors duration-200',
+          activeIndex > 0 &&
+            'hover:text-primary-foreground hover:border-primary-foreground',
+          activeIndex === 0 && 'opacity-50 cursor-default'
+        )}
       >
-        <ArrowLeftIcon className="w-5 h-5 md:w-6 md:h-6" />
+        <ArrowLeftIcon className="w-4 h-4 md:w-6 md:h-6" />
       </button>
 
       {/* Carousel Content */}
@@ -74,8 +74,9 @@ export const Carousel = ({ children }: CarouselProps) => {
             React.cloneElement(item as ReactElement<CarouselItemProps>, {
               className: clsx(
                 'flex-shrink-0 w-full',
-                index === activeIndex ? 'opacity-100' : 'opacity-50', // Adjust visibility
-                item.props.className
+                `grid grid-cols-2 sm:grid-cols-3`,
+
+                index === activeIndex ? 'opacity-100' : 'opacity-50' // Adjust visibility
               ),
             })
           )}
@@ -85,9 +86,14 @@ export const Carousel = ({ children }: CarouselProps) => {
       {/* Next Button */}
       <button
         onClick={handleNext}
-        className="border rounded-full p-2 text-muted-foreground border-muted-foreground/50 hover:text-primary-foreground hover:border-primary-foreground transition-colors duration-200"
+        className={clsx(
+          'border rounded-full p-2 text-muted-foreground border-muted-foreground/50 transition-colors duration-200',
+          activeIndex < items.length - 1 &&
+            'hover:text-primary-foreground hover:border-primary-foreground',
+          activeIndex === items.length - 1 && 'opacity-50 cursor-default'
+        )}
       >
-        <ArrowRightIcon className="w-5 h-5 md:w-6 md:h-6" />
+        <ArrowRightIcon className="w-4 h-4 md:w-6 md:h-6" />
       </button>
     </div>
   );

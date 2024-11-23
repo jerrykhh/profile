@@ -14,11 +14,11 @@ export const clientLoader: LoaderFunction = async () => {
 
 const ProjectPage = () => {
   const projects: Project[] = useLoaderData<typeof clientLoader>();
-  console.log(projects);
+  console.log('projects', projects);
 
   const devicePlatform = useDevicePlatform();
   const cols = {
-    [DevicePlatform.MOBILE]: 3,
+    [DevicePlatform.MOBILE]: 2,
     [DevicePlatform.TABLET]: 3,
     [DevicePlatform.DESKTOP]: 3,
   }[devicePlatform ?? DevicePlatform.DESKTOP];
@@ -30,19 +30,21 @@ const ProjectPage = () => {
       <Carousel>
         {Array.from({
           length:
-            projects.length < cols ? cols : Math.ceil(projects.length / cols),
+            projects.length < cols
+              ? projects.length
+              : Math.ceil(projects.length / cols),
         }).map((_, i) => {
           return (
             <CarouselItem key={projects[i].slug}>
               {Array.from({
                 length: Math.min(cols, projects.length - i * cols),
               }).map((_, j) => {
-                const index = i * cols + j;
-                console.log('index', index);
+                const index = Math.min(i * cols + j, projects.length - 1);
                 return (
-                  <div className={`box-border`} key={projects[index].slug + j}>
-                    <ProjectCard project={projects[index]} />
-                  </div>
+                  <ProjectCard
+                    key={projects[index].slug + j}
+                    project={projects[index]}
+                  />
                 );
               })}
             </CarouselItem>
