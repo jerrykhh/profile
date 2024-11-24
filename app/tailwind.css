@@ -91,6 +91,10 @@
     @apply text-base font-bold;
   }
 
+  h5 {
+    @apply text-xs font-medium;
+  }
+
   img {
     @apply rounded-lg;
   }
@@ -105,6 +109,10 @@
 
   p {
     @apply py-2;
+  }
+
+  input {
+    @apply border rounded w-full px-2 py-1 my-2 focus:outline-none focus:border-primary focus:border-2;
   }
 }
 

@@ -1,4 +1,5 @@
 import { Link, useMatches } from '@remix-run/react';
+import clsx from 'clsx';
 
 import { cn } from '@/lib/utils';
 import { NavigationItem } from '@/types/navigation';
@@ -30,6 +31,18 @@ export const Navigation = ({ items }: { items: NavigationItem[] }) => {
           </div>
         </Link>
       ))}
+    </div>
+  );
+};
+
+type SubNavigationProps = React.HTMLAttributes<HTMLDivElement>;
+export const SubNavigation = ({ children, ...props }: SubNavigationProps) => {
+  return (
+    <div
+      className={clsx('border-r p-4  w-full fixed lg:w-80 lg:relative')}
+      {...props}
+    >
+      <div className="">{children}</div>
     </div>
   );
 };

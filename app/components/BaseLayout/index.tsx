@@ -16,12 +16,8 @@ export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
         >
           <Navigation items={navItems} />
         </div>
-        <div className="w-full md:content md:ml-auto p-4">
-          <div className="flex flex-col items-center">
-            <div className="max-w-5xl">
-              <DevicePlatformProvider>{children}</DevicePlatformProvider>
-            </div>
-          </div>
+        <div className="w-full md:content md:ml-auto">
+          <DevicePlatformProvider>{children}</DevicePlatformProvider>
         </div>
       </div>
     </div>
