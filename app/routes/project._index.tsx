@@ -1,18 +1,21 @@
 import { LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useSearchParams } from '@remix-run/react';
-import { useMemo } from 'react';
+import { Menu } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
-import { Carousel, CarouselItem } from '@/components/Carousel';
+// import { Carousel, CarouselItem } from '@/components/Carousel';
 import { SubNavigation } from '@/components/Navigation';
 import { PageContainer } from '@/components/PageContrainer';
-import { ProjectCard } from '@/components/Project/ProjectCard';
-import { TopProjects } from '@/components/Project/TopProjects';
+// import { ProjectCard } from '@/components/Project/ProjectCard';
+// import { TopProjects } from '@/components/Project/TopProjects';
 import { SearchCard } from '@/components/SearchCard';
 import { FilterOption, FilterOptionGroup } from '@/components/SearchFilter';
 import useDevicePlatform, { DevicePlatform } from '@/contexts/DevicePlatform';
+// import useDevicePlatform, { DevicePlatform } from '@/contexts/DevicePlatform';
 import { base64ToString, stringToBase64 } from '@/lib/converter';
-import { getProjects } from '@/services/post.service';
-import type { Project } from '@/types/project';
+import { cn } from '@/lib/utils';
+import { getProjects } from '@/services/work.service/project.service';
+import type { Project } from '@/types/work/project';
 
 export const clientLoader: LoaderFunction = async () => {
   return await getProjects({});
@@ -20,9 +23,11 @@ export const clientLoader: LoaderFunction = async () => {
 
 const Project = () => {
   const projects: Project[] = useLoaderData<typeof clientLoader>();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTags =
     base64ToString(searchParams.get('t') ?? '').split(',') ?? [];
+  const q = searchParams.get('q') ?? '';
 
   const projectTags = useMemo(() => {
     const tags = projects.map((project) => project.tags).flat();
@@ -34,21 +39,36 @@ const Project = () => {
   }, [projects]);
 
   const devicePlatform = useDevicePlatform();
-  const cols = {
-    [DevicePlatform.MOBILE]: 2,
-    [DevicePlatform.TABLET]: 3,
-    [DevicePlatform.DESKTOP]: 3,
-  }[devicePlatform ?? DevicePlatform.DESKTOP];
+  // const cols = {
+  //   [DevicePlatform.MOBILE]: 2,
+  //   [DevicePlatform.TABLET]: 3,
+  //   [DevicePlatform.DESKTOP]: 3,
+  // }[devicePlatform ?? DevicePlatform.DESKTOP];
 
-  console.log('project page');
+  const isMobileOrTablet =
+    devicePlatform === DevicePlatform.MOBILE ||
+    devicePlatform === DevicePlatform.TABLET;
+  const [mobileTableSubNavOpen, setMobileTableSubNavOpen] = useState(false);
 
   return (
     <div className="flex">
-      <SubNavigation>
+      <SubNavigation
+        isOpen={mobileTableSubNavOpen}
+        onClose={() => setMobileTableSubNavOpen(false)}
+      >
         <div className="flex flex-col gap-4">
           <div className="search">
             <h3>Search</h3>
-            <input type="text" placeholder="Search" />
+            <input
+              type="text"
+              placeholder="search"
+              value={q}
+              maxLength={64}
+              onChange={(e) => {
+                console.log(searchParams);
+                setSearchParams((prev) => ({ ...prev, q: e.target.value }));
+              }}
+            />
 
             <FilterOptionGroup>
               {projectTags.map((tag) => (
@@ -61,7 +81,10 @@ const Project = () => {
                       ? selectedTags.filter((t) => t !== tag)
                       : [...selectedTags, tag];
 
-                    setSearchParams({ t: stringToBase64(newTags.join(',')) });
+                    setSearchParams((prev) => {
+                      prev.set('t', stringToBase64(newTags.join(',')));
+                      return prev;
+                    });
                   }}
                 />
               ))}
@@ -99,8 +122,24 @@ const Project = () => {
           </div>
         </div>
       </SubNavigation>
-      <PageContainer className="grow p-4">
-        <TopProjects projects={projects} />
+      <PageContainer className="lg:grow p-4 w-full">
+        <div
+          className={cn(
+            'flex flex-col gap-4',
+            !isMobileOrTablet ? 'hidden' : ''
+          )}
+        >
+          <div className="text-right">
+            <button
+              className="p-2 rounded-md border border-muted-foreground"
+              onClick={() => setMobileTableSubNavOpen(true)}
+            >
+              <Menu className="w-7 h-7" />
+            </button>
+          </div>
+        </div>
+
+        {/* <TopProjects projects={projects} />
         <Carousel>
           {Array.from({
             length:
@@ -124,7 +163,7 @@ const Project = () => {
               </CarouselItem>
             );
           })}
-        </Carousel>
+        </Carousel> */}
       </PageContainer>
     </div>
   );
