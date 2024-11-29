@@ -1,7 +1,9 @@
 import { Link, useMatches } from '@remix-run/react';
 import { XIcon } from 'lucide-react';
+import { useEffect } from 'react';
 
 import useDevicePlatform, { DevicePlatform } from '@/contexts/DevicePlatform';
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import { cn } from '@/lib/utils';
 import { NavigationItem } from '@/types/navigation';
 
@@ -36,29 +38,46 @@ export const Navigation = ({ items }: { items: NavigationItem[] }) => {
   );
 };
 
+export enum SubNavigationType {
+  FILTER = 'filter',
+  NAVIGATION = 'navigation',
+}
+
 type SubNavigationProps = React.HTMLAttributes<HTMLDivElement> & {
   isOpen?: boolean;
   onClose?: React.MouseEventHandler<HTMLButtonElement>;
+  type?: SubNavigationType;
 };
 export const SubNavigation = ({
   children,
   onClose,
   isOpen,
+  type = SubNavigationType.NAVIGATION,
   ...props
 }: SubNavigationProps) => {
   const devicePlatform = useDevicePlatform();
+  const { blockScroll, allowScroll } = useLockBodyScroll();
   const isMobileOrTablet =
     devicePlatform === DevicePlatform.MOBILE ||
     devicePlatform === DevicePlatform.TABLET;
 
+  useEffect(() => {
+    if (!devicePlatform) return;
+    devicePlatform !== DevicePlatform.DESKTOP &&
+      type === SubNavigationType.NAVIGATION &&
+      (isOpen ? blockScroll() : allowScroll());
+  }, [isOpen]);
+
   return (
     <div
       className={cn(
-        'fixed lg:relative border-r min-h-screen p-4 w-full lg:w-80 z-10 bg-popover',
-        isMobileOrTablet ? 'fixed' : '',
+        'lg:fixed lg:p-4 lg:min-h-screen',
+        type === SubNavigationType.NAVIGATION && 'min-h-screen',
+        'border-r p-6 w-full z-10 bg-popover lg:w-[var(--sub-nav-narrow-width)]',
+        // isMobileOrTablet ? 'fixed' : '',
         devicePlatform === DevicePlatform.DESKTOP || isOpen
-          ? 'translate-x-0'
-          : '-translate-x-full'
+          ? 'translate-x-0 overflow-y-hidden'
+          : 'hidden lg:block'
       )}
       {...props}
     >

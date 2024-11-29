@@ -1,42 +1,92 @@
 import { LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useSearchParams } from '@remix-run/react';
-import { Menu } from 'lucide-react';
+import { ListFilterIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-// import { Carousel, CarouselItem } from '@/components/Carousel';
-import { SubNavigation } from '@/components/Navigation';
+import { SubNavigation, SubNavigationType } from '@/components/Navigation';
 import { PageContainer } from '@/components/PageContrainer';
-// import { ProjectCard } from '@/components/Project/ProjectCard';
-// import { TopProjects } from '@/components/Project/TopProjects';
 import { SearchCard } from '@/components/SearchCard';
 import { FilterOption, FilterOptionGroup } from '@/components/SearchFilter';
+import { WorkList } from '@/components/WorkList';
 import useDevicePlatform, { DevicePlatform } from '@/contexts/DevicePlatform';
-// import useDevicePlatform, { DevicePlatform } from '@/contexts/DevicePlatform';
 import { base64ToString, stringToBase64 } from '@/lib/converter';
 import { cn } from '@/lib/utils';
+import { getBlogs } from '@/services/work.service/blog.serice';
 import { getProjects } from '@/services/work.service/project.service';
+import { Work } from '@/types/work';
+import { Blog } from '@/types/work/blog';
 import type { Project } from '@/types/work/project';
 
 export const clientLoader: LoaderFunction = async () => {
-  return await getProjects({});
+  const projects = await getProjects({});
+  const blogs = await getBlogs({});
+  return { projects, blogs };
 };
 
 const Project = () => {
-  const projects: Project[] = useLoaderData<typeof clientLoader>();
+  const { projects, blogs }: { projects: Project[]; blogs: Blog[] } =
+    useLoaderData<typeof clientLoader>();
+  const works = [...projects, ...blogs] as Work[];
 
+  // search params
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedTags =
-    base64ToString(searchParams.get('t') ?? '').split(',') ?? [];
+  const selectedTags = searchParams.get('t')
+    ? base64ToString(searchParams.get('t') ?? '').split(',')
+    : [];
   const q = searchParams.get('q') ?? '';
 
-  const projectTags = useMemo(() => {
-    const tags = projects.map((project) => project.tags).flat();
+  // work tags
+  const workTags = useMemo(() => {
+    const tags = works.map((work) => work.tags).flat();
     const freqTags = {} as Record<string, number>;
     tags.forEach((tag) => {
-      freqTags[tag.toLowerCase()] = (freqTags[tag.toLowerCase()] ?? 0) + 1;
+      freqTags[tag] = (freqTags[tag] ?? 0) + 1;
     });
-    return Object.keys(freqTags).sort((a, b) => freqTags[b] - freqTags[a]);
-  }, [projects]);
+    return Object.keys(freqTags)
+      .sort((a, b) => freqTags[b] - freqTags[a])
+      .slice(0, 10);
+  }, [works]);
+
+  const cachebyTagToWorks = useMemo(() => {
+    const cache = {} as Record<string, Work[]>;
+    workTags.forEach((tag) => {
+      cache[tag] = works.filter((work) => work.tags.includes(tag));
+    });
+    return cache;
+  }, [workTags]);
+
+  const filteredWorks = useMemo(() => {
+    if (!selectedTags.length && !q) return works;
+
+    let worksByTags = works;
+
+    if (selectedTags.length) {
+      const tmpSelectedTagWorks = selectedTags.map(
+        (tag) => cachebyTagToWorks[tag] || []
+      );
+      if (tmpSelectedTagWorks.length < 2) {
+        worksByTags = tmpSelectedTagWorks.flat();
+      } else {
+        const [smallestGroup, ...otherGroups] = tmpSelectedTagWorks.sort(
+          (a, b) => a.length - b.length
+        );
+        worksByTags = smallestGroup.filter((work) =>
+          otherGroups.every((group) =>
+            group.some((item) => item.slug === work.slug)
+          )
+        );
+      }
+    }
+
+    if (q) {
+      const query = q.toLowerCase();
+      worksByTags = worksByTags.filter((work) =>
+        work.title.toLowerCase().includes(query)
+      );
+    }
+
+    return worksByTags;
+  }, [works, selectedTags, q]);
 
   const devicePlatform = useDevicePlatform();
   // const cols = {
@@ -51,8 +101,9 @@ const Project = () => {
   const [mobileTableSubNavOpen, setMobileTableSubNavOpen] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row">
       <SubNavigation
+        type={SubNavigationType.FILTER}
         isOpen={mobileTableSubNavOpen}
         onClose={() => setMobileTableSubNavOpen(false)}
       >
@@ -65,13 +116,15 @@ const Project = () => {
               value={q}
               maxLength={64}
               onChange={(e) => {
-                console.log(searchParams);
-                setSearchParams((prev) => ({ ...prev, q: e.target.value }));
+                setSearchParams((prev) => {
+                  prev.set('q', e.target.value);
+                  return prev;
+                });
               }}
             />
 
             <FilterOptionGroup>
-              {projectTags.map((tag) => (
+              {workTags.map((tag) => (
                 <FilterOption
                   key={tag}
                   label={tag}
@@ -92,7 +145,7 @@ const Project = () => {
           </div>
 
           <div>
-            <h4>Projects</h4>
+            <h4>Projects:latest</h4>
             <div className="flex flex-col gap-4 my-4">
               {Array.from({ length: Math.min(4, projects.length) }).map(
                 (_, i) => (
@@ -110,7 +163,7 @@ const Project = () => {
         </div>
 
         <div>
-          <h4>Blog</h4>
+          <h4>Blogs</h4>
           <div className="flex flex-col gap-4">
             <SearchCard
               item={{
@@ -122,11 +175,11 @@ const Project = () => {
           </div>
         </div>
       </SubNavigation>
-      <PageContainer className="lg:grow p-4 w-full">
+      <PageContainer className="p-4 lg:content-include-sub-nav">
         <div
           className={cn(
             'flex flex-col gap-4',
-            !isMobileOrTablet ? 'hidden' : ''
+            !isMobileOrTablet || mobileTableSubNavOpen ? 'hidden' : ''
           )}
         >
           <div className="text-right">
@@ -134,36 +187,45 @@ const Project = () => {
               className="p-2 rounded-md border border-muted-foreground"
               onClick={() => setMobileTableSubNavOpen(true)}
             >
-              <Menu className="w-7 h-7" />
+              <ListFilterIcon className="w-6 h-6 text-muted-foreground hover:text-foreground transition-colors duration-200" />
             </button>
           </div>
         </div>
+        <div>
+          <WorkList
+            header={{
+              title: 'Projects',
+              description: 'Projects I have worked on',
+            }}
+            items={filteredWorks}
+          />
+        </div>
 
         {/* <TopProjects projects={projects} />
-        <Carousel>
-          {Array.from({
-            length:
-              projects.length < cols
-                ? projects.length
-                : Math.ceil(projects.length / cols),
-          }).map((_, i) => {
-            return (
-              <CarouselItem key={projects[i].slug}>
-                {Array.from({
-                  length: Math.min(cols, projects.length - i * cols),
-                }).map((_, j) => {
-                  const index = Math.min(i * cols + j, projects.length - 1);
-                  return (
-                    <ProjectCard
-                      key={projects[index].slug + j}
-                      project={projects[index]}
-                    />
-                  );
-                })}
-              </CarouselItem>
-            );
-          })}
-        </Carousel> */}
+<Carousel>
+{Array.from({
+length:
+  projects.length < cols
+    ? projects.length
+    : Math.ceil(projects.length / cols),
+}).map((_, i) => {
+return (
+  <CarouselItem key={projects[i].slug}>
+    {Array.from({
+      length: Math.min(cols, projects.length - i * cols),
+    }).map((_, j) => {
+      const index = Math.min(i * cols + j, projects.length - 1);
+      return (
+        <ProjectCard
+          key={projects[index].slug + j}
+          project={projects[index]}
+        />
+      );
+    })}
+  </CarouselItem>
+);
+})}
+</Carousel> */}
       </PageContainer>
     </div>
   );

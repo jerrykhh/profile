@@ -30,6 +30,7 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
     --nav-narrow-width: 72px;
+    --sub-nav-narrow-width: 320px;
   }
 
   .dark {
@@ -62,6 +63,7 @@
   @screen sm {
     :root {
       --nav-narrow-width: 72px;
+      --sub-nav-narrow-width: 320px;
     }
   }
 }
@@ -127,6 +129,10 @@
 
   .content {
     width: calc(100% - var(--nav-narrow-width));
+  }
+
+  .content-include-sub-nav {
+    @apply lg:w-[calc(100%-var(--sub-nav-narrow-width))] ml-auto;
   }
 }
 
