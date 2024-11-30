@@ -1,6 +1,6 @@
 import { Link } from '@remix-run/react';
 
-import { Work } from '@/types/work';
+import { type Work } from '@/models/work';
 
 import { WorkCard } from './WordCard';
 
@@ -25,7 +25,7 @@ export const WorkList = ({ header, items }: WorkListProps) => {
       {items.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {items.map((item, index) => (
-            <Link to={`/project/${item.slug}`} key={index}>
+            <Link to={`/works/${item.getRoute()}`} key={index}>
               <WorkCard work={item} />
             </Link>
           ))}

@@ -5,14 +5,14 @@ export const clientLoader: LoaderFunction = async ({
   params,
 }: LoaderFunctionArgs) => {
   const { slug } = params;
-  console.log('slug', slug);
+
   return { slug };
 };
 
-export const ProjectDetailPage = () => {
+export const ProjectDetail = () => {
   const { slug } = useLoaderData<typeof clientLoader>();
 
   return <div>ProjectDetailPage {slug}</div>;
 };
 
-export default ProjectDetailPage;
+export default ProjectDetail;

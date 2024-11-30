@@ -1,4 +1,4 @@
-import { Blog } from '@/types/work/blog';
+import { Blog } from '@/models/blog';
 
 import { getWork, getWorks } from '.';
 
@@ -10,9 +10,10 @@ export const getBlogs = async ({
   return await getWorks<Blog>({
     keys: Object.keys(import.meta.glob('../../data/works/blog/*.md')),
     sort,
+    createInstance: (data) => new Blog(data),
   });
 };
 
 export const getBlog = async (slug: string) => {
-  return await getWork<Blog>(`blog/${slug}`);
+  return await getWork<Blog>(`blog/${slug}`, (data) => new Blog(data));
 };

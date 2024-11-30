@@ -1,4 +1,4 @@
-import { Work } from '@/types/work';
+import { type Work } from '@/models/work';
 
 export const WorkCard = ({ work }: { work: Work }) => {
   return (

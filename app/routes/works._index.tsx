@@ -11,11 +11,11 @@ import { WorkList } from '@/components/WorkList';
 import useDevicePlatform, { DevicePlatform } from '@/contexts/DevicePlatform';
 import { base64ToString, stringToBase64 } from '@/lib/converter';
 import { cn } from '@/lib/utils';
-import { getBlogs } from '@/services/work.service/blog.serice';
+import { type Blog } from '@/models/blog';
+import { type Project } from '@/models/project';
+import { type Work } from '@/models/work';
+import { getBlogs } from '@/services/work.service/blog.service';
 import { getProjects } from '@/services/work.service/project.service';
-import { Work } from '@/types/work';
-import { Blog } from '@/types/work/blog';
-import type { Project } from '@/types/work/project';
 
 export const clientLoader: LoaderFunction = async () => {
   const projects = await getProjects({});
@@ -23,7 +23,7 @@ export const clientLoader: LoaderFunction = async () => {
   return { projects, blogs };
 };
 
-const Project = () => {
+const Works = () => {
   const { projects, blogs }: { projects: Project[]; blogs: Blog[] } =
     useLoaderData<typeof clientLoader>();
   const works = [...projects, ...blogs] as Work[];
@@ -231,4 +231,4 @@ return (
   );
 };
 
-export default Project;
+export default Works;
