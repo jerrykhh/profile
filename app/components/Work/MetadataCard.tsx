@@ -3,11 +3,11 @@ import { type WorkMeta } from '@/models/work';
 export const WorkMetadataCard = ({ workMeta }: { workMeta: WorkMeta }) => {
   return (
     <div className="flex flex-col">
-      <div className="w-full rounded border self-center mb-3">
+      <div className="w-56 h-56 rounded border self-center mb-3">
         <img
           src={workMeta.image}
           alt={workMeta.title}
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover"
         />
       </div>
       <h3>{workMeta.title}</h3>

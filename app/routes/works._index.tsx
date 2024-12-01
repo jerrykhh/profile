@@ -153,7 +153,7 @@ const Works = () => {
                     key={i}
                     item={{
                       ...projects[i].meta,
-                      route: `/project/${projects[i].slug}`,
+                      route: `/works/project/${projects[i].slug}`,
                     }}
                   />
                 )
@@ -164,14 +164,13 @@ const Works = () => {
 
         <div>
           <h4>Blogs</h4>
-          <div className="flex flex-col gap-4">
-            <SearchCard
-              item={{
-                route: '/blog',
-                title:
-                  'Review the Captcha Challenge in Leisure Link e-Services System(康體通)',
-              }}
-            />
+          <div className="flex flex-col gap-4 mt-2">
+            {blogs.map((blog) => (
+              <SearchCard
+                key={blog.slug}
+                item={{ ...blog.meta, route: blog.getRoute() }}
+              />
+            ))}
           </div>
         </div>
       </SubNavigation>

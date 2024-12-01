@@ -16,18 +16,20 @@ export const SearchCard = ({ item }: SearchCardProps) => {
     <Link to={item.route}>
       <div
         className={cn(
-          'flex',
+          'flex gap-2',
           !item.image &&
             !item.description &&
             'py-2 border-b-[0.5px] text-muted-foreground hover:text-primary-foreground hover:border-primary-foreground transition-colors duration-200'
         )}
       >
         {item.image && (
-          <img
-            src={item.image}
-            alt={item.title}
-            className="h-12 w-12 bg-accent rounded-md"
-          />
+          <div className="w-32">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="bg-accent rounded-sm w-8 h-8 object-cover"
+            />
+          </div>
         )}
         <div className="grow self-center">
           <h5 className={cn(item.description && 'text-justify')}>

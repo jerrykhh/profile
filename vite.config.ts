@@ -21,6 +21,14 @@ export default defineConfig({
         v3_singleFetch: true,
         v3_lazyRouteDiscovery: true,
       },
+      routes(defineRoutes) {
+        return defineRoutes((route) => {
+          route('works', 'routes/works.$type._layout.tsx', () => {
+            route('blog/:slug', 'routes/works.blog.$slug.tsx');
+            route('project/:slug', 'routes/works.project.$slug.tsx');
+          });
+        });
+      },
     }),
     tsconfigPaths(),
   ],
