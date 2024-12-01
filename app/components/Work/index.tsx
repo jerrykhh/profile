@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react';
 
 import { type Work } from '@/models/work';
 
-import { WorkCard } from './WordCard';
+import { WorkMetadataCard } from './MetadataCard';
 
 interface WorkListProps {
   header: {
@@ -13,6 +13,8 @@ interface WorkListProps {
 }
 
 export const WorkList = ({ header, items }: WorkListProps) => {
+  console.log('items', items);
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <div>
@@ -26,7 +28,7 @@ export const WorkList = ({ header, items }: WorkListProps) => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {items.map((item, index) => (
             <Link to={`/works/${item.getRoute()}`} key={index}>
-              <WorkCard work={item} />
+              <WorkMetadataCard workMeta={item.meta} />
             </Link>
           ))}
         </div>

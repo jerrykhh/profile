@@ -7,7 +7,7 @@ import { SubNavigation, SubNavigationType } from '@/components/Navigation';
 import { PageContainer } from '@/components/PageContrainer';
 import { SearchCard } from '@/components/SearchCard';
 import { FilterOption, FilterOptionGroup } from '@/components/SearchFilter';
-import { WorkList } from '@/components/WorkList';
+import { WorkList } from '@/components/Work';
 import useDevicePlatform, { DevicePlatform } from '@/contexts/DevicePlatform';
 import { base64ToString, stringToBase64 } from '@/lib/converter';
 import { cn } from '@/lib/utils';
@@ -37,7 +37,7 @@ const Works = () => {
 
   // work tags
   const workTags = useMemo(() => {
-    const tags = works.map((work) => work.tags).flat();
+    const tags = works.map((work) => work.meta.tags).flat();
     const freqTags = {} as Record<string, number>;
     tags.forEach((tag) => {
       freqTags[tag] = (freqTags[tag] ?? 0) + 1;
@@ -50,7 +50,7 @@ const Works = () => {
   const cachebyTagToWorks = useMemo(() => {
     const cache = {} as Record<string, Work[]>;
     workTags.forEach((tag) => {
-      cache[tag] = works.filter((work) => work.tags.includes(tag));
+      cache[tag] = works.filter((work) => work.meta.tags.includes(tag));
     });
     return cache;
   }, [workTags]);
@@ -81,7 +81,7 @@ const Works = () => {
     if (q) {
       const query = q.toLowerCase();
       worksByTags = worksByTags.filter((work) =>
-        work.title.toLowerCase().includes(query)
+        work.meta.title.toLowerCase().includes(query)
       );
     }
 
@@ -152,7 +152,7 @@ const Works = () => {
                   <SearchCard
                     key={i}
                     item={{
-                      ...projects[i],
+                      ...projects[i].meta,
                       route: `/project/${projects[i].slug}`,
                     }}
                   />

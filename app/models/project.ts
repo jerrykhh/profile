@@ -1,6 +1,6 @@
-import { Work } from './work';
+import { Work, WorkMeta } from './work';
 
-export class Project extends Work {
+export class ProjectMeta extends WorkMeta {
   repository?: string;
   techs?: string[];
 
@@ -17,6 +17,12 @@ export class Project extends Work {
     super(data);
     this.repository = data.repository;
     this.techs = data.techs;
+  }
+}
+
+export class Project extends Work {
+  constructor(data: { slug: string; meta: ProjectMeta; content: string }) {
+    super(data);
   }
 
   getRoute(): string {

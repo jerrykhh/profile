@@ -8,11 +8,11 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <div className="flex flex-col">
       <div className="w-full rounded">
-        <img src={project.image} alt={project.title} />
+        <img src={project.meta.image} alt={project.meta.title} />
       </div>
-      <h4>{project.title}</h4>
+      <h4>{project.meta.title}</h4>
       <p className="text-secondary-foreground text-justify text-sm ">
-        {project.description}
+        {project.meta.description}
       </p>
     </div>
   );

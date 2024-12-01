@@ -1,18 +1,18 @@
-import { type Work } from '@/models/work';
+import { type WorkMeta } from '@/models/work';
 
-export const WorkCard = ({ work }: { work: Work }) => {
+export const WorkMetadataCard = ({ workMeta }: { workMeta: WorkMeta }) => {
   return (
     <div className="flex flex-col">
       <div className="w-full rounded border self-center mb-3">
         <img
-          src={work.image}
-          alt={work.title}
+          src={workMeta.image}
+          alt={workMeta.title}
           className="w-full h-full object-contain"
         />
       </div>
-      <h3>{work.title}</h3>
+      <h3>{workMeta.title}</h3>
       <p className="text-xs text-muted-foreground text-justify">
-        {work.description}
+        {workMeta.description}
       </p>
     </div>
   );

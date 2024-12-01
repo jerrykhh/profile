@@ -1,14 +1,15 @@
 import { Outlet } from '@remix-run/react';
 import React from 'react';
 
-export function ProjectLayout({ children }: { children: React.ReactNode }) {
-  console.log('project layout');
-  console.log(children);
+export function WorkLayout({ children }: { children: React.ReactNode }) {
   return (
     <React.Fragment>
-      <Outlet />
+      <div className="min-h-screen">
+        {children}
+        <Outlet />
+      </div>
     </React.Fragment>
   );
 }
 
-export default ProjectLayout;
+export default WorkLayout;

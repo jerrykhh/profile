@@ -1,6 +1,6 @@
-import { Work } from './work';
+import { Work, WorkMeta } from './work';
 
-export class Blog extends Work {
+export class BlogMeta extends WorkMeta {
   constructor(data: {
     slug: string;
     title: string;
@@ -9,6 +9,12 @@ export class Blog extends Work {
     createdAt: Date;
     tags: string[];
   }) {
+    super(data);
+  }
+}
+
+export class Blog extends Work {
+  constructor(data: { slug: string; meta: BlogMeta; content: string }) {
     super(data);
   }
 

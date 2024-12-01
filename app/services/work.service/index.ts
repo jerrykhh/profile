@@ -1,20 +1,23 @@
 import matter from 'gray-matter';
 
-import { Work } from '@/models/work';
+import { Work, WorkMeta } from '@/models/work';
 
 export const WORK_DATA_PATH = '../../data/works/';
 
-export const getWorks = async <T extends Work>({
+type GetWorksParams<T extends Work, M extends WorkMeta> = {
+  keys: string[];
+  sort?: (a: T, b: T) => number;
+  createInstance: (data: { slug: string; meta: M; content: string }) => T;
+  createMeta: (data: { [K in keyof M]: M[K] }) => M;
+};
+
+export const getWorks = async <T extends Work, M extends WorkMeta>({
   keys,
   sort,
   createInstance,
-}: {
-  keys: string[];
-  sort?: (a: T, b: T) => number;
-  createInstance: (data: {
-    [K in keyof T]: T[K];
-  }) => T;
-}) => {
+  createMeta,
+}: GetWorksParams<T, M>): Promise<T[]> => {
+  // Added return type
   const prefixs = keys
     .map((key) => {
       const match = key.match(/^(.*\/)[^/]+$/);
@@ -23,41 +26,53 @@ export const getWorks = async <T extends Work>({
     .filter((key) => key !== null) as string[];
 
   if (prefixs.length !== keys.length) {
-    throw new Error('prefixs length must be equal to keys length');
+    throw new Error('Prefixes length must be equal to keys length');
   }
 
-  const works = await keys.reduce<Promise<T[]>>(
-    async (accPromise, path, index) => {
-      const acc = await accPromise;
+  const works = await Promise.all(
+    keys.map(async (path, index) => {
       const slug = path.split('/').pop()?.replace(/\.md$/, '');
-      if (!slug) return acc;
-      const work = await getWork<T>(
-        `${prefixs[index]}/${slug}`,
-        createInstance
-      );
-      return work ? [...acc, work] : acc;
-    },
-    Promise.resolve([])
+      if (!slug) return null;
+
+      return await getWork<T, M>({
+        key: `${prefixs[index]}${slug}`,
+        createInstance,
+        createMeta,
+      });
+    })
   );
 
-  return works.sort(sort);
+  const filteredWorks = works.filter((work) => work !== null) as T[];
+
+  return sort ? filteredWorks.sort(sort) : filteredWorks;
 };
 
-export const getWork = async <T extends Work>(
-  key: string,
-  createInstance: (data: {
-    [K in keyof T]: T[K];
-  }) => T
-) => {
-  const meta = await getWorkMetadata(key);
+type GetWorkParams<T extends Work, M extends WorkMeta> = {
+  key: string;
+  createInstance: (data: { slug: string; meta: M; content: string }) => T;
+  createMeta: (data: { [K in keyof M]: M[K] }) => M;
+};
+
+export const getWork = async <T extends Work, M extends WorkMeta>({
+  key,
+  createInstance,
+  createMeta,
+}: GetWorkParams<T, M>): Promise<T> => {
+  // Added return type
+  const { meta, content } = await getMatter(key);
+  console.log('meta', meta);
   return createInstance({
-    ...meta,
-    createdAt: new Date(meta.createdAt),
+    slug: meta.slug,
+    meta: createMeta({
+      ...meta,
+      createdAt: new Date(meta.createdAt),
+    } as { [K in keyof M]: M[K] }),
+    content,
   });
 };
 
-const getWorkMetadata = async (key: string) => {
+const getMatter = async (key: string) => {
   const module = await import(`${WORK_DATA_PATH}${key}.md?raw`);
-  const { meta } = matter(module.default).data;
-  return meta;
+  const { data, content } = matter(module.default);
+  return { meta: data.meta, content };
 };

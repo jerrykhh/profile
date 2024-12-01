@@ -1,6 +1,6 @@
 import { type Project } from '@/models/project';
 
-import { ProjectCard } from './ProjectCard';
+import { ProjectCard } from './Card';
 
 interface TopProjectsProps {
   projects: Project[];
