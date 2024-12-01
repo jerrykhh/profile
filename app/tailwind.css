@@ -101,6 +101,10 @@
     @apply rounded-lg;
   }
 
+  iframe {
+    @apply absolute left-0 top-0 h-full w-full;
+  }
+
   ul > li {
     @apply py-2;
   }
