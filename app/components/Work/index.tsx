@@ -25,7 +25,7 @@ export const WorkList = ({ header, items }: WorkListProps) => {
       </div>
 
       {items.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 mdOnly:grid-cols-3 lgOnly:grid-cols-2 xlOnly:grid-cols-3 2xl:grid-cols-4 gap-8">
           {items.map((item, index) => (
             <Link to={`/works/${item.getRoute()}`} key={index}>
               <WorkMetadataCard workMeta={item.meta} />
