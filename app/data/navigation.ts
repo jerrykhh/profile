@@ -14,8 +14,8 @@ export const navItems: NavigationItem[] = [
     icon: HouseIcon,
   },
   {
-    name: 'Project',
-    route: '/project',
+    name: 'Works',
+    route: '/works',
     icon: PresentationIcon,
   },
   {

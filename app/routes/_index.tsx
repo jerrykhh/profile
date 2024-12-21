@@ -1,6 +1,7 @@
 import type { LoaderFunction, MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
+import { PageContainer } from '@/components/PageContrainer';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import TechStack from '@/components/Profile/TechStack';
 import { getMe } from '@/services/me.serivce';
@@ -24,11 +25,13 @@ export default function Index() {
   const me = useLoaderData<typeof clientLoader>();
 
   return (
-    <div className="divide-y divide-solid">
-      <ProfileCard about={me} />
-      <div className="py-8">
-        <TechStack items={me.techs} />
+    <PageContainer>
+      <div className="divide-y divide-solid">
+        <ProfileCard about={me} />
+        <div className="py-8">
+          <TechStack items={me.techs} />
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

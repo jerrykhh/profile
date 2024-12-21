@@ -11,6 +11,10 @@ export default {
       sm: `${BREAKPOINT.SM_MIN}px`, //Tablet-sm
       md: `${BREAKPOINT.MD_MIN}px`, //Tablet-l
       lg: `${BREAKPOINT.LG_MIN}px`, //Desktop
+      xl: `${BREAKPOINT.XL_MIN}px`, //Desktop-xl
+      '2xl': `${BREAKPOINT['2XL_MIN']}px`, //Desktop-2xl
+      '3xl': `${BREAKPOINT['3XL_MIN']}px`, //Desktop-3xl
+
       xsOnly: {
         min: `${BREAKPOINT.XS_MIN}`,
         max: `${BREAKPOINT.SM_MIN - 1}px`,
@@ -34,6 +38,18 @@ export default {
       xsToMd: {
         min: `${BREAKPOINT.XS_MIN}`,
         max: `${BREAKPOINT.LG_MIN - 1}px`,
+      },
+      lgOnly: {
+        min: `${BREAKPOINT.LG_MIN}px`,
+        max: `${BREAKPOINT.XL_MIN - 1}px`,
+      },
+      xlOnly: {
+        min: `${BREAKPOINT.XL_MIN}px`,
+        max: `${BREAKPOINT['2XL_MIN'] - 1}px`,
+      },
+      '2xlOnly': {
+        min: `${BREAKPOINT['2XL_MIN']}px`,
+        max: `${BREAKPOINT['3XL_MIN'] - 1}px`,
       },
     },
     extend: {
@@ -98,5 +114,5 @@ export default {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config;

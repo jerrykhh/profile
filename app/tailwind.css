@@ -30,6 +30,7 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
     --nav-narrow-width: 72px;
+    --sub-nav-narrow-width: 320px;
   }
 
   .dark {
@@ -62,6 +63,7 @@
   @screen sm {
     :root {
       --nav-narrow-width: 72px;
+      --sub-nav-narrow-width: 320px;
     }
   }
 }
@@ -87,8 +89,20 @@
     @apply text-lg font-bold;
   }
 
+  h4 {
+    @apply text-base font-bold;
+  }
+
+  h5 {
+    @apply text-xs font-medium;
+  }
+
   img {
     @apply rounded-lg;
+  }
+
+  iframe {
+    @apply absolute left-0 top-0 h-full w-full;
   }
 
   ul > li {
@@ -101,6 +115,10 @@
 
   p {
     @apply py-2;
+  }
+
+  input {
+    @apply border rounded w-full px-2 py-1 my-2 focus:outline-none focus:border-primary focus:border-2;
   }
 }
 
@@ -115,5 +133,20 @@
 
   .content {
     width: calc(100% - var(--nav-narrow-width));
+  }
+
+  .content-include-sub-nav {
+    @apply lg:w-[calc(100%-var(--sub-nav-narrow-width))] ml-auto;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    @apply hidden;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

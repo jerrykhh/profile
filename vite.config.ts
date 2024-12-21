@@ -1,3 +1,4 @@
+import mdx from '@mdx-js/rollup';
 import { vitePlugin as remix } from '@remix-run/dev';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -10,6 +11,7 @@ declare module '@remix-run/node' {
 
 export default defineConfig({
   plugins: [
+    mdx(),
     remix({
       ssr: false,
       future: {
@@ -18,6 +20,14 @@ export default defineConfig({
         v3_throwAbortReason: true,
         v3_singleFetch: true,
         v3_lazyRouteDiscovery: true,
+      },
+      routes(defineRoutes) {
+        return defineRoutes((route) => {
+          route('works', 'routes/works.$type._layout.tsx', () => {
+            route('blog/:slug', 'routes/works.blog.$slug.tsx');
+            route('project/:slug', 'routes/works.project.$slug.tsx');
+          });
+        });
       },
     }),
     tsconfigPaths(),
