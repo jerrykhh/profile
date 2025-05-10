@@ -2,6 +2,15 @@
 
 @config '../../tailwind.config.ts';
 
+@theme {
+  --font-geist-mono:
+    'Geist Mono', 'monospace', 'ui-sans-serif', 'system-ui',
+    'BlinkMacSystemFont', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-geist: 'Geist', 'sans-serif';
+}
+
 base {
   *,
   ::after,
