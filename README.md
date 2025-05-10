@@ -1,42 +1,47 @@
-# Profile
+# Welcome to Remix + Cloudflare!
 
-## Features
+- 📖 [Remix docs](https://remix.run/docs)
+- 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
 
-- Next.js 13 App Directory
-- Radix UI Primitives
-- Tailwind CSS
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Tailwind CSS class sorting, merging and linting.
+## Development
 
-## Usage
+Run the dev server:
 
-```bash
-npm install
-npm run preview
+```sh
+npm run dev
 ```
 
-## Directory Structure
+To run Wrangler:
+
+```sh
+npm run build
+npm run start
 ```
-├──src
-    ├─app           // Next.js 13 app dir
-    │  ├─blog       // Blog Post (not contain List blog posts now)
-    │  │  └─[uri]   // Blog Details
-    │  └─project    // List Projects
-    │      └─[uri]  // Project Details
-    ├─components    // client side components
-    │  ├─blog
-    │  ├─nav
-    │  ├─profile
-    │  ├─project
-    │  ├─ui         // ui.shadcn ui components (Radix UI + Tailwind CSS)
-    │  └─utils
-    ├─config        // about page configuration
-    ├─lib
-    │  ├─convert
-    │  ├─get        // For Get Markdown Contents
-    │  │  ├─blog
-    │  │  └─project
-    │  └─typing
-    └─styles        // Tailwind CSS
+
+## Typegen
+
+Generate types for your Cloudflare bindings in `wrangler.toml`:
+
+```sh
+npm run typegen
 ```
+
+You will need to rerun typegen whenever you make changes to `wrangler.toml`.
+
+## Deployment
+
+First, build your app for production:
+
+```sh
+npm run build
+```
+
+Then, deploy your app to Cloudflare Pages:
+
+```sh
+npm run deploy
+```
+
+## Styling
+
+This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
