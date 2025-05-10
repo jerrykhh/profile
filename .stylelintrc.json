@@ -1,9 +1,3 @@
 {
-  "extends": [
-    "stylelint-config-recommended-scss",
-    "stylelint-config-tailwindcss/scss"
-  ],
-  "rules": {
-    "scss/operator-no-unspaced": null
-  }
+  "extends": ["stylelint-config-tailwindcss"]
 }
