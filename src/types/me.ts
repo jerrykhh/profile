@@ -28,4 +28,9 @@ export interface Me {
   biography: string;
   title: string;
   todos: NoitonMultiSelect;
+  version: {
+    name: string;
+    tag: string;
+    url: string | null;
+  };
 }

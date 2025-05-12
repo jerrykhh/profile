@@ -5,13 +5,14 @@ import type {
 } from '@/types/notion/database/property';
 
 import {
-  convertNotionPerpertyCheckbox,
-  convertNotionPerpertyDate,
-  convertNotionPerpertyTitle,
+  convertNotionPropertyCheckbox,
+  convertNotionPropertyDate,
   convertNotionPropertyFile,
   convertNotionPropertyMutliSelect,
   convertNotionPropertyRelation,
   convertNotionPropertyText,
+  convertNotionPropertyTitle,
+  convertNotionPropertyUrl,
 } from './property';
 
 type PropertyConverter = (property: INotionProperty) => unknown;
@@ -20,22 +21,23 @@ const propertiesConvertorMapping: Record<string, PropertyConverter> = {
   files: convertNotionPropertyFile,
   rich_text: convertNotionPropertyText,
   multi_select: convertNotionPropertyMutliSelect,
-  title: convertNotionPerpertyTitle,
+  title: convertNotionPropertyTitle,
   relation: convertNotionPropertyRelation,
-  checkbox: convertNotionPerpertyCheckbox,
-  date: convertNotionPerpertyDate,
+  checkbox: convertNotionPropertyCheckbox,
+  date: convertNotionPropertyDate,
+  url: convertNotionPropertyUrl,
 };
 
 export const convertNotionPropertiesToData = async <T>(
   properties: NotionDataProperty
 ): Promise<T> => {
   const data: { [key: string]: unknown } = {};
-  Object.keys(properties).forEach((key) => {
+  Object.keys(properties).forEach(async (key) => {
     const property = properties[key];
     if (!property) return;
     const converter = propertiesConvertorMapping[property.type];
     if (converter) {
-      data[key] = converter(property);
+      data[key] = await converter(property);
     }
   });
   return data as T;
