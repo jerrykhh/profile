@@ -1,6 +1,8 @@
 // property.ts
 import type {
   INotionProperty,
+  NotionPropertyCheckbox,
+  NotionPropertyDate,
   NotionPropertyFile,
   NotionPropertyMutliSelect,
   NotionPropertyRelation,
@@ -18,6 +20,7 @@ export const convertNotionPropertyFile = (property: INotionProperty) => {
     name: obj.name,
     file: obj.file,
   }));
+  if (files.length === 0) return null;
   return files.length === 1 ? files[0] : files;
 };
 
@@ -53,4 +56,23 @@ export const convertNotionPerpertyTitle = (property: INotionProperty) => {
     throw Error(`convertNotionPerpertyTitle: cannot convert ${property.type}`);
   const titleProp = property as NotionPropertyTitle;
   return titleProp.title.map((obj) => obj.plain_text).join('\n');
+};
+
+export const convertNotionPerpertyCheckbox = (property: INotionProperty) => {
+  if (property.type !== 'checkbox')
+    throw Error(
+      `convertNotionPerpertyCheckbox: cannot convert ${property.type}`
+    );
+  const checkboxProps = property as NotionPropertyCheckbox;
+  return Boolean(checkboxProps.checkbox);
+};
+
+export const convertNotionPerpertyDate = (property: INotionProperty) => {
+  if (property.type !== 'date')
+    throw Error(`convertNotionPerpertyDate: cannot convert ${property.type}`);
+  const dateProps = property as NotionPropertyDate;
+  return {
+    start: new Date(dateProps.date.start),
+    end: dateProps.date.end ? new Date(dateProps.date.end) : null,
+  };
 };

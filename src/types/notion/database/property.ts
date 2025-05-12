@@ -90,7 +90,7 @@ export interface NotionPropertyUrl extends NotionProperty {
 export interface NotionPropertyDate extends NotionProperty {
   id: string;
   type: 'date';
-  data: {
+  date: {
     start: string;
     end: string | null;
     time_zone: null | string;

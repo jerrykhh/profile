@@ -5,6 +5,8 @@ import type {
 } from '@/types/notion/database/property';
 
 import {
+  convertNotionPerpertyCheckbox,
+  convertNotionPerpertyDate,
   convertNotionPerpertyTitle,
   convertNotionPropertyFile,
   convertNotionPropertyMutliSelect,
@@ -20,6 +22,8 @@ const propertiesConvertorMapping: Record<string, PropertyConverter> = {
   multi_select: convertNotionPropertyMutliSelect,
   title: convertNotionPerpertyTitle,
   relation: convertNotionPropertyRelation,
+  checkbox: convertNotionPerpertyCheckbox,
+  date: convertNotionPerpertyDate,
 };
 
 export const convertNotionPropertiesToData = async <T>(

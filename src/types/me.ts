@@ -1,4 +1,5 @@
-import {
+import type { NoitonMultiSelect, NotionFile } from './notion/converted';
+import type {
   NotionDataProperty,
   NotionPropertyFile,
   NotionPropertyMutliSelect,
@@ -21,3 +22,10 @@ export type NotionVersionProperty = {
   name: NotionPropertyTitle;
   tag: NotionPropertyText;
 };
+
+export interface Me {
+  profilePic: NotionFile;
+  biography: string;
+  title: string;
+  todos: NoitonMultiSelect;
+}

@@ -1,34 +1,41 @@
-import { NoitonMultiSelect, NotionDate } from './notion/converted';
+import type {
+  NoitonMultiSelect,
+  NotionDate,
+  NotionFile,
+} from './notion/converted';
 import type {
   NotionDataProperty,
   NotionPropertyCheckbox,
   NotionPropertyDate,
+  NotionPropertyFile,
   NotionPropertyMutliSelect,
   NotionPropertyText,
   NotionPropertyTitle,
+  NotionPropertyUrl,
 } from './notion/database/property';
 import type { NotionContentSocialProperty } from './social';
 
-export type NotionBlogProperty = NotionDataProperty &
+export type NotionProjectProperty = NotionDataProperty &
   NotionContentSocialProperty & {
     name: NotionPropertyTitle;
-    title: NotionPropertyText;
-    synopsis: NotionPropertyText;
-    createdAt: NotionPropertyDate;
-    external: NotionPropertyCheckbox;
-    tags: NotionPropertyMutliSelect;
     published: NotionPropertyCheckbox;
+    createdAt: NotionPropertyDate;
+    'github.repo': NotionPropertyUrl;
+    synopsis: NotionPropertyText;
+    thumbnail: NotionPropertyFile;
+    title: NotionPropertyTitle;
+    tags: NotionPropertyMutliSelect;
   };
 
-export interface Blog {
-  published: boolean;
-  synopsis: string;
-  external: boolean;
-  title: string;
-  'social.og.title': string;
-  'social.og.image': string;
-  'social.og.description': string;
+export interface Project {
   name: string;
   createdAt: NotionDate;
+  synopsis: string;
+  published: boolean;
+  title: string;
+  thumbnail: null | NotionFile;
+  'social.og.title': string;
+  'social.og.description': string;
+  'social.og.image': string;
   tags: NoitonMultiSelect[];
 }
