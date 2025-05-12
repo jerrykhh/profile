@@ -7,6 +7,8 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
+import { BaseLayout } from '@/components/Layouts/BaseLayout';
+
 import './global.css';
 
 export const links: LinksFunction = () => [
@@ -31,8 +33,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="font-geist font-bold">
-        {children}
+      <body className="font-geist-mono">
+        <BaseLayout>{children}</BaseLayout>
         <ScrollRestoration />
         <Scripts />
       </body>

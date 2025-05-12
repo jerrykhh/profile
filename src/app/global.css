@@ -21,6 +21,12 @@ base {
   }
 }
 
+@layer base {
+  h5 {
+    @apply xsOrSm:text-lg;
+  }
+}
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;

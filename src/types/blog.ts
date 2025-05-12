@@ -1,4 +1,4 @@
-import { NoitonMultiSelect, NotionDate } from './notion/converted';
+import type { NotionDate } from './notion/converted';
 import type {
   NotionDataProperty,
   NotionPropertyCheckbox,
@@ -8,6 +8,7 @@ import type {
   NotionPropertyTitle,
 } from './notion/database/property';
 import type { NotionContentSocialProperty } from './social';
+import type { Tag } from './tag';
 
 export type NotionBlogProperty = NotionDataProperty &
   NotionContentSocialProperty & {
@@ -30,5 +31,5 @@ export interface Blog {
   'social.og.description': string;
   name: string;
   createdAt: NotionDate;
-  tags: NoitonMultiSelect[];
+  tags: Tag[];
 }
