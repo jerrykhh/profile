@@ -6,7 +6,11 @@ export type INotionProperty =
   | NotionPropertyRelation
   | NotionPropertyMutliSelect
   | NotionPropertyTitle
-  | NotionPropertyUrl;
+  | NotionPropertyUrl
+  | NotionPropertyDate
+  | NotionPropertyCheckbox;
+
+export type NotionDataProperty = Record<string, INotionProperty>;
 
 export interface NotionProperty {
   id: string;
@@ -81,4 +85,20 @@ export interface NotionPropertyUrl extends NotionProperty {
   id: string;
   type: 'url';
   url: null | string;
+}
+
+export interface NotionPropertyDate extends NotionProperty {
+  id: string;
+  type: 'date';
+  data: {
+    start: string;
+    end: string | null;
+    time_zone: null | string;
+  };
+}
+
+export interface NotionPropertyCheckbox extends NotionProperty {
+  id: string;
+  type: 'checkbox';
+  checkbox: boolean;
 }

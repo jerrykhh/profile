@@ -1,17 +1,28 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 
+import { listBlogs } from '@/services/blog';
 import { getMe } from '@/services/me';
 import { convertNotionPropertiesToData } from '@/utils/notion/convert';
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
-  const data = await getMe({
-    authToken: context.cloudflare.env.NOTION_API_TOKEN,
-  });
+  const { NOTION_API_TOKEN: notionAPIToken } = context.cloudflare.env;
+  const [me, blogs] = await Promise.all([
+    getMe({
+      authToken: notionAPIToken,
+    }).then(async (data) => await convertNotionPropertiesToData(data)),
+    listBlogs({
+      authToken: notionAPIToken,
+    }).then(
+      async (data) =>
+        await Promise.all(data.map((d) => convertNotionPropertiesToData(d)))
+    ),
+  ]);
 
-  console.log('Data', data);
-
-  console.log('converted', convertNotionPropertiesToData(data));
-  return data;
+  // console.log('converted', convertNotionPropertiesToData(data));
+  return {
+    me,
+    blogs,
+  };
 };
 
 export const meta: MetaFunction = () => {

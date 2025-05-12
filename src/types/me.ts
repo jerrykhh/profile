@@ -1,4 +1,5 @@
 import {
+  NotionDataProperty,
   NotionPropertyFile,
   NotionPropertyMutliSelect,
   NotionPropertyRelation,
@@ -7,7 +8,7 @@ import {
   NotionPropertyUrl,
 } from './notion/database/property';
 
-export type NotionMeProperty = {
+export type NotionMeProperty = NotionDataProperty & {
   profilePic: NotionPropertyFile;
   biography: NotionPropertyText;
   versions: NotionPropertyRelation;

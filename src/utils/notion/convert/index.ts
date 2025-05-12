@@ -1,5 +1,8 @@
 // convert.ts
-import type { INotionProperty } from '@/types/notion/database/property';
+import type {
+  INotionProperty,
+  NotionDataProperty,
+} from '@/types/notion/database/property';
 
 import {
   convertNotionPerpertyTitle,
@@ -19,9 +22,9 @@ const propertiesConvertorMapping: Record<string, PropertyConverter> = {
   relation: convertNotionPropertyRelation,
 };
 
-export const convertNotionPropertiesToData = <T>(
-  properties: Record<string, INotionProperty>
-): T => {
+export const convertNotionPropertiesToData = async <T>(
+  properties: NotionDataProperty
+): Promise<T> => {
   const data: { [key: string]: unknown } = {};
   Object.keys(properties).forEach((key) => {
     const property = properties[key];
