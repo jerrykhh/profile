@@ -13,6 +13,6 @@ export type NoitonMultiSelect = {
 };
 
 export type NotionDate = {
-  start: Date;
-  end: null | Date;
+  start: string;
+  end: null | string;
 };

@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 import React from 'react';
 
+import { Blogs } from '@/components/Home/Module/Blogs';
 import { Intro } from '@/components/Home/Module/Intro';
 import { listBlogs } from '@/services/blog';
 import { getMe } from '@/services/me';
@@ -60,6 +61,7 @@ export default function Index() {
         todos={data.me.todos}
         versions={data.me.versions}
       />
+      <Blogs items={data.blogs} />
     </React.Fragment>
   );
 }

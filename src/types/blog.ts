@@ -6,6 +6,7 @@ import type {
   NotionPropertyMutliSelect,
   NotionPropertyText,
   NotionPropertyTitle,
+  NotionPropertyUrl,
 } from './notion/database/property';
 import type { NotionContentSocialProperty } from './social';
 import type { Tag } from './tag';
@@ -17,14 +18,17 @@ export type NotionBlogProperty = NotionDataProperty &
     synopsis: NotionPropertyText;
     createdAt: NotionPropertyDate;
     external: NotionPropertyCheckbox;
+    externalUrl: NotionPropertyUrl;
     tags: NotionPropertyMutliSelect;
     published: NotionPropertyCheckbox;
   };
 
 export interface Blog {
+  id: string;
   published: boolean;
   synopsis: string;
   external: boolean;
+  externalUrl: string;
   title: string;
   'social.og.title': string;
   'social.og.image': string;

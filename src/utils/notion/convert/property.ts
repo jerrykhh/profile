@@ -83,10 +83,7 @@ export const convertNotionPropertyDate = async (property: INotionProperty) => {
   if (property.type !== 'date')
     throw Error(`convertNotionPropertyDate: cannot convert ${property.type}`);
   const dateProps = property as NotionPropertyDate;
-  return {
-    start: new Date(dateProps.date.start),
-    end: dateProps.date.end ? new Date(dateProps.date.end) : null,
-  };
+  return dateProps.date;
 };
 
 export const convertNotionPropertyUrl = async (property: INotionProperty) => {

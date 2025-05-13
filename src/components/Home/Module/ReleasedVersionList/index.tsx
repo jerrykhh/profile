@@ -11,12 +11,13 @@ type ReleasedVersionParams = {
 
 export const ReleasedVersionList = ({ items }: ReleasedVersionParams) => {
   return (
-    <Card title={`Releases (${items.length})`} containerClassName="border">
+    <Card title={`Releases (${items.length})`} containerClassName="border p-4">
       <ul>
         {items.map((item) => {
           const isProvidedUrl = R.isNotEmpty(item.url) && R.isNotNil(item.url);
           const releaseEle = (
             <li
+              key={item.tag}
               className={classNames(
                 'py-2 border-b',
                 isProvidedUrl

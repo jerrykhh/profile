@@ -33,6 +33,10 @@ export const convertNotionPropertiesToData = async <T>(
 ): Promise<T> => {
   const data: { [key: string]: unknown } = {};
   Object.keys(properties).forEach(async (key) => {
+    if (['string', 'number', 'boolean'].includes(typeof properties[key])) {
+      data[key] = properties[key];
+      return;
+    }
     const property = properties[key];
     if (!property) return;
     const converter = propertiesConvertorMapping[property.type];

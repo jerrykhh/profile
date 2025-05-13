@@ -2,8 +2,14 @@ import classNames from 'classnames';
 
 import type { Tag } from '@/types/tag';
 
+import { Tags } from '../Tags';
 import { CardHeader } from './Header';
-import { CardTags } from './Tag';
+
+export enum ContentCardType {
+  DEFAULT = 'default',
+  CONTENT = 'content',
+  CONTAINER = 'container',
+}
 
 type CardProps = {
   title?: string;
@@ -12,6 +18,7 @@ type CardProps = {
   children?: React.ReactNode;
   tags?: Tag[];
 
+  type?: ContentCardType;
   containerClassName?: string;
 };
 
@@ -22,14 +29,20 @@ export const Card = ({
   children,
   tags,
   containerClassName,
+  type = ContentCardType.DEFAULT,
 }: CardProps) => {
   return (
-    <div className={classNames('flex flex-col p-4', containerClassName)}>
+    <div className={classNames('flex flex-col', containerClassName)}>
       {(title || publishedDate || hints) && (
-        <CardHeader title={title} hints={hints} publishedDate={publishedDate} />
+        <CardHeader
+          type={type}
+          title={title}
+          hints={hints}
+          publishedDate={publishedDate}
+        />
       )}
       <div className="py-2">{children}</div>
-      {tags && <CardTags items={tags} />}
+      {type === ContentCardType.CONTENT && tags && <Tags items={tags} />}
     </div>
   );
 };

@@ -7,7 +7,7 @@ type TodoListParams = {
 
 export const TodoList = ({ items }: TodoListParams) => {
   return (
-    <Card title="Todo" hints="I need to do it." containerClassName="border">
+    <Card title="Todo" hints="I need to do it." containerClassName="border p-4">
       <ul className="list-disc list-inside">
         {items.map((item) => (
           <li key={item.id}>{item.name}</li>

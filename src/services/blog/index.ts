@@ -22,5 +22,13 @@ export const listBlogs = async ({ authToken, limit = 3 }: ListBlogParams) => {
 
   const data =
     (await res.json()) as NotionRetrieveQueryDatabaseAPIResponse<NotionBlogProperty>;
-  return data.results.map((result) => result.properties).slice(0, limit);
+
+  return data.results
+    .map((result) => {
+      return {
+        id: result.id,
+        ...result.properties,
+      };
+    })
+    .slice(0, limit);
 };
