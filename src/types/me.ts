@@ -1,4 +1,4 @@
-import type { NoitonMultiSelect, NotionFile } from './notion/converted';
+import type { NotionFile } from './notion/converted';
 import type {
   NotionDataProperty,
   NotionPropertyFile,
@@ -8,6 +8,8 @@ import type {
   NotionPropertyTitle,
   NotionPropertyUrl,
 } from './notion/database/property';
+import type { Todo } from './todo';
+import type { ReleasedVersion } from './version';
 
 export type NotionMeProperty = NotionDataProperty & {
   profilePic: NotionPropertyFile;
@@ -27,10 +29,6 @@ export interface Me {
   profilePic: NotionFile;
   biography: string;
   title: string;
-  todos: NoitonMultiSelect;
-  version: {
-    name: string;
-    tag: string;
-    url: string | null;
-  };
+  todos: Todo[];
+  versions: ReleasedVersion[];
 }

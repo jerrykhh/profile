@@ -1,6 +1,8 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
+import React from 'react';
 
+import { Intro } from '@/components/Home/Module/Intro';
 import { listBlogs } from '@/services/blog';
 import { getMe } from '@/services/me';
 import { listProjects } from '@/services/project';
@@ -50,5 +52,14 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   const data = useLoaderData<typeof loader>();
   console.log(data);
-  return <div></div>;
+  return (
+    <React.Fragment>
+      <Intro
+        title={data.me.title}
+        biography={data.me.biography}
+        todos={data.me.todos}
+        versions={data.me.versions}
+      />
+    </React.Fragment>
+  );
 }
