@@ -41,7 +41,14 @@ export const Card = ({
           publishedDate={publishedDate}
         />
       )}
-      <div className="py-2">{children}</div>
+      <div
+        className={classNames(
+          'py-2',
+          type === ContentCardType.CONTENT && 'text-sm'
+        )}
+      >
+        {children}
+      </div>
       {type === ContentCardType.CONTENT && tags && <Tags items={tags} />}
     </div>
   );
