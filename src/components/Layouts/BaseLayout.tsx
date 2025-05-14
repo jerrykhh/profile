@@ -1,3 +1,4 @@
+import { Footer } from '../Footer';
 import { NavHeader } from '../NavHeader';
 
 type BaseLayoutParams = {
@@ -12,6 +13,9 @@ export const BaseLayout = ({ children }: BaseLayoutParams) => {
           <NavHeader />
         </div>
         {children}
+        <div className="mt-6">
+          <Footer />
+        </div>
       </div>
     </div>
   );

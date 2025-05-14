@@ -1,6 +1,7 @@
-import { Link, useLocation } from '@remix-run/react';
-import classNames from 'classnames';
+import { useLocation } from '@remix-run/react';
 import * as R from 'ramda';
+
+import { NavButton } from '../NavButton';
 
 export const NavHeader = () => {
   const curPathname = useLocation().pathname;
@@ -21,26 +22,19 @@ export const NavHeader = () => {
 
   return (
     <div className="flex">
-      <div className="flex grow gap-2">
+      <div className="flex grow gap-4">
         {menus.map((item) => {
           const isActive =
             item.path === '/'
               ? curPathname === item.path
               : R.match(/\/[^\\/]+/, curPathname)[0] === item.path;
           return (
-            <Link key={item.path} to={item.path}>
-              <div className="px-1">
-                <div
-                  className={classNames(
-                    isActive
-                      ? 'border-b-[1.5px]'
-                      : 'hover:border-b-[1.5px] hover:border-dashed'
-                  )}
-                >
-                  <h5>{item.title}</h5>
-                </div>
-              </div>
-            </Link>
+            <NavButton
+              key={item.path}
+              to={item.path}
+              title={item.title}
+              isActive={isActive}
+            />
           );
         })}
       </div>
