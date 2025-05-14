@@ -24,7 +24,7 @@ export const CardHeader = ({
           type == ContentCardType.CONTAINER && 'text-3xl',
           type == ContentCardType.DEFAULT && 'text-lg',
           type == ContentCardType.CONTENT &&
-            'text-2xl group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-2'
+            'text-xl group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-2'
         )}
       >
         {title}

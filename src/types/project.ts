@@ -25,6 +25,7 @@ export type NotionProjectProperty = NotionDataProperty &
   };
 
 export interface Project {
+  id: string;
   name: string;
   createdAt: NotionDate;
   synopsis: string;

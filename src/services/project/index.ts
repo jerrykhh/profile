@@ -26,5 +26,12 @@ export const listProjects = async ({
 
   const data =
     (await res.json()) as NotionRetrieveQueryDatabaseAPIResponse<NotionProjectProperty>;
-  return data.results.map((result) => result.properties).slice(0, limit);
+  return data.results
+    .map((result) => {
+      return {
+        id: result.id,
+        ...result.properties,
+      };
+    })
+    .slice(0, limit);
 };

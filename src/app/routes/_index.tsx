@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Blogs } from '@/components/Home/Module/Blogs';
 import { Intro } from '@/components/Home/Module/Intro';
+import { Projects } from '@/components/Home/Module/Projects';
 import { listBlogs } from '@/services/blog';
 import { getMe } from '@/services/me';
 import { listProjects } from '@/services/project';
@@ -61,7 +62,10 @@ export default function Index() {
         todos={data.me.todos}
         versions={data.me.versions}
       />
-      <Blogs items={data.blogs} />
+      <div className="flex flex-col gap-8">
+        <Blogs items={data.blogs} />
+        <Projects items={data.projects} />
+      </div>
     </React.Fragment>
   );
 }
