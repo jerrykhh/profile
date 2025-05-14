@@ -1,35 +1,32 @@
 // convert.ts
-import type {
-  INotionProperty,
-  NotionDataProperty,
-} from '@/types/notion/database/property';
+import type { INotionData, INotionObjectData } from '@/types/notion/data';
 
 import {
-  convertNotionPropertyCheckbox,
-  convertNotionPropertyDate,
-  convertNotionPropertyFile,
-  convertNotionPropertyMutliSelect,
-  convertNotionPropertyRelation,
-  convertNotionPropertyText,
-  convertNotionPropertyTitle,
-  convertNotionPropertyUrl,
+  convertNotionDataCheckbox,
+  convertNotionDataDate,
+  convertNotionDataFile,
+  convertNotionDataMutliSelect,
+  convertNotionDataRelation,
+  convertNotionDataText,
+  convertNotionDataTitle,
+  convertNotionDataUrl,
 } from './property';
 
-type PropertyConverter = (property: INotionProperty) => unknown;
+type PropertyConverter = (property: INotionData) => unknown;
 
 const propertiesConvertorMapping: Record<string, PropertyConverter> = {
-  files: convertNotionPropertyFile,
-  rich_text: convertNotionPropertyText,
-  multi_select: convertNotionPropertyMutliSelect,
-  title: convertNotionPropertyTitle,
-  relation: convertNotionPropertyRelation,
-  checkbox: convertNotionPropertyCheckbox,
-  date: convertNotionPropertyDate,
-  url: convertNotionPropertyUrl,
+  files: convertNotionDataFile,
+  rich_text: convertNotionDataText,
+  multi_select: convertNotionDataMutliSelect,
+  title: convertNotionDataTitle,
+  relation: convertNotionDataRelation,
+  checkbox: convertNotionDataCheckbox,
+  date: convertNotionDataDate,
+  url: convertNotionDataUrl,
 };
 
-export const convertNotionPropertiesToData = async <T>(
-  properties: NotionDataProperty
+export const convertNotionObjectToData = async <T>(
+  properties: INotionObjectData
 ): Promise<T> => {
   const data: { [key: string]: unknown } = {};
   Object.keys(properties).forEach(async (key) => {

@@ -1,26 +1,26 @@
 import type { NotionDate } from './notion/converted';
 import type {
-  NotionDataProperty,
-  NotionPropertyCheckbox,
-  NotionPropertyDate,
-  NotionPropertyMutliSelect,
-  NotionPropertyText,
-  NotionPropertyTitle,
-  NotionPropertyUrl,
-} from './notion/database/property';
+  NotionData,
+  NotionDataCheckbox,
+  NotionDataDate,
+  NotionDataMutliSelect,
+  NotionDataText,
+  NotionDataTitle,
+  NotionDataUrl,
+} from './notion/data';
 import type { NotionContentSocialProperty } from './social';
 import type { Tag } from './tag';
 
-export type NotionBlogProperty = NotionDataProperty &
+export type NotionBlogProperty = NotionData &
   NotionContentSocialProperty & {
-    name: NotionPropertyTitle;
-    title: NotionPropertyText;
-    synopsis: NotionPropertyText;
-    createdAt: NotionPropertyDate;
-    external: NotionPropertyCheckbox;
-    externalUrl: NotionPropertyUrl;
-    tags: NotionPropertyMutliSelect;
-    published: NotionPropertyCheckbox;
+    name: NotionDataTitle;
+    title: NotionDataText;
+    synopsis: NotionDataText;
+    createdAt: NotionDataDate;
+    external: NotionDataCheckbox;
+    externalUrl: NotionDataUrl;
+    tags: NotionDataMutliSelect;
+    published: NotionDataCheckbox;
   };
 
 export interface Blog {

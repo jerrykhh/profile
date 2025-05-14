@@ -1,25 +1,19 @@
-import type {
+import {
   NotionDatabaseRelationMapping,
   NotionUserRelationMapping,
-} from './relation';
+} from './database/relation';
 
-export type NotionObjectType = 'database';
-
-export interface NotionRetrieveQueryDatabaseAPIResponse<T> {
-  object: 'list';
+export interface NotionAPIResponse {
+  object: string;
   next_cursor: string | null;
   has_more: boolean;
-  results: Array<NotionRetrieveQueryDatabaseResult<T>>;
-  type: string;
-  page_or_database: unknown;
+  type: 'block' | 'page_or_database';
   developer_survey: string;
   request_id: string;
 }
 
-export type NotionRetrieveQueryDatabaseResultType = 'page';
-
-export interface NotionRetrieveQueryDatabaseResult<T> {
-  object: NotionRetrieveQueryDatabaseResultType;
+export interface NotionResult {
+  object: string;
   id: string;
   created_time: string;
   last_edited_time: string;
@@ -30,7 +24,7 @@ export interface NotionRetrieveQueryDatabaseResult<T> {
   parent: NotionDatabaseRelationMapping;
   archived: boolean;
   in_trash: boolean;
-  properties: T;
+
   url: string;
   public_url: null | string;
 }

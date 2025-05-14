@@ -1,4 +1,4 @@
-export type NotionAnnotations = {
+export type NotionDataTextAnnotations = {
   bold: boolean;
   italic: boolean;
   strikethrough: boolean;

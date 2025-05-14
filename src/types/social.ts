@@ -1,7 +1,7 @@
-import type { NotionPropertyText } from './notion/database/property';
+import type { NotionDataText } from './notion/data';
 
 export type NotionContentSocialProperty = {
-  'social.og.title': NotionPropertyText;
-  'social.og.description': NotionPropertyText;
-  'social.og.image': NotionPropertyText;
+  'social.og.title': NotionDataText;
+  'social.og.description': NotionDataText;
+  'social.og.image': NotionDataText;
 };

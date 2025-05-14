@@ -1,4 +1,4 @@
-import type { NotionRetrieveQueryDatabaseResult } from '@/types/notion/database/query';
+import { NotionQueryDatabaseResult } from '@/types/notion/database/properties';
 import { getNotionAPIRequestAuthHeader } from '@/utils/notion';
 
 type GetRelationDataParams = {
@@ -27,8 +27,7 @@ export const getRelationData = async <T>({
         throw Error('Cannot GetRelation data');
       }
 
-      return ((await res.json()) as NotionRetrieveQueryDatabaseResult<T>)
-        .properties;
+      return ((await res.json()) as NotionQueryDatabaseResult<T>).properties;
     })
   );
 

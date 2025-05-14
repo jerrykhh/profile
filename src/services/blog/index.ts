@@ -1,5 +1,5 @@
 import type { NotionBlogProperty } from '@/types/blog';
-import type { NotionRetrieveQueryDatabaseAPIResponse } from '@/types/notion/database/query';
+import { NotionQueryDatabaseAPIResponse } from '@/types/notion/database/properties';
 import { getNotionAPIRequestAuthHeader } from '@/utils/notion';
 
 type ListBlogParams = {
@@ -21,13 +21,13 @@ export const listBlogs = async ({ authToken, limit = 3 }: ListBlogParams) => {
   }
 
   const data =
-    (await res.json()) as NotionRetrieveQueryDatabaseAPIResponse<NotionBlogProperty>;
+    (await res.json()) as NotionQueryDatabaseAPIResponse<NotionBlogProperty>;
 
   return data.results
     .map((result) => {
       return {
-        id: result.id,
         ...result.properties,
+        id: result.id,
       };
     })
     .slice(0, limit);

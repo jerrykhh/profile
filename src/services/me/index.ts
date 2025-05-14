@@ -1,5 +1,5 @@
 import type { NotionMeProperty, NotionVersionProperty } from '@/types/me';
-import { NotionRetrieveQueryDatabaseAPIResponse } from '@/types/notion/database/query';
+import { NotionQueryDatabaseAPIResponse } from '@/types/notion/database/properties';
 import { getNotionAPIRequestAuthHeader } from '@/utils/notion';
 
 import { getRelationData } from '../relation';
@@ -21,7 +21,7 @@ export const getMe = async ({ authToken }: GetMeParams) => {
     throw Error('Cannot GetMe data');
   }
   const data =
-    (await res.json()) as NotionRetrieveQueryDatabaseAPIResponse<NotionMeProperty>;
+    (await res.json()) as NotionQueryDatabaseAPIResponse<NotionMeProperty>;
   let properties: NotionMeProperty = data.results[0].properties;
 
   if (properties.versions) {

@@ -1,28 +1,28 @@
 import type { NotionFile } from './notion/converted';
 import type {
-  NotionDataProperty,
-  NotionPropertyFile,
-  NotionPropertyMutliSelect,
-  NotionPropertyRelation,
-  NotionPropertyText,
-  NotionPropertyTitle,
-  NotionPropertyUrl,
-} from './notion/database/property';
+  NotionData,
+  NotionDataFile,
+  NotionDataMutliSelect,
+  NotionDataRelation,
+  NotionDataText,
+  NotionDataTitle,
+  NotionDataUrl,
+} from './notion/data';
 import type { Todo } from './todo';
 import type { ReleasedVersion } from './version';
 
-export type NotionMeProperty = NotionDataProperty & {
-  profilePic: NotionPropertyFile;
-  biography: NotionPropertyText;
-  versions: NotionPropertyRelation;
-  todos: NotionPropertyMutliSelect;
-  title: NotionPropertyTitle;
+export type NotionMeProperty = NotionData & {
+  profilePic: NotionDataFile;
+  biography: NotionDataText;
+  versions: NotionDataRelation;
+  todos: NotionDataMutliSelect;
+  title: NotionDataTitle;
 };
 
 export type NotionVersionProperty = {
-  url: NotionPropertyUrl;
-  name: NotionPropertyTitle;
-  tag: NotionPropertyText;
+  url: NotionDataUrl;
+  name: NotionDataTitle;
+  tag: NotionDataText;
 };
 
 export interface Me {

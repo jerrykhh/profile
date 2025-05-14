@@ -1,4 +1,4 @@
-import { NotionRetrieveQueryDatabaseAPIResponse } from '@/types/notion/database/query';
+import { NotionQueryDatabaseAPIResponse } from '@/types/notion/database/properties';
 import { NotionProjectProperty } from '@/types/project';
 import { getNotionAPIRequestAuthHeader } from '@/utils/notion';
 
@@ -25,12 +25,12 @@ export const listProjects = async ({
   }
 
   const data =
-    (await res.json()) as NotionRetrieveQueryDatabaseAPIResponse<NotionProjectProperty>;
+    (await res.json()) as NotionQueryDatabaseAPIResponse<NotionProjectProperty>;
   return data.results
     .map((result) => {
       return {
-        id: result.id,
         ...result.properties,
+        id: result.id,
       };
     })
     .slice(0, limit);

@@ -1,27 +1,27 @@
 import type { NotionDate, NotionFile } from './notion/converted';
 import type {
-  NotionDataProperty,
-  NotionPropertyCheckbox,
-  NotionPropertyDate,
-  NotionPropertyFile,
-  NotionPropertyMutliSelect,
-  NotionPropertyText,
-  NotionPropertyTitle,
-  NotionPropertyUrl,
-} from './notion/database/property';
+  NotionData,
+  NotionDataCheckbox,
+  NotionDataDate,
+  NotionDataFile,
+  NotionDataMutliSelect,
+  NotionDataText,
+  NotionDataTitle,
+  NotionDataUrl,
+} from './notion/data';
 import type { NotionContentSocialProperty } from './social';
 import type { Tag } from './tag';
 
-export type NotionProjectProperty = NotionDataProperty &
+export type NotionProjectProperty = NotionData &
   NotionContentSocialProperty & {
-    name: NotionPropertyTitle;
-    published: NotionPropertyCheckbox;
-    createdAt: NotionPropertyDate;
-    'github.repo': NotionPropertyUrl;
-    synopsis: NotionPropertyText;
-    thumbnail: NotionPropertyFile;
-    title: NotionPropertyTitle;
-    tags: NotionPropertyMutliSelect;
+    name: NotionDataTitle;
+    published: NotionDataCheckbox;
+    createdAt: NotionDataDate;
+    'github.repo': NotionDataUrl;
+    synopsis: NotionDataText;
+    thumbnail: NotionDataFile;
+    title: NotionDataTitle;
+    tags: NotionDataMutliSelect;
   };
 
 export interface Project {
@@ -36,4 +36,8 @@ export interface Project {
   'social.og.description': string;
   'social.og.image': string;
   tags: Tag[];
+}
+
+export interface ProjectPageContent {
+  [key: string]: NotionData;
 }
