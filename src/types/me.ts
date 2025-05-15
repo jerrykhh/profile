@@ -1,6 +1,6 @@
 import type { NotionFile } from './notion/converted';
 import type {
-  NotionData,
+  INotionObjectData,
   NotionDataFile,
   NotionDataMutliSelect,
   NotionDataRelation,
@@ -11,13 +11,13 @@ import type {
 import type { Todo } from './todo';
 import type { ReleasedVersion } from './version';
 
-export type NotionMeProperty = NotionData & {
+export interface NotionMeProperty extends INotionObjectData {
   profilePic: NotionDataFile;
   biography: NotionDataText;
   versions: NotionDataRelation;
   todos: NotionDataMutliSelect;
   title: NotionDataTitle;
-};
+}
 
 export type NotionVersionProperty = {
   url: NotionDataUrl;

@@ -1,5 +1,5 @@
 import type { NotionMeProperty, NotionVersionProperty } from '@/types/me';
-import { NotionQueryDatabaseAPIResponse } from '@/types/notion/database/properties';
+import { NotionQueryDatabaseAPIResponse } from '@/types/notion/database/query';
 import { getNotionAPIRequestAuthHeader } from '@/utils/notion';
 
 import { getRelationData } from '../relation';

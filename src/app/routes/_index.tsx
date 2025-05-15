@@ -11,25 +11,27 @@ import { listProjects } from '@/services/project';
 import { Blog } from '@/types/blog';
 import { Me } from '@/types/me';
 import { Project } from '@/types/project';
-import { convertNotionPropertiesToData } from '@/utils/notion/convert';
+import { convertNotionObjectToData } from '@/utils/notion/convert';
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const { NOTION_API_TOKEN: notionAPIToken } = context.cloudflare.env;
   const [me, blogs, projects] = await Promise.all([
     getMe({
       authToken: notionAPIToken,
-    }).then(async (data) => await convertNotionPropertiesToData(data)),
+    }).then(async (data) => await convertNotionObjectToData<Me>(data)),
     listBlogs({
       authToken: notionAPIToken,
     }).then(
       async (data) =>
-        await Promise.all(data.map((d) => convertNotionPropertiesToData(d)))
+        await Promise.all(data.map((d) => convertNotionObjectToData<Blog>(d)))
     ),
     listProjects({
       authToken: notionAPIToken,
     }).then(
       async (data) =>
-        await Promise.all(data.map((d) => convertNotionPropertiesToData(d)))
+        await Promise.all(
+          data.map((d) => convertNotionObjectToData<Project>(d))
+        )
     ),
   ]);
 

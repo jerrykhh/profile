@@ -1,4 +1,5 @@
 import type { NotionDataTextAnnotations } from '../data/annotations';
+import { INotionBlock } from './block';
 
 export type INotionData =
   | NotionDataFile
@@ -8,7 +9,8 @@ export type INotionData =
   | NotionDataTitle
   | NotionDataUrl
   | NotionDataDate
-  | NotionDataCheckbox;
+  | NotionDataCheckbox
+  | INotionBlock;
 
 export type INotionObjectData = Record<string, INotionData>;
 
@@ -17,27 +19,39 @@ export interface NotionData {
   type: string;
 }
 
+export interface NotionText {
+  type: 'text';
+  text: {
+    content: string;
+    link: string | null;
+  };
+  plain_text: string;
+  annotations: NotionDataTextAnnotations;
+}
+
+export interface NotionEmbeddedVideo {
+  type: 'external';
+  external: {
+    url: string;
+  };
+}
+
+export interface NotionFile {
+  name?: string;
+  type: 'file';
+  file: {
+    url: string;
+    expiry_time: string;
+  };
+}
 export interface NotionDataFile extends NotionData {
   type: 'files';
-  files: Array<{
-    name: string;
-    type: 'file';
-    file: {
-      url: string;
-      expiry_time: string;
-    };
-  }>;
+  files: Array<NotionFile>;
 }
 
 export interface NotionDataText extends NotionData {
   type: 'rich_text';
-  rich_text: Array<{
-    type: 'text';
-    text: {
-      content: string;
-      link: string | null;
-    };
-  }>;
+  rich_text: Array<NotionText>;
   annotations: NotionDataTextAnnotations;
   plain_text: string;
   href: null;
@@ -64,16 +78,7 @@ export interface NotionDataMutliSelect extends NotionData {
 
 export interface NotionDataTitle extends NotionData {
   type: 'title';
-  title: Array<{
-    type: 'text';
-    text: {
-      content: string;
-      link: string | null;
-    };
-    annotations: NotionDataTextAnnotations;
-    plain_text: string;
-    href: string | null;
-  }>;
+  title: Array<NotionText>;
 }
 
 export interface NotionDataUrl extends NotionData {

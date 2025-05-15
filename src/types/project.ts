@@ -1,5 +1,6 @@
 import type { NotionDate, NotionFile } from './notion/converted';
 import type {
+  INotionObjectData,
   NotionData,
   NotionDataCheckbox,
   NotionDataDate,
@@ -12,7 +13,7 @@ import type {
 import type { NotionContentSocialProperty } from './social';
 import type { Tag } from './tag';
 
-export type NotionProjectProperty = NotionData &
+export type NotionProjectProperty = INotionObjectData &
   NotionContentSocialProperty & {
     name: NotionDataTitle;
     published: NotionDataCheckbox;

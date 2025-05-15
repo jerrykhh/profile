@@ -13,6 +13,7 @@ import type {
 } from '@/types/notion/data';
 
 import { convertNotionObjectToData } from '.';
+import { extractText } from './utils';
 
 export const convertNotionDataFile = async (property: INotionData) => {
   if (property.type !== 'files')
@@ -30,7 +31,7 @@ export const convertNotionDataText = async (property: INotionData) => {
   if (property.type !== 'rich_text')
     throw Error(`convertNotionDataText: cannot convert ${property.type}`);
   const textProp = property as NotionDataText;
-  return textProp.rich_text.map((obj) => obj.text.content).join('\n');
+  return extractText(textProp.rich_text);
 };
 
 export const convertNotionDataMutliSelect = async (property: INotionData) => {

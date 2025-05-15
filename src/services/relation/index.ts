@@ -1,4 +1,4 @@
-import { NotionQueryDatabaseResult } from '@/types/notion/database/properties';
+import { NotionQueryDatabaseResult } from '@/types/notion/database/query';
 import { getNotionAPIRequestAuthHeader } from '@/utils/notion';
 
 type GetRelationDataParams = {
