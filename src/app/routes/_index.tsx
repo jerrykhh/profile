@@ -23,7 +23,9 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
       authToken: notionAPIToken,
     }).then(
       async (data) =>
-        await Promise.all(data.map((d) => convertNotionObjectToData<Blog>(d)))
+        await Promise.all(
+          data.results.map((d) => convertNotionObjectToData<Blog>(d))
+        )
     ),
     listProjects({
       authToken: notionAPIToken,
