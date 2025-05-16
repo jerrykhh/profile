@@ -16,3 +16,8 @@ export type NotionDate = {
   start: string;
   end: null | string;
 };
+
+export type NotionBlock = {
+  type: 'paragraph' | 'heading_2' | 'code' | 'heading_3' | 'video';
+  data: string;
+};

@@ -30,7 +30,12 @@ export const ReleasedVersionList = ({ items }: ReleasedVersionParams) => {
             </li>
           );
           return isProvidedUrl ? (
-            <Link to={item.url!} target="_blank" rel="noreferrer">
+            <Link
+              key={item.tag}
+              to={item.url!}
+              target="_blank"
+              rel="noreferrer"
+            >
               {releaseEle}
             </Link>
           ) : (

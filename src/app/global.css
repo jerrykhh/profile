@@ -23,7 +23,7 @@ base {
 
 @layer base {
   h1 {
-    @apply text-5xl font-bold;
+    @apply text-5xl font-bold py-2;
   }
   h5 {
     @apply xsOrSm:text-lg;

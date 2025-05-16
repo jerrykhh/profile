@@ -1,3 +1,4 @@
+import { NotionBlock } from '@/types/notion/converted';
 import type { INotionData } from '@/types/notion/data';
 import { INotionBlock } from '@/types/notion/data/block';
 
@@ -65,7 +66,9 @@ const blockConvertorMapping: Record<string, BlockConverter> = {
   code: convertNotionBlockCode,
   video: convertNotionBlockVideo,
 };
-export const convertNotionBlockToData = async (results: INotionBlock[]) => {
+export const convertNotionBlockToData = async (
+  results: INotionBlock[]
+): Promise<Array<NotionBlock>> => {
   return await Promise.all(
     results.map(async (data) => blockConvertorMapping[data.type]?.(data))
   );
