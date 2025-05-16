@@ -32,7 +32,6 @@ export const convertNotionBlockImage = async (property: INotionData) => {
 };
 
 export const convertNotionBlockHeading = async (property: INotionData) => {
-  console.log('convertNotionBlockHeading', property);
   if (!property.type.includes('heading'))
     throw Error(`convertNotionBlockHeading: cannot convert ${property.type}`);
   const headingProps = property as NotionBlockHeading;

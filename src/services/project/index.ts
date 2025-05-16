@@ -8,7 +8,7 @@ import { getPage } from '../page';
 type ListProjectParams = {
   authToken: string;
   limit?: number;
-  next_cursor?: string;
+  next_cursor?: string | null;
 };
 
 export const listProjects = async ({
@@ -24,7 +24,7 @@ export const listProjects = async ({
       body: JSON.stringify({
         page_size: limit,
         ...(next_cursor && {
-          next_cursor,
+          start_cursor: next_cursor,
         }),
       }),
     }

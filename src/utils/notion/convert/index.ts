@@ -38,20 +38,14 @@ export const convertNotionObjectToData = async <T>(
 ): Promise<T> => {
   const data: { [key: string]: unknown } = {};
   Object.keys(properties).forEach(async (key) => {
-    console.log('key', key);
     if (['string', 'number', 'boolean'].includes(typeof properties[key])) {
       data[key] = properties[key];
       return;
     }
     const property = properties[key];
-    console.log('property', property);
     if (!property) return;
     const converter = propertiesConvertorMapping[property.type];
-    if (converter) {
-      key === 'paragraph' && console.log('property', property);
-      data[key] = await converter(property);
-      key === 'paragraph' && console.log('data[key]', data[key]);
-    }
+    if (converter) data[key] = await converter(property);
   });
   return data as T;
 };
@@ -69,7 +63,7 @@ const blockConvertorMapping: Record<string, BlockConverter> = {
 export const convertNotionBlockToData = async (
   results: INotionBlock[]
 ): Promise<Array<NotionBlock>> => {
-  return await Promise.all(
+  return (await Promise.all(
     results.map(async (data) => blockConvertorMapping[data.type]?.(data))
-  );
+  )) as Array<NotionBlock>;
 };

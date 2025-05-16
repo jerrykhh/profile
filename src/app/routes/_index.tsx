@@ -56,7 +56,6 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
   return (
     <React.Fragment>
       <Intro
