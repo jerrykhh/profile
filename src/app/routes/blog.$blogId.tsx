@@ -1,26 +1,26 @@
-import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
+import { LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 
 import { PageContainer } from '@/components/Page';
 import { blockWrapper } from '@/components/Page/block';
-import { getProject } from '@/services/content/project';
-import type { Project } from '@/types/project';
+import { getBlog } from '@/services/content/blog';
+import { Blog } from '@/types/blog';
 import {
   convertNotionBlockToData,
   convertNotionObjectToData,
 } from '@/utils/notion/convert';
 
 export const loader = async ({ context, params }: LoaderFunctionArgs) => {
-  const { projectId } = params;
-  if (!projectId) return;
+  const { blogId } = params;
+  if (!blogId) return;
   const { NOTION_API_TOKEN: notionAPIToken } = context.cloudflare.env;
 
-  return await getProject({
-    id: projectId ?? '__MISSING_PROJECT_ID__',
+  return await getBlog({
+    id: blogId,
     authToken: notionAPIToken,
   }).then(async (data) => {
     const converted = await Promise.all([
-      convertNotionObjectToData<Project>(data.properties),
+      convertNotionObjectToData<Blog>(data.properties),
       convertNotionBlockToData(data.content),
     ]);
     return {
@@ -30,17 +30,15 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   });
 };
 
-const ProjectDetailPage = () => {
+const BlogDetailPage = () => {
   const { properties, content } = useLoaderData<typeof loader>();
   const pageContent = blockWrapper(content);
+  console.log('content', content);
   return (
     <PageContainer
       title={properties.title}
       createdAt={properties.createdAt.start}
       tags={properties.tags}
-      externalUrls={
-        !properties['github.repo'] ? [] : [properties['github.repo']]
-      }
       notionBlocks={content}
     >
       {pageContent}
@@ -48,4 +46,4 @@ const ProjectDetailPage = () => {
   );
 };
 
-export default ProjectDetailPage;
+export default BlogDetailPage;

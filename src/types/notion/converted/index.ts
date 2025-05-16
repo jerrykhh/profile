@@ -1,3 +1,5 @@
+import { NotionDataTextAnnotations } from '../data/annotations';
+
 export type NotionFile = {
   name: string;
   file: {
@@ -18,6 +20,21 @@ export type NotionDate = {
 };
 
 export type NotionBlock = {
-  type: 'paragraph' | 'heading_2' | 'code' | 'heading_3' | 'video';
-  data: string;
+  type:
+    | 'paragraph'
+    | 'heading_2'
+    | 'code'
+    | 'heading_3'
+    | 'video'
+    | 'numbered_list_item';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+};
+
+export type NotionTextStyled = {
+  text: {
+    content: string;
+    link: string;
+  };
+  annotations: NotionDataTextAnnotations;
 };
