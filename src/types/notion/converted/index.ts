@@ -26,9 +26,9 @@ export type NotionBlock = {
     | 'code'
     | 'heading_3'
     | 'video'
-    | 'numbered_list_item';
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+    | 'numbered_list_item'
+    | 'image';
+  data: NotionTextStyled[] | string;
 };
 
 export type NotionTextStyled = {

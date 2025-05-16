@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-npx tsx && npm run lint:css && npx lint-staged
+npx tsc && npm run lint:css && npx lint-staged

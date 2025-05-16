@@ -7,7 +7,8 @@ import { PageImage } from './Image';
 import { PageNumberedListItem } from './NumberedListItem';
 import { PageVideo } from './Video';
 
-const blockToComponentMapping = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const blockToComponentMapping: Record<string, (data: any) => JSX.Element> = {
   paragraph: PageParagraph,
   heading_2: PageHeading2,
   heading_3: PageHeading3,

@@ -5,7 +5,7 @@ import { NotionBlock } from '@/types/notion/converted';
 type HeadingNode = {
   id: string;
   level: number;
-  content?: string;
+  content: string;
   children: HeadingNode[];
 };
 
@@ -23,7 +23,7 @@ export const TableOfContent = ({ blocks }: { blocks: NotionBlock[] }) => {
         const node: HeadingNode = {
           id: `${level}-${i}`,
           level,
-          content: block.data,
+          content: block.data as string,
           children: [],
         };
 
