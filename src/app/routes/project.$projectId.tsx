@@ -1,7 +1,10 @@
 import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
+import React from 'react';
 
+import { blockWrapper } from '@/components/Page/block';
 import { getProject } from '@/services/project';
+import type { Project } from '@/types/project';
 import {
   convertNotionBlockToData,
   convertNotionObjectToData,
@@ -18,7 +21,7 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
     authToken: notionAPIToken,
   }).then(async (data) => {
     const converted = await Promise.all([
-      convertNotionObjectToData(data.properties),
+      convertNotionObjectToData<Project>(data.properties),
       convertNotionBlockToData(data.content),
     ]);
     console.log('converted', converted);
@@ -29,7 +32,15 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   });
 };
 
-export const ProjectDetailPage = () => {
+const ProjectDetailPage = () => {
   const data = useLoaderData<typeof loader>();
-  console.log(data);
+  const pageContent = blockWrapper(data.content);
+  console.log('content', pageContent);
+  return (
+    <React.Fragment>
+      <div>{pageContent}</div>
+    </React.Fragment>
+  );
 };
+
+export default ProjectDetailPage;
