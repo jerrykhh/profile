@@ -3,11 +3,12 @@ import {
   NotionBlockCode,
   NotionBlockHeading,
   NotionBlockImage,
+  NotionBlockNumberedListItem,
   NotionBlockParagraph,
   NotionBlockVideo,
 } from '@/types/notion/data/block';
 
-import { extractText } from './utils';
+import { extractText, extractTextWithStyle } from './utils';
 
 export const convertNotionBlockParagraph = async (property: INotionData) => {
   if (property.type !== 'paragraph')
@@ -17,7 +18,23 @@ export const convertNotionBlockParagraph = async (property: INotionData) => {
   if (paragraphs.length === 0) return;
   return {
     type: paragraphProps.type,
-    data: extractText(paragraphs),
+    data: extractTextWithStyle(paragraphs),
+  };
+};
+
+export const convertNotionBlockNumberedListItem = async (
+  property: INotionData
+) => {
+  if (property.type !== 'numbered_list_item')
+    throw Error(
+      `convertNotionBlockNumberedListItem: cannot convert ${property.type}`
+    );
+  const numberedListItemProps = property as NotionBlockNumberedListItem;
+  const numberedListItems = numberedListItemProps.numbered_list_item.rich_text;
+  if (numberedListItems.length === 0) return;
+  return {
+    type: numberedListItemProps.type,
+    data: extractTextWithStyle(numberedListItems),
   };
 };
 

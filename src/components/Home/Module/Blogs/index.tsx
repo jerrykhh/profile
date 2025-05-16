@@ -21,7 +21,7 @@ export const Blogs = ({ items }: BlogsParams) => {
                       target: '_blank',
                     }
                   : {
-                      to: `blog/${item.id}`,
+                      to: `/blog/${item.id}`,
                     })}
               >
                 <Card

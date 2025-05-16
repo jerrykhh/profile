@@ -6,6 +6,7 @@ import {
   convertNotionBlockCode,
   convertNotionBlockHeading,
   convertNotionBlockImage,
+  convertNotionBlockNumberedListItem,
   convertNotionBlockParagraph,
   convertNotionBlockVideo,
 } from './block';
@@ -59,6 +60,7 @@ const blockConvertorMapping: Record<string, BlockConverter> = {
   heading_3: convertNotionBlockHeading,
   code: convertNotionBlockCode,
   video: convertNotionBlockVideo,
+  numbered_list_item: convertNotionBlockNumberedListItem,
 };
 export const convertNotionBlockToData = async (
   results: INotionBlock[]

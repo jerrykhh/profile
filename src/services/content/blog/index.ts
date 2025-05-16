@@ -2,6 +2,8 @@ import type { NotionBlogProperty } from '@/types/blog';
 import { NotionQueryDatabaseAPIResponse } from '@/types/notion/database/query';
 import { getNotionAPIRequestAuthHeader } from '@/utils/notion';
 
+import { GetContentParams, getContent } from '..';
+
 type ListBlogParams = {
   authToken: string;
   limit?: number;
@@ -47,3 +49,8 @@ export const listBlogs = async ({
     }),
   };
 };
+
+type GetProjectParams = GetContentParams;
+
+export const getBlog = async (params: GetProjectParams) =>
+  await getContent<NotionBlogProperty>(params);

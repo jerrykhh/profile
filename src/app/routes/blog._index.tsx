@@ -3,7 +3,7 @@ import { useFetcher, useLoaderData } from '@remix-run/react';
 
 import { Blogs } from '@/components/Home/Module/Blogs';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { listBlogs } from '@/services/blog';
+import { listBlogs } from '@/services/content/blog';
 import { Blog } from '@/types/blog';
 import { PaginatedData } from '@/types/data';
 import { convertNotionObjectToData } from '@/utils/notion/convert';

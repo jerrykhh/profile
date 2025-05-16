@@ -29,6 +29,13 @@ export interface NotionBlockParagraph extends NotionBlockResult {
   };
 }
 
+export interface NotionBlockNumberedListItem extends NotionBlockResult {
+  type: 'numbered_list_item';
+  numbered_list_item: {
+    rich_text: Array<NotionText>;
+  };
+}
+
 export interface NotionBlockImage extends NotionBlockResult {
   type: 'image';
   image: NotionFile;

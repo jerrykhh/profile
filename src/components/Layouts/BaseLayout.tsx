@@ -8,7 +8,7 @@ type BaseLayoutParams = {
 export const BaseLayout = ({ children }: BaseLayoutParams) => {
   return (
     <div className="w-full mx-auto min-h-screen max-w-3xl flex flex-col gap-2">
-      <div className="py-4 xsOrSm:px-3">
+      <div className="md:py-4 px-3">
         <div className="py-4">
           <NavHeader />
         </div>
