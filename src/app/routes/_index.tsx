@@ -27,10 +27,11 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
     ),
     listProjects({
       authToken: notionAPIToken,
+      limit: 3,
     }).then(
       async (data) =>
         await Promise.all(
-          data.map((d) => convertNotionObjectToData<Project>(d))
+          data.results.map((d) => convertNotionObjectToData<Project>(d))
         )
     ),
   ]);

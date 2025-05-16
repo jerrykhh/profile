@@ -16,7 +16,6 @@ import {
 export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   const { projectId } = params;
   if (!projectId) return;
-
   const { NOTION_API_TOKEN: notionAPIToken } = context.cloudflare.env;
 
   return await getProject({
@@ -27,7 +26,6 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
       convertNotionObjectToData<Project>(data.properties),
       convertNotionBlockToData(data.content),
     ]);
-    console.log('converted', converted);
     return {
       properties: converted[0],
       content: converted[1],

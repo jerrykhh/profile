@@ -8,17 +8,25 @@ import { getPage } from '../page';
 type ListProjectParams = {
   authToken: string;
   limit?: number;
+  next_cursor?: string;
 };
 
 export const listProjects = async ({
   authToken,
-  limit = 3,
+  limit = 100,
+  next_cursor,
 }: ListProjectParams) => {
   const res = await fetch(
     `${process.env.NOTION_API_BASE_URL}/databases/${process.env.NOTION_TABLE_PROJECT_ID}/query`,
     {
       method: 'POST',
       headers: getNotionAPIRequestAuthHeader(authToken),
+      body: JSON.stringify({
+        page_size: limit,
+        ...(next_cursor && {
+          next_cursor,
+        }),
+      }),
     }
   );
 
@@ -29,16 +37,19 @@ export const listProjects = async ({
 
   const data =
     (await res.json()) as NotionQueryDatabaseAPIResponse<NotionProjectProperty>;
-  return data.results
-    .map((result) => {
+
+  return {
+    has_more: data.has_more,
+    next_cursor: data.next_cursor,
+    results: data.results.map((result) => {
       return {
         ...result.properties,
         id: result.id,
       } as NotionProjectProperty & {
         id: string;
       };
-    })
-    .slice(0, limit);
+    }),
+  };
 };
 
 type GetProjectParams = {
