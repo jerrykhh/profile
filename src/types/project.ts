@@ -33,6 +33,7 @@ export interface Project {
   published: boolean;
   title: string;
   thumbnail: null | NotionFile;
+  'github.repo'?: string;
   'social.og.title': string;
   'social.og.description': string;
   'social.og.image': string;

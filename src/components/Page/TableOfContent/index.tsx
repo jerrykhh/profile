@@ -52,7 +52,7 @@ export const TableOfContent = ({ blocks }: { blocks: NotionBlock[] }) => {
       }))
   );
 
-  if (headingTree.length === 0) return null;
+  if (headingTree.length < 2) return null;
 
   const renderNestedList = (nodes: HeadingNode[]) => (
     <ul className="list-none pl-4 space-y-1">

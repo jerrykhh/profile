@@ -17,3 +17,13 @@ export const Button = ({ to, children, ...props }: ButtonProps) => {
   );
   return to ? <Link to={to}>{buttonElement}</Link> : buttonElement;
 };
+
+export const BackButton = () => {
+  return (
+    <Link to={'../'}>
+      <button className="text-neutral-400 hover:text-neutral-300 cursor-pointer hover:underline text-sm py-4">
+        back
+      </button>
+    </Link>
+  );
+};
