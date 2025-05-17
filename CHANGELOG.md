@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/jerrykhh/profile/compare/v3.0.0...v3.0.1) (2025-05-17)
+
+
+### Bug Fixes
+
+* ext link linkedin incorrect url ([a958667](https://github.com/jerrykhh/profile/commit/a9586673e6a4d68f016bce0d12dd0f178695ff92))
+
 ## [3.0.0](https://github.com/jerrykhh/profile/compare/v2.0.0...v3.0.0) (2025-05-17)
 
 

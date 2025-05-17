@@ -1,6 +1,6 @@
 {
   "name": "profile",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "scripts": {
     "build": "remix vite:build",
     "deploy": "npm run build && wrangler pages deploy",
