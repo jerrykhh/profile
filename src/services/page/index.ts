@@ -17,5 +17,9 @@ export const getPage = async <T>({ id, authToken }: GetPageParams) => {
     throw new Error(`Cannot GetPage:${id} data`);
   }
 
-  return ((await res.json()) as NotionQueryDatabaseResult<T>).properties;
+  const data = (await res.json()) as NotionQueryDatabaseResult<T>;
+  return {
+    id: data.id,
+    ...data.properties,
+  };
 };

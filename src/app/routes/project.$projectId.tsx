@@ -1,8 +1,12 @@
-import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 
 import { PageContainer } from '@/components/Page';
 import { blockWrapper } from '@/components/Page/block';
+import {
+  generateContentDefaultMetadata,
+  generateDefaultMetadata,
+} from '@/constants/metadata';
 import { getProject } from '@/services/content/project';
 import type { Project } from '@/types/project';
 import {
@@ -28,6 +32,11 @@ export const loader = async ({ context, params }: LoaderFunctionArgs) => {
       content: converted[1],
     };
   });
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data) return generateDefaultMetadata('Blog', '/blog');
+  return generateContentDefaultMetadata(data, '/blog');
 };
 
 const ProjectDetailPage = () => {

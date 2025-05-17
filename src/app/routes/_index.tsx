@@ -5,6 +5,7 @@ import React from 'react';
 import { Blogs } from '@/components/Home/Module/Blogs';
 import { Intro } from '@/components/Home/Module/Intro';
 import { Projects } from '@/components/Home/Module/Projects';
+import { generateDefaultMetadata } from '@/constants/metadata';
 import { listBlogs } from '@/services/content/blog';
 import { listProjects } from '@/services/content/project';
 import { getMe } from '@/services/me';
@@ -49,11 +50,8 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
   };
 };
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: 'New Remix App' },
-    { name: 'description', content: 'Welcome to Remix!' },
-  ];
+export const meta: MetaFunction<typeof loader> = () => {
+  return generateDefaultMetadata();
 };
 
 export default function Index() {

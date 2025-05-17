@@ -1,7 +1,8 @@
-import { LoaderFunctionArgs } from '@remix-run/cloudflare';
+import { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
 import { Blogs } from '@/components/Home/Module/Blogs';
+import { generateDefaultMetadata } from '@/constants/metadata';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { listBlogs } from '@/services/content/blog';
 import { Blog } from '@/types/blog';
@@ -32,6 +33,10 @@ export const loader = async ({
       has_more: data.has_more || false,
     };
   });
+};
+
+export const meta: MetaFunction<typeof loader> = () => {
+  return generateDefaultMetadata('Blog', '/blog');
 };
 
 export default function BlogPage() {

@@ -7,7 +7,6 @@ type PageParagraphProps = {
 };
 
 export const PageParagraph = ({ data }: PageParagraphProps) => {
-  console.log('dataasdfasdsa', data);
   const renderTextSegment = (segment: (typeof data)[number], index: number) => {
     let content: React.ReactNode = segment.text.content;
 

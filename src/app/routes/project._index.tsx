@@ -1,7 +1,8 @@
-import { LoaderFunctionArgs } from '@remix-run/cloudflare';
+import { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
 import { Projects } from '@/components/Home/Module/Projects';
+import { generateDefaultMetadata } from '@/constants/metadata';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { listProjects } from '@/services/content/project';
 import { PaginatedData } from '@/types/data';
@@ -34,6 +35,10 @@ export const loader = async ({
       has_more: data.has_more || false,
     };
   });
+};
+
+export const meta: MetaFunction<typeof loader> = () => {
+  return generateDefaultMetadata('Project', '/project');
 };
 
 export default function ProjectPage() {
