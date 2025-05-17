@@ -39,7 +39,7 @@ const defaultMetadata = {
     'SSR',
   ].join(', '),
   url: WEB_URL,
-  image: `${WEB_URL}/public/static/icon.jpg`,
+  image: `${WEB_URL}/static/icon.jpg`,
 };
 
 export const generateDefaultMetadata = (
