@@ -2,9 +2,9 @@ import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 import React from 'react';
 
-import { Blogs } from '@/components/Home/Module/Blogs';
+import { Blogs } from '@/components/Blogs';
 import { Intro } from '@/components/Home/Module/Intro';
-import { Projects } from '@/components/Home/Module/Projects';
+import { Projects } from '@/components/Projects';
 import { generateDefaultMetadata } from '@/constants/metadata';
 import { listBlogs } from '@/services/content/blog';
 import { listProjects } from '@/services/content/project';

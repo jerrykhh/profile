@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
-import { Blogs } from '@/components/Home/Module/Blogs';
+import { Blogs } from '@/components/Blogs';
 import { generateDefaultMetadata } from '@/constants/metadata';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { listBlogs } from '@/services/content/blog';

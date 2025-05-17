@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, MetaFunction } from '@remix-run/cloudflare';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 
-import { Projects } from '@/components/Home/Module/Projects';
+import { Projects } from '@/components/Projects';
 import { generateDefaultMetadata } from '@/constants/metadata';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { listProjects } from '@/services/content/project';
