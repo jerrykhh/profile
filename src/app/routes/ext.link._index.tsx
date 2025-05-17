@@ -22,7 +22,7 @@ const ExtLinkPage = () => {
     {
       username: 'jerrykhh',
       component: LinkedInIcon,
-      to: 'https://github.com/jerrykhh',
+      to: 'https://www.linkedin.com/in/jerrykhh/',
     },
     {
       username: 'jerrykwok.khh@gmail.com',
