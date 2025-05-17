@@ -1,0 +1,52 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "open-profile",
+	"compatibility_date": "2025-05-10",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"nodejs_compat_populate_process_env"
+	],
+	"pages_build_output_dir": "./build/client",
+	"observability": {
+		"enabled": true
+	},
+	/**
+	 * Smart Placement
+	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+	 */
+	// "placement": { "mode": "smart" },
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 */
+	"vars": {
+		"NOTION_API_BASE_URL": "https://api.notion.com/v1",
+		"NOTION_TABLE_ME_ID": "1ef2b6e8bddd802db81aed5ac406b2e7",
+		"NOTION_TABLE_BLOG_ID": "1ed2b6e8bddd80668e7af163e532b5d8",
+		"NOTION_TABLE_PROJECT_ID": "1ed2b6e8bddd80b5907af76900c44ddd"
+	}
+	/**
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 */
+	/**
+	 * Static Assets
+	 * https://developers.cloudflare.com/workers/static-assets/binding/
+	 */
+	// "assets": { "directory": "./public/", "binding": "ASSETS" },
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+}
