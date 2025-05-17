@@ -73,7 +73,7 @@ export const generateDefaultMetadata = (
     },
     {
       property: 'og:image',
-      content: defaultMetadata.url,
+      content: defaultMetadata.image,
     },
     {
       property: 'og:locale',
