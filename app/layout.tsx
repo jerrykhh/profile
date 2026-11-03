@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk } from "next/font/google";
+import { Manrope, Outfit } from "next/font/google";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -9,10 +9,16 @@ import { cn } from "@/lib/utils";
 
 import "./globals.css";
 
-const grotesk = Schibsted_Grotesk({
+const display = Outfit({
   subsets: ["latin"],
-  variable: "--font-grotesk",
-  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
+});
+
+const body = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -37,11 +43,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn(grotesk.variable)}>
-      <body className="font-sans">
+    <html lang="en" suppressHydrationWarning className={cn(display.variable, body.variable)}>
+      <body className="font-[family-name:var(--font-body)]">
         <ThemeScript />
         <SiteHeader />
-        <main>{children}</main>
+        <main className="min-h-[70vh]">{children}</main>
         <SiteFooter />
       </body>
     </html>
