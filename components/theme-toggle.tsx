@@ -3,6 +3,8 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 function isDark() {
   return document.documentElement.classList.contains("dark");
 }
@@ -23,17 +25,18 @@ export function ThemeToggle() {
   }, []);
 
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
+      size="icon"
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={() => {
         const next = !isDark();
         applyTheme(next);
         setDark(next);
       }}
-      className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition hover:bg-secondary"
     >
       {ready && dark ? <Sun /> : <Moon />}
-    </button>
+    </Button>
   );
 }

@@ -3,9 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { LinkButton } from "@/components/link-button";
 import { Markdown } from "@/components/markdown";
 import { Badge } from "@/components/ui/badge";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBlog, getBlogs } from "@/lib/content";
 
 type PageProps = {
@@ -20,10 +29,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const blog = getBlog(slug);
   if (!blog) return {};
-  return {
-    title: blog.title,
-    description: blog.description,
-  };
+  return { title: blog.title, description: blog.description };
+}
+
+function BlogCrumb({ title }: { title: string }) {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink render={<Link href="/blog" />}>Blog</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>{title}</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
 }
 
 export default async function BlogDetailPage({ params }: PageProps) {
@@ -31,49 +53,35 @@ export default async function BlogDetailPage({ params }: PageProps) {
   const blog = getBlog(slug);
   if (!blog) notFound();
 
-  if (blog.external && blog.externalUrl) {
-    return (
-      <article className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-12 md:px-8 md:py-16">
-        <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">
-          ← Blog
-        </Link>
-        <h1 className="font-[family-name:var(--font-display)] text-4xl font-semibold md:text-5xl">{blog.title}</h1>
-        <p className="text-muted-foreground">{blog.description}</p>
-        <LinkButton href={blog.externalUrl} target="_blank" rel="noreferrer" className="w-fit rounded-full">
-          Read on LinkedIn
-        </LinkButton>
-      </article>
-    );
-  }
-
   return (
-    <article className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-12 md:px-8 md:py-16">
-      <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">
-        ← Blog
-      </Link>
-      <div className="flex flex-col gap-4">
-        <time className="text-sm text-muted-foreground">{blog.date}</time>
-        <h1 className="font-[family-name:var(--font-display)] text-4xl font-semibold leading-tight md:text-5xl">{blog.title}</h1>
-        <p className="text-lg text-muted-foreground">{blog.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {blog.tags.map((tag) => (
-            <Badge key={tag} variant="outline">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      </div>
-      {blog.cover ? (
-        <Image
-          src={blog.cover}
-          alt={blog.title}
-          width={1200}
-          height={720}
-          className="rounded-3xl object-cover"
-          priority
-        />
-      ) : null}
-      <Markdown content={blog.body} />
+    <article className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 md:px-8">
+      <BlogCrumb title={blog.title} />
+      <Card>
+        {blog.cover && !blog.external ? (
+          <Image src={blog.cover} alt="" width={1200} height={720} className="aspect-[16/9] w-full object-cover" priority />
+        ) : null}
+        <CardHeader>
+          <CardDescription>{blog.date}</CardDescription>
+          <CardTitle className="text-3xl">{blog.title}</CardTitle>
+          <CardDescription>{blog.description}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex flex-wrap gap-2">
+            {blog.tags.map((tag) => (
+              <Badge key={tag} variant="outline">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+          {blog.external && blog.externalUrl ? (
+            <Button className="w-fit" nativeButton={false} render={<Link href={blog.externalUrl} target="_blank" rel="noreferrer" />}>
+              Read on LinkedIn
+            </Button>
+          ) : (
+            <Markdown content={blog.body} />
+          )}
+        </CardContent>
+      </Card>
     </article>
   );
 }

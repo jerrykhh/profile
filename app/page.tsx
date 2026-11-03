@@ -3,8 +3,12 @@ import Link from "next/link";
 
 import { ContentCard } from "@/components/content-card";
 import { HeroShaderLazy } from "@/components/hero-shader-lazy";
-import { LinkButton } from "@/components/link-button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from "@/components/ui/item";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileConfig, siteConfig } from "@/config/profile";
 import { getFeaturedBlogs, getFeaturedProjects } from "@/lib/content";
 
@@ -13,132 +17,147 @@ export default function HomePage() {
   const blogs = getFeaturedBlogs(3);
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-4 py-8 md:px-8 md:py-12">
-      <section className="grid items-stretch gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="flex flex-col justify-between gap-8 rounded-[2rem] border border-border bg-card p-7 md:p-10">
-          <div className="flex flex-col gap-5">
-            <p className="w-fit rounded-full bg-accent px-3 py-1 text-sm text-accent-foreground">
-              {siteConfig.title} · {siteConfig.location}
-            </p>
-            <h1 className="font-[family-name:var(--font-display)] text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">
-              {profileConfig.headline}
-            </h1>
-            <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">{profileConfig.tagline}</p>
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 md:px-8 md:py-12">
+      <section className="grid items-stretch gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="flex flex-col justify-center gap-6 py-4">
+          <div className="flex items-center gap-3">
+            <Avatar className="size-14">
+              <AvatarImage src={siteConfig.profileIcon} alt={siteConfig.name} />
+              <AvatarFallback>JK</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-wrap gap-2">
+              <Badge>{siteConfig.location}</Badge>
+              <Badge variant="secondary">{siteConfig.title}</Badge>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <LinkButton href="/ext/link" size="lg" className="rounded-full px-6">
+          <h1 className="max-w-xl text-5xl font-semibold tracking-tight md:text-6xl">{profileConfig.headline}</h1>
+          <p className="max-w-xl text-lg text-muted-foreground">{profileConfig.tagline}</p>
+          <div className="flex flex-wrap gap-2">
+            <Button nativeButton={false} render={<Link href="/ext/link" />}>
               Get in Touch
-            </LinkButton>
-            <LinkButton href="/project" size="lg" variant="outline" className="rounded-full px-6">
+            </Button>
+            <Button variant="outline" nativeButton={false} render={<Link href="/project" />}>
               View Projects
-            </LinkButton>
+            </Button>
           </div>
         </div>
-        <div className="relative min-h-[320px] overflow-hidden rounded-[2rem] border border-border">
+        <Card className="relative min-h-72 overflow-hidden">
           <HeroShaderLazy />
-          <div className="relative flex h-full min-h-[320px] flex-col justify-end p-6">
-            <p className="font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight md:text-5xl">
-              {siteConfig.brand}
-            </p>
-            <p className="mt-2 text-sm text-muted-foreground">Cloud, web, and serverless systems.</p>
-          </div>
-        </div>
+          <CardContent className="relative flex min-h-72 flex-col justify-end">
+            <CardTitle className="text-4xl">{siteConfig.brand}</CardTitle>
+            <CardDescription>Cloud, web, and serverless systems.</CardDescription>
+          </CardContent>
+        </Card>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="flex flex-col gap-5 rounded-[2rem] border border-border bg-card p-7 md:p-10">
-          <h2 className="font-[family-name:var(--font-display)] text-3xl font-semibold">About</h2>
-          {profileConfig.intro.map((paragraph) => (
-            <p key={paragraph.slice(0, 24)} className="text-base leading-relaxed text-muted-foreground">
-              {paragraph}
-            </p>
-          ))}
-        </div>
-        <div className="flex flex-col gap-4 rounded-[2rem] border border-border bg-card p-5">
+      <section className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+        <Card>
+          <CardHeader>
+            <CardTitle>About</CardTitle>
+            <CardDescription>{siteConfig.name}</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 text-muted-foreground">
+            {profileConfig.intro.map((paragraph) => (
+              <p key={paragraph.slice(0, 32)} className="max-w-prose leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
+          </CardContent>
+        </Card>
+        <Card>
           <Image
             src={siteConfig.profileIcon}
             alt={siteConfig.name}
-            width={720}
-            height={720}
-            className="aspect-square w-full rounded-[1.4rem] object-cover"
+            width={900}
+            height={900}
+            className="aspect-square w-full object-cover"
             priority
           />
-          <div>
-            <p className="text-lg font-medium">{siteConfig.name}</p>
-            <p className="text-sm text-muted-foreground">{siteConfig.title}</p>
-          </div>
-        </div>
+          <CardHeader>
+            <CardTitle>{siteConfig.name}</CardTitle>
+            <CardDescription>{siteConfig.title}</CardDescription>
+          </CardHeader>
+        </Card>
       </section>
 
-      <section className="rounded-[2rem] border border-border bg-card p-7 md:p-10">
-        <div className="mb-8 flex flex-col gap-2">
-          <h2 className="font-[family-name:var(--font-display)] text-3xl font-semibold">Tech stack</h2>
-          <p className="text-muted-foreground">Languages, frameworks, and cloud tools I reach for most often.</p>
-        </div>
-        <div className="flex flex-col gap-8">
-          {profileConfig.techs.map((group) => (
-            <div key={group.id} className="flex flex-col gap-3">
-              <h3 className="text-sm font-medium text-muted-foreground">{group.label}</h3>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-                {group.items.map((tech) => (
-                  <div key={tech.name} className="flex items-center gap-3 rounded-2xl bg-secondary px-3 py-3">
-                    <Image src={tech.icon} alt="" width={28} height={28} className="size-7 rounded-lg object-cover" />
-                    <span className="text-sm">{tech.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Tech stack</CardTitle>
+          <CardDescription>Languages, frameworks, and cloud tools I use most.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue={profileConfig.techs[0].id}>
+            <TabsList>
+              {profileConfig.techs.map((group) => (
+                <TabsTrigger key={group.id} value={group.id}>
+                  {group.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {profileConfig.techs.map((group) => (
+              <TabsContent key={group.id} value={group.id} className="pt-4">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+                  {group.items.map((tech) => (
+                    <Card key={tech.name} size="sm">
+                      <CardContent className="flex items-center gap-3">
+                        <Image src={tech.icon} alt="" width={28} height={28} className="size-7 rounded-md object-cover" />
+                        <span>{tech.name}</span>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </CardContent>
+      </Card>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-2xl font-semibold">Focus</h2>
+        <ItemGroup>
+          {profileConfig.todos.map((todo) => (
+            <Item key={todo} variant="outline">
+              <ItemContent>
+                <ItemTitle>{todo}</ItemTitle>
+                <ItemDescription>In progress</ItemDescription>
+              </ItemContent>
+            </Item>
           ))}
-        </div>
+        </ItemGroup>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
-        {profileConfig.todos.map((todo) => (
-          <div key={todo} className="rounded-3xl border border-border bg-card px-5 py-4">
-            <p className="text-sm text-muted-foreground">Now</p>
-            <p className="mt-1 text-base">{todo}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-[family-name:var(--font-display)] text-3xl font-semibold">Projects</h2>
-            <p className="mt-2 text-muted-foreground">Selected builds across serverless, automation, and prototypes.</p>
-          </div>
-          <Link href="/project" className="text-sm font-medium text-primary hover:underline">
+      <section className="flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-2xl font-semibold">Projects</h2>
+          <Button variant="link" nativeButton={false} render={<Link href="/project" />}>
             All projects
-          </Link>
+          </Button>
         </div>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {projects.map((item) => (
             <ContentCard key={item.slug} item={item} />
           ))}
         </div>
       </section>
 
-      <section className="flex flex-col gap-6 pb-6">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-[family-name:var(--font-display)] text-3xl font-semibold">Blog</h2>
-            <p className="mt-2 text-muted-foreground">Notes on architecture, computer vision, and shipping under load.</p>
-          </div>
-          <Link href="/blog" className="text-sm font-medium text-primary hover:underline">
+      <section className="flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-2xl font-semibold">Blog</h2>
+          <Button variant="link" nativeButton={false} render={<Link href="/blog" />}>
             All posts
-          </Link>
+          </Button>
         </div>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {blogs.map((item) => (
             <ContentCard key={item.slug} item={item} />
           ))}
         </div>
         <div className="flex flex-wrap gap-2">
           {profileConfig.versions.map((version) => (
-            <Badge key={version.name} variant={version.current ? "default" : "outline"} className="rounded-full">
+            <Badge key={version.name} variant={version.current ? "default" : "outline"}>
               <Link href={version.url}>
                 {version.name}
-                {version.current ? " · now" : ""}
+                {version.current ? " now" : ""}
               </Link>
             </Badge>
           ))}
