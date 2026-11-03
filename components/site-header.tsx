@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useReducedMotion } from "motion/react";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import { siteConfig } from "@/config/profile";
 import { cn } from "@/lib/utils";
 
@@ -16,40 +16,37 @@ const links = [
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const reduceMotion = useReducedMotion();
 
   return (
-    <motion.header
-      initial={reduceMotion ? false : { y: -16, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 260, damping: 28 }}
-      className="sticky top-0 z-40 border-b border-white/10 bg-[#0d060b]/80 backdrop-blur-md"
-    >
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 md:px-8">
-        <Link href="/" className="font-[family-name:var(--font-display)] text-xl tracking-tight text-white">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur-md">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 md:px-8">
+        <Link href="/" className="font-[family-name:var(--font-display)] text-lg font-semibold tracking-tight">
           {siteConfig.brand}
         </Link>
-        <nav className="flex items-center gap-1 md:gap-2">
-          {links.map((link) => {
-            const active =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname === link.href || pathname.startsWith(`${link.href}/`);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "rounded-full px-3 py-1.5 text-sm transition-colors",
-                  active ? "bg-white text-[#0d060b]" : "text-white/70 hover:bg-white/10 hover:text-white",
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="flex items-center gap-2">
+          <nav className="flex max-w-[min(72vw,28rem)] items-center gap-1 overflow-x-auto rounded-full border border-border bg-card p-1">
+            {links.map((link) => {
+              const active =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname === link.href || pathname.startsWith(`${link.href}/`);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "shrink-0 rounded-full px-2.5 py-1.5 text-xs transition-colors sm:px-3 sm:text-sm",
+                    active ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
-    </motion.header>
+    </header>
   );
 }

@@ -32,19 +32,19 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   if (!project) notFound();
 
   return (
-    <article className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-5 py-16 md:px-8 md:py-24">
-      <Link href="/project" className="text-sm text-white/55 hover:text-white">
+    <article className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-12 md:px-8 md:py-16">
+      <Link href="/project" className="text-sm text-muted-foreground hover:text-foreground">
         ← Projects
       </Link>
       <div className="flex flex-col gap-4">
-        <time className="text-sm text-white/55">{project.date}</time>
-        <h1 className="font-[family-name:var(--font-display)] text-4xl leading-tight text-white md:text-5xl">
+        <time className="text-sm text-muted-foreground">{project.date}</time>
+        <h1 className="font-[family-name:var(--font-display)] text-4xl font-semibold leading-tight md:text-5xl">
           {project.title}
         </h1>
-        <p className="text-lg text-white/70">{project.description}</p>
+        <p className="text-lg text-muted-foreground">{project.description}</p>
         <div className="flex flex-wrap gap-2">
           {project.tags.map((tag) => (
-            <Badge key={tag} variant="outline" className="border-white/20">
+            <Badge key={tag} variant="outline">
               {tag}
             </Badge>
           ))}
