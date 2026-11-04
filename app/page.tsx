@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ContentCard } from "@/components/content-card";
-import { HeroShaderLazy } from "@/components/hero-shader-lazy";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,36 +17,27 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 md:px-8 md:py-12">
-      <section className="grid items-stretch gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="flex flex-col justify-center gap-6 py-4">
-          <div className="flex items-center gap-3">
-            <Avatar className="size-14">
-              <AvatarImage src={siteConfig.profileIcon} alt={siteConfig.name} />
-              <AvatarFallback>JK</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-wrap gap-2">
-              <Badge>{siteConfig.location}</Badge>
-              <Badge variant="secondary">{siteConfig.title}</Badge>
-            </div>
-          </div>
-          <h1 className="max-w-xl text-5xl font-semibold tracking-tight md:text-6xl">{profileConfig.headline}</h1>
-          <p className="max-w-xl text-lg text-muted-foreground">{profileConfig.tagline}</p>
+      <section className="flex max-w-3xl flex-col gap-6 py-4">
+        <div className="flex items-center gap-3">
+          <Avatar className="size-14">
+            <AvatarImage src={siteConfig.profileIcon} alt={siteConfig.name} />
+            <AvatarFallback>JK</AvatarFallback>
+          </Avatar>
           <div className="flex flex-wrap gap-2">
-            <Button nativeButton={false} render={<Link href="/ext/link" />}>
-              Get in Touch
-            </Button>
-            <Button variant="outline" nativeButton={false} render={<Link href="/project" />}>
-              View Projects
-            </Button>
+            <Badge>{siteConfig.location}</Badge>
+            <Badge variant="secondary">{siteConfig.title}</Badge>
           </div>
         </div>
-        <Card className="relative min-h-72 overflow-hidden">
-          <HeroShaderLazy />
-          <CardContent className="relative flex min-h-72 flex-col justify-end">
-            <CardTitle className="text-4xl">{siteConfig.brand}</CardTitle>
-            <CardDescription>Cloud, web, and serverless systems.</CardDescription>
-          </CardContent>
-        </Card>
+        <h1 className="text-5xl font-semibold tracking-tight md:text-6xl">{profileConfig.headline}</h1>
+        <p className="text-lg text-muted-foreground">{profileConfig.tagline}</p>
+        <div className="flex flex-wrap gap-2">
+          <Button nativeButton={false} render={<Link href="/ext/link" />}>
+            Get in Touch
+          </Button>
+          <Button variant="outline" nativeButton={false} render={<Link href="/project" />}>
+            View Projects
+          </Button>
+        </div>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">

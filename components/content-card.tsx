@@ -6,13 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ContentItem } from "@/lib/content/types";
 
+const EXTERNAL_PLACEHOLDER = "/blog/external-placeholder.svg";
+
 export function ContentCard({ item }: { item: ContentItem }) {
   const isExternal = item.external && Boolean(item.externalUrl);
+  const cover = item.cover || (isExternal ? EXTERNAL_PLACEHOLDER : undefined);
 
   return (
     <Card className="h-full">
-      {item.cover ? (
-        <Image src={item.cover} alt="" width={800} height={500} className="aspect-[16/10] w-full object-cover" />
+      {cover ? (
+        <Image
+          src={cover}
+          alt=""
+          width={800}
+          height={500}
+          unoptimized={cover.endsWith(".svg")}
+          className="aspect-[16/10] w-full bg-accent object-cover"
+        />
       ) : null}
       <CardHeader>
         <CardDescription>{item.date}</CardDescription>

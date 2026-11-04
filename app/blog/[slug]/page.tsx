@@ -57,8 +57,16 @@ export default async function BlogDetailPage({ params }: PageProps) {
     <article className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 md:px-8">
       <BlogCrumb title={blog.title} />
       <Card>
-        {blog.cover && !blog.external ? (
-          <Image src={blog.cover} alt="" width={1200} height={720} className="aspect-[16/9] w-full object-cover" priority />
+        {blog.cover ? (
+          <Image
+            src={blog.cover}
+            alt=""
+            width={1200}
+            height={720}
+            unoptimized={blog.cover.endsWith(".svg")}
+            className="aspect-[16/9] w-full object-cover"
+            priority
+          />
         ) : null}
         <CardHeader>
           <CardDescription>{blog.date}</CardDescription>

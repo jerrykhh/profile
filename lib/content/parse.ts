@@ -66,6 +66,11 @@ export function parseMarkdownFile(kind: ContentKind, filename: string, source: s
   const fallbackSlug = filename.replace(/\.mdx?$/, "");
   const slug = toSlug(raw.slug || raw.uri || fallbackSlug);
 
+  const external = Boolean(raw.external || raw.externalUrl);
+  const cover =
+    resolveCover(kind, raw.uri || slug, raw) ||
+    (kind === "blog" && external ? "/blog/external-placeholder.svg" : undefined);
+
   const meta: ContentMeta = {
     slug,
     title: raw.title || raw.name || slug,
@@ -73,8 +78,8 @@ export function parseMarkdownFile(kind: ContentKind, filename: string, source: s
     description: raw.description || "",
     date: parseDate(raw.date),
     tags: parseTags(raw),
-    cover: resolveCover(kind, raw.uri || slug, raw),
-    external: Boolean(raw.external || raw.externalUrl),
+    cover,
+    external,
     externalUrl: raw.externalUrl,
     repository: raw.repository,
     language: raw.language,
