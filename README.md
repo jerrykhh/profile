@@ -1,47 +1,34 @@
-# Welcome to Remix + Cloudflare!
+# jerrykhh profile (v4)
 
-- 📖 [Remix docs](https://remix.run/docs)
-- 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
+Personal portfolio and blog built with **Next.js (vinext)** on **Cloudflare Workers**, Tailwind CSS, shadcn/ui, and static markdown content.
+
+## Routes
+
+- `/` — intro, tech stack, featured work
+- `/project`, `/project/[slug]`
+- `/blog`, `/blog/[slug]`
+- `/ext/link` — shareable contact card
+
+## Content
+
+- Profile/home copy: `config/profile.ts`
+- Blog posts: `content/blog/*.md`
+- Projects: `content/projects/*.md`
+- Assets: `public/blog`, `public/project`, `public/profile`
 
 ## Development
 
-Run the dev server:
-
 ```sh
+npm install
 npm run dev
 ```
 
-To run Wrangler:
+## Build & deploy (Cloudflare Workers)
 
 ```sh
 npm run build
-npm run start
+npm run start   # local Worker preview
+npm run deploy  # vinext-cloudflare deploy
 ```
 
-## Typegen
-
-Generate types for your Cloudflare bindings in `wrangler.toml`:
-
-```sh
-npm run typegen
-```
-
-You will need to rerun typegen whenever you make changes to `wrangler.toml`.
-
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then, deploy your app to Cloudflare Pages:
-
-```sh
-npm run deploy
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+Worker name: `open-profile` (see `cloudflare.config.ts`).

@@ -1,8 +1,17 @@
-node_modules
 
-/.cache
-/build
-.env
+build
+.cache
+.cloudflare
 .dev.vars
-
+dist
+.DS_Store
+.env
+*.log
+.next
+next-env.d.ts
+node_modules
+.taste-skill/
+*.tsbuildinfo
+.vinext
+.vite
 .wrangler
