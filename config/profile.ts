@@ -14,30 +14,114 @@ export type TechGroup = {
   }>;
 };
 
+export type ExperienceItem = {
+  role: string;
+  company: string;
+  period: string;
+  summary: string;
+  highlights: string[];
+};
+
+export type EducationItem = {
+  school: string;
+  credential: string;
+  period: string;
+  note?: string;
+};
+
+export type CertificationItem = {
+  name: string;
+  period: string;
+};
+
 export const siteConfig = {
   brand: "jerrykhh",
   name: "Jerry Kwok",
-  title: "Software Engineer",
+  title: "Senior Software Engineer",
   location: "Hong Kong",
   url: "https://owner.bytesio.net",
   description:
-    "Personal blog and portfolio of Jerry Kwok — software engineer focused on web, cloud, and serverless systems.",
+    "Senior Software Engineer working across DevOps/SRE, cloud platform engineering, and hands-on application development.",
   profileIcon: "/profile/icon.jpg",
 } as const;
 
 export const profileConfig = {
   nickname: "Jerry",
   headline: "Hi, I’m Jerry.",
-  tagline: "Building web and cloud systems from Hong Kong.",
+  tagline:
+    "Senior Software Engineer at ViuTV — DevOps/SRE, cloud platforms, and customer-facing web systems.",
   intro: [
-    "I am a passionate IT professional with a strong background in web development and a focus on problem-solving through programming. I hold an MSc in Information Technology from PolyU, a BSc in Computer Science from CityU, and a Higher Diploma in Software Engineering from IVE.",
-    "My interest in System Design and Cloud Solution has led me to become certified in both Azure and AWS, with a current goal of attaining AWS Solution Architecture certification. I have experience building applications using the 3-tier architecture and have even developed some applications using serverless architecture.",
-    "In the past, I have participated in various competitions such as Hackathons, CTF, and so on. Although I didn't win many of them, I gained a lot of experience in areas such as generating ideas, technical skills, teamwork, and more.",
+    "I work across DevOps/SRE, cloud platform engineering, and hands-on application development. I translate business and user needs into system designs, then deliver through infrastructure provisioning, software development, integration, testing, release, and production support.",
+    "At ViuTV I partner with product, design, engineers, and vendors to balance delivery timelines, security, scalability, reliability, and operability. Recent work includes a zero-disruption Next.js SSR modernisation for traffic peaks above 10 million requests per hour, AWS cost reduction of about 20%, and AI-assisted delivery workflows.",
+    "I hold an MSc in Information Technology (Big Data and AI) from PolyU, a BSc in Computer Science from CityU, and a Higher Diploma in Software Engineering from IVE. I am AWS Certified Solutions Architect – Associate, AWS Certified AI Practitioner, and AWS Certified Cloud Practitioner.",
   ],
+  experience: [
+    {
+      role: "Senior Software Engineer",
+      company: "HK Television Entertainment Co Ltd (ViuTV) · Digital Team",
+      period: "Nov 2025 – Present",
+      summary:
+        "Partner with product and design on solution options, delivery approaches, and vendor technical reviews. Continue DevOps/SRE and in-house web platform ownership.",
+      highlights: [
+        "Reduced AWS cost by about 20% through architecture and resource optimisation",
+        "Introduced AI agent tools such as Cursor, DevOps Agent, and Amazon Quick to automate development, security patching, and analysis workflows",
+        "Support engineering recruitment through screening and interviews",
+      ],
+    },
+    {
+      role: "Software Engineer",
+      company: "HK Television Entertainment Co Ltd (ViuTV) · Digital Team",
+      period: "Nov 2023 – Nov 2025",
+      summary:
+        "Primary focus on DevOps/SRE and cloud platform engineering, with hands-on Next.js development and vendor coordination for TV and mobile apps.",
+      highlights: [
+        "Designed AWS and Terraform stacks for a React SPA to Next.js SSR migration with zero disruption above 10M requests/hour",
+        "Built Fastify APIs, recommendation pipelines, MongoDB Atlas semantic search, prize-claim, voting, and Live/VOD reaction systems",
+        "Hardened AWS accounts, OIDC GitHub Actions, CI quality gates, multi-AZ ECS migrations, load testing, and live-stream disaster recovery",
+      ],
+    },
+    {
+      role: "Student Programmer",
+      company: "Hospital Authority · Storage & Backup Team",
+      period: "Jul 2021 – Jun 2022",
+      summary:
+        "Placement work across Linux/AIX verification scripts, SQL Server Agent to Bash migration, and Flask apps on OpenShift.",
+      highlights: [
+        "Revamped an ASP.NET webpage into a Python Flask internal application on OpenShift",
+        "Built reporting, web crawler, and REST API gateway utilities from user requirements",
+      ],
+    },
+  ] satisfies ExperienceItem[],
+  education: [
+    {
+      school: "The Hong Kong Polytechnic University",
+      credential: "MSc in Information Technology (Big Data and AI)",
+      period: "Aug 2022 – May 2023",
+    },
+    {
+      school: "The City University of Hong Kong",
+      credential: "BSc in Computer Science",
+      period: "Sep 2020 – May 2022",
+      note: "HK Tech 300, CityHack 2021, HKCERT CTF 20 & 21, UST Hackathon 2021",
+    },
+    {
+      school: "Hong Kong Institute of Vocational Education",
+      credential: "Higher Diploma in Software Engineering",
+      period: "Sep 2018 – May 2020",
+    },
+  ] satisfies EducationItem[],
+  certifications: [
+    { name: "AWS Certified Solutions Architect – Associate", period: "Nov 2025 – Nov 2028" },
+    { name: "AWS Certified AI Practitioner", period: "Sep 2025 – Sep 2028" },
+    { name: "AWS Certified Cloud Practitioner", period: "Jul 2022 – Nov 2028" },
+    { name: "Microsoft Certified: Azure AI Fundamentals", period: "Jun 2021" },
+    { name: "Microsoft Certified: Azure Fundamentals", period: "Sep 2020" },
+    { name: "CityHack 2021 — 2nd Runner Up", period: "Jan 2021" },
+  ] satisfies CertificationItem[],
   todos: [
-    "AWS Certification (AWS SAA & AWS Developer)",
+    "Deepen AI agent tooling across delivery and operations",
     "Learn Japanese",
-    "Develop Microservices side project",
+    "Ship a microservices side project",
     "Keep learning, keep looking further",
   ],
   versions: [
@@ -74,31 +158,29 @@ export const profileConfig = {
   ] satisfies SocialLink[],
   techs: [
     {
-      id: "application",
-      label: "Application",
+      id: "languages",
+      label: "Languages & apps",
       items: [
-        { name: "Python", icon: "/profile/tech/python.png" },
-        { name: "Java", icon: "/profile/tech/java.png" },
         { name: "TypeScript", icon: "/profile/tech/typescript.jpg" },
         { name: "JavaScript", icon: "/profile/tech/javascript.jpg" },
         { name: "Node.js", icon: "/profile/tech/node_js.png" },
-        { name: "Android", icon: "/profile/tech/android.png" },
-        { name: "Next.js", icon: "/profile/tech/nextjs.png" },
-        { name: "React Native", icon: "/profile/tech/react_native.jpg" },
+        { name: "Python", icon: "/profile/tech/python.png" },
         { name: "PHP", icon: "/profile/tech/php.jpg" },
-        { name: "MySQL", icon: "/profile/tech/mysql.png" },
+        { name: "Next.js", icon: "/profile/tech/nextjs.png" },
+        { name: "React", icon: "/profile/tech/react.png" },
+        { name: "Tailwind CSS", icon: "/profile/tech/tailwindcss.png" },
+        { name: "Flask", icon: "/profile/tech/flask.png" },
+        { name: "GraphQL", icon: "/profile/tech/graphQL.png" },
       ],
     },
     {
-      id: "others",
-      label: "Others",
+      id: "cloud",
+      label: "Cloud & data",
       items: [
-        { name: "GitHub", icon: "/profile/tech/github.jpg" },
-        { name: "GraphQL", icon: "/profile/tech/graphQL.png" },
-        { name: "Flask", icon: "/profile/tech/flask.png" },
-        { name: "Tailwind CSS", icon: "/profile/tech/tailwindcss.png" },
         { name: "AWS", icon: "/profile/tech/aws.jpg" },
         { name: "AWS CDK", icon: "/profile/tech/aws_cdk.png" },
+        { name: "GitHub", icon: "/profile/tech/github.jpg" },
+        { name: "MySQL", icon: "/profile/tech/mysql.png" },
       ],
     },
   ] satisfies TechGroup[],

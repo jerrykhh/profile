@@ -70,6 +70,66 @@ export default function HomePage() {
         </Card>
       </section>
 
+      <section className="flex flex-col gap-4">
+        <h2 className="text-2xl font-semibold">Experience</h2>
+        <ItemGroup>
+          {profileConfig.experience.map((job) => (
+            <Item key={`${job.role}-${job.period}`} variant="outline">
+              <ItemContent>
+                <ItemTitle>
+                  {job.role} · {job.company}
+                </ItemTitle>
+                <ItemDescription>{job.period}</ItemDescription>
+                <p className="text-sm text-muted-foreground">{job.summary}</p>
+                <ul className="flex list-disc flex-col gap-1 ps-4 text-sm text-muted-foreground">
+                  {job.highlights.map((highlight) => (
+                    <li key={highlight}>{highlight}</li>
+                  ))}
+                </ul>
+              </ItemContent>
+            </Item>
+          ))}
+        </ItemGroup>
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Education</CardTitle>
+            <CardDescription>Degrees and academic background.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ItemGroup>
+              {profileConfig.education.map((item) => (
+                <Item key={item.credential} variant="muted">
+                  <ItemContent>
+                    <ItemTitle>{item.credential}</ItemTitle>
+                    <ItemDescription>
+                      {item.school} · {item.period}
+                    </ItemDescription>
+                    {item.note ? <p className="text-sm text-muted-foreground">{item.note}</p> : null}
+                  </ItemContent>
+                </Item>
+              ))}
+            </ItemGroup>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Certifications</CardTitle>
+            <CardDescription>Cloud credentials and competition awards.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2">
+            {profileConfig.certifications.map((cert) => (
+              <div key={cert.name} className="flex flex-col gap-1 border-b border-border py-2 last:border-b-0">
+                <p className="font-medium">{cert.name}</p>
+                <p className="text-sm text-muted-foreground">{cert.period}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </section>
+
       <Card>
         <CardHeader>
           <CardTitle>Tech stack</CardTitle>
