@@ -54,9 +54,9 @@ export default async function BlogDetailPage({ params }: PageProps) {
   if (!blog) notFound();
 
   return (
-    <article className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 md:px-8">
+    <article className="mx-auto flex w-full max-w-[1600px] flex-col gap-6 px-4 py-10 md:px-8">
       <BlogCrumb title={blog.title} />
-      <Card>
+      <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
         {blog.cover ? (
           <Image
             src={blog.cover}

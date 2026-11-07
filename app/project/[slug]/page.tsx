@@ -38,7 +38,9 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const project = getProject(slug);
   if (!project) notFound();
 
-  const moreProjects = getProjects().filter((item) => item.slug !== project.slug);
+  const moreProjects = getProjects()
+    .filter((item) => item.slug !== project.slug)
+    .slice(0, 4);
 
   return (
     <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 py-10 md:px-8">
@@ -119,7 +121,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               All projects
             </Button>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {moreProjects.map((item) => (
               <ContentCard key={item.slug} item={item} />
             ))}
