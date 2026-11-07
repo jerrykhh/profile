@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 function isDark() {
   return document.documentElement.classList.contains("dark");
@@ -15,7 +16,13 @@ function applyTheme(dark: boolean) {
   localStorage.setItem("theme", dark ? "dark" : "light");
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({
+  className,
+  variant = "outline",
+}: {
+  className?: string;
+  variant?: "outline" | "ghost";
+}) {
   const [dark, setDark] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -27,8 +34,9 @@ export function ThemeToggle() {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant={variant}
       size="icon"
+      className={cn("rounded-full border-transparent bg-transparent shadow-none", className)}
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={() => {
         const next = !isDark();

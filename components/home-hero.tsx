@@ -14,9 +14,9 @@ export function HomeHero() {
     : { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
-    <section className="relative isolate min-h-[min(92vh,54rem)] overflow-hidden border-b border-border/60">
+    <section className="relative isolate -mt-16 min-h-[min(100vh,58rem)] overflow-hidden border-b border-border/60 pt-16">
       <HeroShader />
-      <div className="relative z-10 mx-auto flex min-h-[min(92vh,54rem)] w-full max-w-6xl flex-col justify-center px-4 pb-24 pt-28 md:px-8 md:pb-28 md:pt-32">
+      <div className="relative z-10 mx-auto flex min-h-[min(calc(100vh-4rem),54rem)] w-full max-w-6xl flex-col justify-center px-4 pb-24 pt-12 md:px-8 md:pb-28 md:pt-16">
         <motion.div
           className="flex max-w-3xl flex-col gap-5 text-foreground"
           initial={reduceMotion ? false : { opacity: 0, y: 28 }}

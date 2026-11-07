@@ -47,7 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="font-[family-name:var(--font-body)]">
         <ThemeScript />
         <SiteHeader />
-        <main className="min-h-[70vh]">{children}</main>
+        <main className="min-h-[70vh] pt-16">{children}</main>
         <SiteFooter />
       </body>
     </html>
