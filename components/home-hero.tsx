@@ -1,0 +1,58 @@
+"use client";
+
+import Link from "next/link";
+import { motion, useReducedMotion } from "motion/react";
+
+import { HeroShader } from "@/components/hero-shader";
+import { Button } from "@/components/ui/button";
+import { profileConfig, siteConfig } from "@/config/profile";
+
+export function HomeHero() {
+  const reduceMotion = useReducedMotion();
+  const transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
+
+  return (
+    <section className="relative isolate min-h-[min(92vh,54rem)] overflow-hidden border-b border-border/60">
+      <HeroShader />
+      <div className="relative z-10 mx-auto flex min-h-[min(92vh,54rem)] w-full max-w-6xl flex-col justify-center px-4 pb-24 pt-28 md:px-8 md:pb-28 md:pt-32">
+        <motion.div
+          className="flex max-w-3xl flex-col gap-5 text-white"
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={transition}
+        >
+          <p className="font-heading text-5xl font-semibold tracking-tight text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.35)] md:text-7xl lg:text-8xl">
+            {siteConfig.brand}
+          </p>
+          <h1 className="max-w-2xl font-heading text-2xl font-medium tracking-tight text-white md:text-4xl">
+            {profileConfig.headline}
+          </h1>
+          <p className="max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+            {profileConfig.tagline}
+          </p>
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Button
+              size="lg"
+              className="h-10 rounded-full border-transparent bg-white px-5 text-zinc-950 hover:bg-white/90"
+              nativeButton={false}
+              render={<Link href="/ext/link" />}
+            >
+              Get in Touch
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-10 rounded-full border-white/40 bg-white/5 px-5 text-white backdrop-blur-sm hover:bg-white/15 hover:text-white"
+              nativeButton={false}
+              render={<Link href="/project" />}
+            >
+              View Projects
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}

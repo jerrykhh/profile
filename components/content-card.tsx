@@ -13,7 +13,7 @@ export function ContentCard({ item }: { item: ContentItem }) {
   const cover = item.cover || (isExternal ? EXTERNAL_PLACEHOLDER : undefined);
 
   return (
-    <Card className="h-full">
+    <Card className="h-full border-border/80 bg-card shadow-none ring-1 ring-border/70 transition-[transform,background-color] duration-300 hover:-translate-y-0.5">
       {cover ? (
         <Image
           src={cover}

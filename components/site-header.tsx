@@ -18,9 +18,14 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 md:px-8">
-        <Button variant="ghost" nativeButton={false} render={<Link href="/" />}>
+        <Button
+          variant="ghost"
+          className="font-heading text-base font-semibold tracking-tight"
+          nativeButton={false}
+          render={<Link href="/" />}
+        >
           {siteConfig.brand}
         </Button>
         <div className="flex items-center gap-2">
