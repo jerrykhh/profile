@@ -54,8 +54,18 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(280px,0.9fr)_minmax(0,1.6fr)]">
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.9fr)]">
+        <Card className="order-2 border-border/80 bg-card shadow-none ring-1 ring-border/70 lg:order-1">
+          <CardHeader>
+            <CardTitle className="font-heading text-xl font-semibold tracking-tight">Project details</CardTitle>
+            <CardDescription>Notes, phases, and write-up from the project markdown.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Markdown content={project.body} />
+          </CardContent>
+        </Card>
+
+        <aside className="order-1 lg:sticky lg:top-24 lg:order-2 lg:self-start">
           <Card className="overflow-hidden border-border/80 bg-card shadow-none ring-1 ring-border/70">
             {project.cover ? (
               <Image
@@ -99,16 +109,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             </CardContent>
           </Card>
         </aside>
-
-        <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
-          <CardHeader>
-            <CardTitle className="font-heading text-xl font-semibold tracking-tight">Project details</CardTitle>
-            <CardDescription>Notes, phases, and write-up from the project markdown.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Markdown content={project.body} />
-          </CardContent>
-        </Card>
       </div>
 
       {moreProjects.length > 0 ? (
