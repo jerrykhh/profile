@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ContentItem } from "@/lib/content/types";
 
@@ -13,7 +12,14 @@ export function ContentCard({ item }: { item: ContentItem }) {
   const cover = item.cover || (isExternal ? EXTERNAL_PLACEHOLDER : undefined);
 
   return (
-    <Card className="h-full border-border/80 bg-card shadow-none ring-1 ring-border/70 transition-[transform,background-color] duration-300 hover:-translate-y-0.5">
+    <Card className="group relative h-full border-border/80 bg-card shadow-none ring-1 ring-border/70 transition-[transform,background-color] duration-300 hover:-translate-y-0.5 hover:bg-muted/30">
+      <Link
+        href={item.href}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noreferrer" : undefined}
+        className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label={`${isExternal ? "Open" : "Read"} ${item.title}`}
+      />
       {cover ? (
         <Image
           src={cover}
@@ -36,17 +42,9 @@ export function ContentCard({ item }: { item: ContentItem }) {
             {tag}
           </Badge>
         ))}
-        <Button
-          className="ms-auto"
-          size="sm"
-          variant="outline"
-          nativeButton={false}
-          render={
-            <Link href={item.href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noreferrer" : undefined} />
-          }
-        >
+        <span className="ms-auto inline-flex h-7 items-center rounded-lg border border-border px-2.5 text-[0.8rem] font-medium text-foreground transition-colors group-hover:bg-muted">
           {isExternal ? "Open" : "Read"}
-        </Button>
+        </span>
       </CardFooter>
     </Card>
   );

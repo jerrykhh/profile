@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ContentCard } from "@/components/content-card";
 import { Markdown } from "@/components/markdown";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -37,8 +38,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const project = getProject(slug);
   if (!project) notFound();
 
+  const moreProjects = getProjects().filter((item) => item.slug !== project.slug);
+
   return (
-    <article className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 md:px-8">
+    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 py-10 md:px-8">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -50,31 +53,79 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <Card>
-        {project.cover ? (
-          <Image src={project.cover} alt="" width={1200} height={720} className="aspect-[16/9] w-full object-cover" priority />
-        ) : null}
-        <CardHeader>
-          <CardDescription>{project.date}</CardDescription>
-          <CardTitle className="text-3xl">{project.title}</CardTitle>
-          <CardDescription>{project.description}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <Badge key={tag} variant="outline">
-                {tag}
-              </Badge>
+
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(280px,0.9fr)_minmax(0,1.6fr)]">
+        <aside className="lg:sticky lg:top-24 lg:self-start">
+          <Card className="overflow-hidden border-border/80 bg-card shadow-none ring-1 ring-border/70">
+            {project.cover ? (
+              <Image
+                src={project.cover}
+                alt=""
+                width={1200}
+                height={720}
+                className="aspect-[16/10] w-full object-cover"
+                priority
+              />
+            ) : null}
+            <CardHeader>
+              <CardDescription>{project.date}</CardDescription>
+              <CardTitle className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
+                {project.title}
+              </CardTitle>
+              <CardDescription className="text-sm leading-relaxed">{project.description}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <Badge key={tag} variant="outline">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+              {project.language ? (
+                <p className="text-sm text-muted-foreground">
+                  Language · <span className="text-foreground">{project.language}</span>
+                </p>
+              ) : null}
+              {project.repository ? (
+                <Button
+                  className="w-fit"
+                  nativeButton={false}
+                  render={<Link href={project.repository} target="_blank" rel="noreferrer" />}
+                >
+                  View on GitHub
+                </Button>
+              ) : null}
+            </CardContent>
+          </Card>
+        </aside>
+
+        <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
+          <CardHeader>
+            <CardTitle className="font-heading text-xl font-semibold tracking-tight">Project details</CardTitle>
+            <CardDescription>Notes, phases, and write-up from the project markdown.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Markdown content={project.body} />
+          </CardContent>
+        </Card>
+      </div>
+
+      {moreProjects.length > 0 ? (
+        <section className="flex flex-col gap-5 border-t border-border/70 pt-8">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="font-heading text-2xl font-semibold tracking-tight">More projects</h2>
+            <Button variant="link" className="text-muted-foreground" nativeButton={false} render={<Link href="/project" />}>
+              All projects
+            </Button>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {moreProjects.map((item) => (
+              <ContentCard key={item.slug} item={item} />
             ))}
           </div>
-          {project.repository ? (
-            <Button className="w-fit" nativeButton={false} render={<Link href={project.repository} target="_blank" rel="noreferrer" />}>
-              View on GitHub
-            </Button>
-          ) : null}
-          <Markdown content={project.body} />
-        </CardContent>
-      </Card>
-    </article>
+        </section>
+      ) : null}
+    </div>
   );
 }

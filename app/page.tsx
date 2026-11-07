@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { ContentCard } from "@/components/content-card";
@@ -8,8 +7,9 @@ import { SkillsCard } from "@/components/skills-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { profileConfig, siteConfig } from "@/config/profile";
+import { profileConfig } from "@/config/profile";
 import { getFeaturedBlogs, getFeaturedProjects } from "@/lib/content";
+import { GraduationCap } from "lucide-react";
 
 export default function HomePage() {
   const projects = getFeaturedProjects(3);
@@ -20,39 +20,6 @@ export default function HomePage() {
       <HomeHero />
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-12 md:gap-16 md:px-8 md:py-16">
-        <section className="grid items-start gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-          <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
-            <CardHeader>
-              <CardTitle className="font-heading text-xl font-semibold tracking-tight">About</CardTitle>
-              <CardDescription>
-                {siteConfig.name} · {siteConfig.location}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4 text-muted-foreground">
-              {profileConfig.intro.map((paragraph) => (
-                <p key={paragraph.slice(0, 32)} className="max-w-prose leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card className="overflow-hidden border-border/80 bg-card shadow-none ring-1 ring-border/70">
-            <Image
-              src={siteConfig.profileIcon}
-              alt={siteConfig.name}
-              width={900}
-              height={900}
-              className="aspect-square w-full object-cover"
-              priority
-            />
-            <CardHeader>
-              <CardTitle className="font-heading text-lg font-semibold">{siteConfig.name}</CardTitle>
-              <CardDescription>{siteConfig.title}</CardDescription>
-            </CardHeader>
-          </Card>
-        </section>
-
         <ExperienceTimeline items={profileConfig.experience} />
 
         <SkillsCard groups={profileConfig.techs} />
@@ -67,15 +34,20 @@ export default function HomePage() {
               {profileConfig.education.map((item, index) => (
                 <div
                   key={item.credential}
-                  className={`flex flex-col gap-1 py-4 ${index === 0 ? "pt-0" : ""} ${
+                  className={`flex items-start gap-3 py-4 ${index === 0 ? "pt-0" : ""} ${
                     index < profileConfig.education.length - 1 ? "border-b border-border/70" : "pb-0"
                   }`}
                 >
-                  <p className="font-medium text-foreground">{item.credential}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {item.school} · {item.period}
-                  </p>
-                  {item.note ? <p className="text-sm text-muted-foreground">{item.note}</p> : null}
+                  <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-foreground">
+                    <GraduationCap className="size-4" aria-hidden />
+                  </span>
+                  <div className="flex min-w-0 flex-col gap-1">
+                    <p className="font-medium text-foreground">{item.credential}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {item.school} · {item.period}
+                    </p>
+                    {item.note ? <p className="text-sm text-muted-foreground">{item.note}</p> : null}
+                  </div>
                 </div>
               ))}
             </CardContent>
