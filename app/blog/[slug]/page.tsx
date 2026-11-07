@@ -61,10 +61,10 @@ export default async function BlogDetailPage({ params }: PageProps) {
           <Image
             src={blog.cover}
             alt=""
-            width={1200}
-            height={720}
+            width={1600}
+            height={480}
             unoptimized={blog.cover.endsWith(".svg")}
-            className="aspect-[16/9] w-full object-cover"
+            className="max-h-[480px] w-full object-cover"
             priority
           />
         ) : null}

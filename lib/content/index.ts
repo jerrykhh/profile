@@ -21,14 +21,19 @@ function modulesToItems(
     .map(([filepath, source]) => {
       const filename = filepath.split("/").pop() || filepath;
       const { meta, body } = parseMarkdownFile(kind, filename, source);
+      // Blog cards always route in-site; externalUrl stays for the detail CTA.
+      const href =
+        kind === "blog"
+          ? `/blog/${meta.slug}`
+          : meta.external && meta.externalUrl
+            ? meta.externalUrl
+            : `/project/${meta.slug}`;
+
       return {
         ...meta,
         kind,
         body,
-        href:
-          meta.external && meta.externalUrl
-            ? meta.externalUrl
-            : `/${kind === "blog" ? "blog" : "project"}/${meta.slug}`,
+        href,
       } satisfies ContentItem;
     })
     .sort((a, b) => b.date.localeCompare(a.date));
