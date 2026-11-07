@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 
@@ -16,23 +17,34 @@ export function HomeHero() {
   return (
     <section className="relative isolate -mt-16 min-h-[min(100vh,58rem)] overflow-hidden border-b border-border/60 pt-16">
       <HeroShader />
-      <div className="relative z-10 mx-auto flex min-h-[min(calc(100vh-4rem),54rem)] w-full max-w-6xl flex-col justify-center px-4 pb-24 pt-12 md:px-8 md:pb-28 md:pt-16">
+      <div className="relative z-10 mx-auto flex min-h-[min(calc(100vh-4rem),54rem)] w-full max-w-6xl items-center justify-center px-4 pb-24 pt-12 md:px-8 md:pb-28 md:pt-16">
         <motion.div
-          className="flex max-w-3xl flex-col gap-5 text-foreground"
+          className="flex w-full max-w-2xl flex-col items-center gap-5 text-center text-foreground"
           initial={reduceMotion ? false : { opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={transition}
         >
+          <div className="relative size-28 overflow-hidden rounded-full border border-white/55 bg-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_18px_48px_rgba(15,23,42,0.16)] ring-1 ring-black/5 backdrop-blur-md md:size-36">
+            <Image
+              src={siteConfig.profileIcon}
+              alt={siteConfig.name}
+              width={288}
+              height={288}
+              priority
+              className="size-full object-cover"
+            />
+          </div>
+
           <p className="font-heading text-5xl font-semibold tracking-tight text-foreground md:text-7xl lg:text-8xl">
             {siteConfig.brand}
           </p>
-          <h1 className="max-w-2xl font-heading text-2xl font-medium tracking-tight text-foreground md:text-4xl">
+          <h1 className="font-heading text-2xl font-medium tracking-tight text-foreground md:text-4xl">
             {profileConfig.headline}
           </h1>
           <p className="max-w-xl text-base leading-relaxed text-foreground/75 md:text-lg">
             {profileConfig.tagline}
           </p>
-          <div className="flex flex-wrap gap-3 pt-1">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
             <Button
               size="lg"
               className="h-10 rounded-md border-transparent bg-foreground px-5 text-background hover:bg-foreground/90"

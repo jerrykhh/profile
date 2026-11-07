@@ -103,26 +103,6 @@ export default function HomePage() {
         </section>
 
         <section className="flex flex-col gap-5">
-          <div className="flex items-end justify-between gap-3">
-            <h2 className="font-heading text-2xl font-semibold tracking-tight">Focus</h2>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {profileConfig.todos.map((todo) => (
-              <Card
-                key={todo}
-                size="sm"
-                className="border-border/80 bg-card shadow-none ring-1 ring-border/70"
-              >
-                <CardContent className="flex flex-col gap-1.5 py-1">
-                  <p className="font-medium text-foreground">{todo}</p>
-                  <p className="text-sm text-muted-foreground">In progress</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <section className="flex flex-col gap-5">
           <div className="flex items-center justify-between gap-3">
             <h2 className="font-heading text-2xl font-semibold tracking-tight">Projects</h2>
             <Button variant="link" className="text-muted-foreground" nativeButton={false} render={<Link href="/project" />}>
