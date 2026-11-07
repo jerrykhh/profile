@@ -62,9 +62,9 @@ export default async function BlogDetailPage({ params }: PageProps) {
             src={blog.cover}
             alt=""
             width={1600}
-            height={480}
+            height={256}
             unoptimized={blog.cover.endsWith(".svg")}
-            className="max-h-[480px] w-full object-cover"
+            className="max-h-[256px] w-full object-cover"
             priority
           />
         ) : null}
