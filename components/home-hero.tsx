@@ -18,24 +18,24 @@ export function HomeHero() {
       <HeroShader />
       <div className="relative z-10 mx-auto flex min-h-[min(92vh,54rem)] w-full max-w-6xl flex-col justify-center px-4 pb-24 pt-28 md:px-8 md:pb-28 md:pt-32">
         <motion.div
-          className="flex max-w-3xl flex-col gap-5 text-white"
+          className="flex max-w-3xl flex-col gap-5 text-foreground"
           initial={reduceMotion ? false : { opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={transition}
         >
-          <p className="font-heading text-5xl font-semibold tracking-tight text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.35)] md:text-7xl lg:text-8xl">
+          <p className="font-heading text-5xl font-semibold tracking-tight text-foreground md:text-7xl lg:text-8xl">
             {siteConfig.brand}
           </p>
-          <h1 className="max-w-2xl font-heading text-2xl font-medium tracking-tight text-white md:text-4xl">
+          <h1 className="max-w-2xl font-heading text-2xl font-medium tracking-tight text-foreground md:text-4xl">
             {profileConfig.headline}
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+          <p className="max-w-xl text-base leading-relaxed text-foreground/75 md:text-lg">
             {profileConfig.tagline}
           </p>
           <div className="flex flex-wrap gap-3 pt-1">
             <Button
               size="lg"
-              className="h-10 rounded-full border-transparent bg-white px-5 text-zinc-950 hover:bg-white/90"
+              className="h-10 rounded-md border-transparent bg-foreground px-5 text-background hover:bg-foreground/90"
               nativeButton={false}
               render={<Link href="/ext/link" />}
             >
@@ -44,7 +44,7 @@ export function HomeHero() {
             <Button
               size="lg"
               variant="outline"
-              className="h-10 rounded-full border-white/40 bg-white/5 px-5 text-white backdrop-blur-sm hover:bg-white/15 hover:text-white"
+              className="h-10 rounded-md border-foreground/20 bg-white/70 px-5 text-foreground backdrop-blur-sm hover:bg-white hover:text-foreground"
               nativeButton={false}
               render={<Link href="/project" />}
             >
