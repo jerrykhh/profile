@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { type ComponentType, type ReactNode, type SVGProps } from "react";
+import {
+  useMemo,
+  useState,
+  type ComponentType,
+  type KeyboardEvent,
+  type ReactNode,
+  type SVGProps,
+} from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { GitHubIcon, LinkedInIcon, MailIcon, YouTubeIcon } from "@/components/social-icons";
@@ -14,6 +21,8 @@ import { cn } from "@/lib/utils";
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 const VIUTV_BLUE = "#0180f5";
+const CARD_HEIGHT = 352;
+const PEEK = 58;
 
 const iconById: Record<string, IconComponent> = {
   github: GitHubIcon,
@@ -41,7 +50,15 @@ const socialIcons = ["github", "linkedin", "youtube", "email"].flatMap((id) => {
   ];
 });
 
+type CardId = "current" | "viutv" | "ha";
 type CardTone = "white" | "viutv" | "muted";
+
+type WalletCard = {
+  id: CardId;
+  tone: CardTone;
+  peekTitle: string;
+  peekMeta: string;
+};
 
 function CardShell({
   tone,
@@ -50,7 +67,7 @@ function CardShell({
   className,
 }: {
   tone: CardTone;
-  cardId: "current" | "viutv" | "ha";
+  cardId: CardId;
   children: ReactNode;
   className?: string;
 }) {
@@ -58,7 +75,7 @@ function CardShell({
     <div
       data-wallet-card={cardId}
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border shadow-[0_12px_36px_rgba(15,23,42,0.1)]",
+        "flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border shadow-[0_14px_40px_rgba(15,23,42,0.14)]",
         tone === "white" && "border-black/5 bg-white text-foreground",
         tone === "muted" && "border-black/5 bg-white text-foreground/55",
         tone === "viutv" && "border-transparent text-white",
@@ -73,38 +90,38 @@ function CardShell({
 
 function CurrentCardBody() {
   return (
-    <div className="flex h-full flex-col items-center px-5 pb-6 pt-7 text-center md:px-6 md:pb-7">
-      <Avatar className="size-16 border border-black/5 shadow-[0_10px_30px_rgba(15,23,42,0.1)] md:size-20">
+    <div className="flex h-full flex-col items-center px-6 pb-7 pt-7 text-center">
+      <Avatar className="size-20 border border-black/5 shadow-[0_10px_30px_rgba(15,23,42,0.1)]">
         <AvatarImage src={extLinkConfig.icon} alt={siteConfig.name} />
         <AvatarFallback>JK</AvatarFallback>
       </Avatar>
-      <div className="mt-3 flex flex-col gap-1">
-        <p className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">{siteConfig.brand}</p>
-        <p className="text-sm leading-relaxed text-foreground/70">
+      <div className="mt-3.5 flex flex-col gap-1">
+        <p className="font-heading text-3xl font-semibold tracking-tight">{siteConfig.brand}</p>
+        <p className="text-sm text-foreground/70">
           {siteConfig.name} · {siteConfig.title} · {siteConfig.location}
         </p>
       </div>
 
-      <Separator className="my-4 bg-foreground/10 md:my-5" />
+      <Separator className="my-5 bg-foreground/10" />
 
       <Button
         size="lg"
-        className="h-10 min-w-[9.5rem] rounded-full border-transparent bg-foreground px-6 text-background hover:bg-foreground/90"
+        className="h-10 min-w-[10.5rem] rounded-full border-transparent bg-foreground px-6 text-background hover:bg-foreground/90"
         nativeButton={false}
         render={<Link href="/" />}
       >
         Website
       </Button>
 
-      <div className="mt-4 flex w-full flex-1 items-end justify-center md:mt-5">
-        <div className="inline-flex items-center justify-center gap-2" aria-label="Connect">
+      <div className="mt-5 flex w-full flex-1 items-end justify-center">
+        <div className="inline-flex items-center justify-center gap-2.5" aria-label="Connect">
           {socialIcons.map(({ id, label, href, external, Icon }) => (
             <Button
               key={id}
               size="icon"
               variant="outline"
               className={cn(
-                "size-10 shrink-0 rounded-full border-black/10 bg-white text-foreground md:size-11",
+                "size-11 shrink-0 rounded-full border-black/10 bg-white text-foreground",
                 "hover:bg-muted hover:text-foreground",
               )}
               nativeButton={false}
@@ -140,7 +157,7 @@ function RoleCardBody({
   const onBlue = tone === "viutv";
 
   return (
-    <div className="flex h-full flex-col justify-between px-5 pb-6 pt-7 md:px-6 md:pb-7">
+    <div className="flex h-full flex-col justify-between px-6 pb-7 pt-7">
       <div className="flex flex-col gap-2.5">
         <p
           className={cn(
@@ -152,13 +169,13 @@ function RoleCardBody({
         </p>
         <p
           className={cn(
-            "font-heading text-2xl font-semibold tracking-tight md:text-[1.7rem]",
+            "font-heading text-2xl font-semibold tracking-tight md:text-[1.75rem]",
             onBlue ? "text-white" : "text-foreground/60",
           )}
         >
           {role}
         </p>
-        <p className={cn("text-sm leading-relaxed md:text-base", onBlue ? "text-white/85" : "text-foreground/45")}>
+        <p className={cn("text-base leading-relaxed", onBlue ? "text-white/85" : "text-foreground/45")}>
           {company}
         </p>
       </div>
@@ -167,61 +184,152 @@ function RoleCardBody({
   );
 }
 
-/** Three equal, always-visible wallet-style name cards for /ext/link. */
+/** Apple Wallet–style overlapping vertical stack of equal-size name cards. */
 export function ContactNameCard() {
   const reduceMotion = useReducedMotion();
+  const [frontId, setFrontId] = useState<CardId>("current");
+
   const viutv =
     profileConfig.experience.find((item) => /viu/i.test(item.company)) ?? profileConfig.experience[0];
   const ha =
     profileConfig.experience.find((item) => /hospital authority/i.test(item.company)) ??
     profileConfig.experience.at(-1)!;
 
-  const transition = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const };
+  const cards = useMemo<WalletCard[]>(
+    () => [
+      {
+        id: "current",
+        tone: "white",
+        peekTitle: siteConfig.brand,
+        peekMeta: `${siteConfig.name} · ${siteConfig.location}`,
+      },
+      {
+        id: "viutv",
+        tone: "viutv",
+        peekTitle: "ViuTV",
+        peekMeta: viutv.role,
+      },
+      {
+        id: "ha",
+        tone: "muted",
+        peekTitle: "Hospital Authority",
+        peekMeta: ha.role,
+      },
+    ],
+    [ha.role, viutv.role],
+  );
 
-  const cards = [
-    { id: "current" as const, tone: "white" as const },
-    { id: "viutv" as const, tone: "viutv" as const },
-    { id: "ha" as const, tone: "muted" as const },
-  ];
+  // Front card sits on top; remaining cards keep original relative order for peeks below.
+  const stackOrder = useMemo(() => {
+    const front = cards.find((card) => card.id === frontId)!;
+    const rest = cards.filter((card) => card.id !== frontId);
+    return [front, ...rest];
+  }, [cards, frontId]);
+
+  const stackHeight = CARD_HEIGHT + PEEK * (cards.length - 1);
+  const spring = reduceMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 420, damping: 34, mass: 0.8 };
 
   return (
-    <div
-      className="grid w-full max-w-5xl grid-cols-1 items-stretch gap-4 md:grid-cols-3 md:gap-5"
-      role="list"
-      aria-label="Name cards"
-    >
-      {cards.map((card, index) => (
-        <motion.div
-          key={card.id}
-          role="listitem"
-          className="h-full min-h-[22rem] md:min-h-[24rem]"
-          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...transition, delay: reduceMotion ? 0 : index * 0.06 }}
-        >
-          <CardShell tone={card.tone} cardId={card.id} className="h-full">
-            {card.id === "current" ? (
-              <CurrentCardBody />
-            ) : card.id === "viutv" ? (
-              <RoleCardBody
-                company="HK Television Entertainment Co Ltd (ViuTV)"
-                role={viutv.role}
-                period={viutv.period}
-                tone="viutv"
-              />
-            ) : (
-              <RoleCardBody
-                company="Hospital Authority · Storage & Backup Team"
-                role={ha.role}
-                period={ha.period}
-                tone="muted"
-              />
-            )}
-          </CardShell>
-        </motion.div>
-      ))}
+    <div className="w-full max-w-md">
+      <div
+        className="relative mx-auto w-full"
+        style={{ height: stackHeight }}
+        role="list"
+        aria-label="Name cards"
+      >
+        {stackOrder.map((card, index) => {
+          const isFront = card.id === frontId;
+          const top = index * PEEK;
+          const zIndex = 30 - index;
+
+          const bringForward = () => setFrontId(card.id);
+          const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+            if (isFront) return;
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              bringForward();
+            }
+          };
+
+          return (
+            <motion.div
+              key={card.id}
+              role="listitem"
+              aria-current={isFront ? "true" : undefined}
+              tabIndex={isFront ? -1 : 0}
+              aria-label={`${card.peekTitle}${isFront ? " (front)" : " — bring forward"}`}
+              onClick={isFront ? undefined : bringForward}
+              onKeyDown={onKeyDown}
+              className={cn(
+                "absolute inset-x-0 outline-none",
+                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                !isFront && "cursor-pointer",
+              )}
+              style={{ height: CARD_HEIGHT }}
+              initial={false}
+              animate={{ top, zIndex }}
+              transition={spring}
+            >
+              <CardShell tone={card.tone} cardId={card.id} className="h-full">
+                {isFront ? (
+                  <div className="h-full">
+                    {card.id === "current" ? (
+                      <CurrentCardBody />
+                    ) : card.id === "viutv" ? (
+                      <RoleCardBody
+                        company="HK Television Entertainment Co Ltd (ViuTV)"
+                        role={viutv.role}
+                        period={viutv.period}
+                        tone="viutv"
+                      />
+                    ) : (
+                      <RoleCardBody
+                        company="Hospital Authority · Storage & Backup Team"
+                        role={ha.role}
+                        period={ha.period}
+                        tone="muted"
+                      />
+                    )}
+                  </div>
+                ) : (
+                  // Equal-height cards offset downward: the visible peek is the bottom strip.
+                  <div
+                    className={cn(
+                      "absolute inset-x-0 bottom-0 flex h-[58px] items-center justify-between gap-3 px-5",
+                      card.tone === "viutv" ? "text-white" : "text-foreground",
+                    )}
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate font-heading text-sm font-semibold tracking-tight">
+                        {card.peekTitle}
+                      </p>
+                      <p
+                        className={cn(
+                          "truncate text-xs",
+                          card.tone === "viutv" ? "text-white/75" : "text-foreground/50",
+                        )}
+                      >
+                        {card.peekMeta}
+                      </p>
+                    </div>
+                    <span
+                      className={cn(
+                        "shrink-0 text-[0.65rem] uppercase tracking-[0.14em]",
+                        card.tone === "viutv" ? "text-white/60" : "text-foreground/40",
+                      )}
+                    >
+                      {card.id === "ha" ? "Past" : card.id === "viutv" ? "Role" : "Now"}
+                    </span>
+                  </div>
+                )}
+              </CardShell>
+            </motion.div>
+          );
+        })}
+      </div>
+      <p className="mt-3 text-center text-xs text-foreground/50">Tap a card to bring it forward</p>
     </div>
   );
 }
