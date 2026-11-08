@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { BackButton } from "@/components/back-button";
 import { Markdown } from "@/components/markdown";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -55,7 +56,10 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   return (
     <article className="mx-auto flex w-full max-w-[1600px] flex-col gap-6 px-4 py-10 md:px-8">
-      <BlogCrumb title={blog.title} />
+      <div className="flex flex-wrap items-center gap-3">
+        <BackButton fallbackHref="/blog" />
+        <BlogCrumb title={blog.title} />
+      </div>
       <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
         {blog.cover ? (
           <Image

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { ContentCard } from "@/components/content-card";
@@ -38,8 +39,19 @@ export default function HomePage() {
                     index < profileConfig.education.length - 1 ? "border-b border-border/70" : "pb-0"
                   }`}
                 >
-                  <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-foreground">
-                    <GraduationCap className="size-4" aria-hidden />
+                  <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white p-1.5 text-foreground">
+                    {item.logo ? (
+                      <Image
+                        src={item.logo}
+                        alt=""
+                        width={32}
+                        height={32}
+                        unoptimized={item.logo.endsWith(".svg")}
+                        className="size-full object-contain"
+                      />
+                    ) : (
+                      <GraduationCap className="size-4" aria-hidden />
+                    )}
                   </span>
                   <div className="flex min-w-0 flex-col gap-1">
                     <p className="font-medium text-foreground">{item.credential}</p>

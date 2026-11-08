@@ -27,6 +27,8 @@ export type EducationItem = {
   credential: string;
   period: string;
   note?: string;
+  /** Optimized school mark under /public/profile/schools */
+  logo?: string;
 };
 
 export type CertificationItem = {
@@ -97,17 +99,20 @@ export const profileConfig = {
       school: "The Hong Kong Polytechnic University",
       credential: "MSc in Information Technology (Big Data and AI)",
       period: "Aug 2022 – May 2023",
+      logo: "/profile/schools/polyu.png",
     },
     {
       school: "The City University of Hong Kong",
       credential: "BSc in Computer Science",
       period: "Sep 2020 – May 2022",
       note: "HK Tech 300, CityHack 2021, HKCERT CTF 20 & 21, UST Hackathon 2021",
+      logo: "/profile/schools/cityu.png",
     },
     {
       school: "Hong Kong Institute of Vocational Education",
       credential: "Higher Diploma in Software Engineering",
       period: "Sep 2018 – May 2020",
+      logo: "/profile/schools/ive.svg",
     },
   ] satisfies EducationItem[],
   certifications: [
