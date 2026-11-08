@@ -40,9 +40,9 @@ export function SiteHeader() {
                 variant={active ? "default" : "ghost"}
                 className={cn(
                   "rounded-full",
-                  active
-                    ? "bg-foreground/90 text-background shadow-sm hover:bg-foreground"
-                    : "bg-transparent text-foreground/80 hover:bg-white/30 hover:text-foreground",
+                    active
+                      ? "bg-foreground/90 text-background shadow-sm hover:bg-foreground"
+                      : "bg-transparent text-foreground/80 hover:bg-white/30 hover:text-foreground dark:hover:bg-white/10",
                 )}
                 nativeButton={false}
                 render={<Link href={link.href} />}

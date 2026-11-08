@@ -14,6 +14,7 @@ function applyTheme(dark: boolean) {
   document.documentElement.classList.toggle("dark", dark);
   document.documentElement.style.colorScheme = dark ? "dark" : "light";
   localStorage.setItem("theme", dark ? "dark" : "light");
+  window.dispatchEvent(new Event("themechange"));
 }
 
 export function ThemeToggle({

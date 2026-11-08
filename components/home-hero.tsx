@@ -24,7 +24,7 @@ export function HomeHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={transition}
         >
-          <div className="relative size-28 overflow-hidden rounded-full border border-white/55 bg-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_18px_48px_rgba(15,23,42,0.16)] ring-1 ring-black/5 backdrop-blur-md md:size-36">
+          <div className="relative size-28 overflow-hidden rounded-full border border-white/55 bg-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_18px_48px_rgba(15,23,42,0.16)] ring-1 ring-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_18px_48px_rgba(0,0,0,0.45)] dark:ring-white/10 md:size-36">
             <Image
               src={siteConfig.profileIcon}
               alt={siteConfig.name}
@@ -56,7 +56,7 @@ export function HomeHero() {
             <Button
               size="lg"
               variant="outline"
-              className="h-10 rounded-md border-foreground/20 bg-white/70 px-5 text-foreground backdrop-blur-sm hover:bg-white hover:text-foreground"
+              className="h-10 rounded-md border-foreground/20 bg-white/70 px-5 text-foreground backdrop-blur-sm hover:bg-white hover:text-foreground dark:border-white/20 dark:bg-white/10 dark:text-[#eef1f7] dark:hover:bg-white/15"
               nativeButton={false}
               render={<Link href="/project" />}
             >

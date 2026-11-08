@@ -75,13 +75,22 @@ function CardShell({
     <div
       data-wallet-card={cardId}
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border shadow-[0_14px_40px_rgba(15,23,42,0.14)]",
-        tone === "white" && "border-black/5 bg-white text-foreground",
-        tone === "muted" && "border-black/5 bg-white text-foreground/55",
-        tone === "viutv" && "border-transparent text-white",
+        "flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border shadow-[0_14px_40px_rgba(15,23,42,0.14)] dark:shadow-[0_18px_48px_rgba(0,0,0,0.55)]",
+        // Personal pass: white by day, cool ink plate by night (not flat grey).
+        tone === "white" &&
+          "border-black/5 bg-white text-foreground dark:border-white/12 dark:bg-[#171c2a] dark:text-[#eef1f7]",
+        // Past HA: white + muted ink by day; deeper plate + quieter type by night.
+        tone === "muted" &&
+          "border-black/5 bg-white text-foreground/55 dark:border-white/8 dark:bg-[#121620] dark:text-[#8b93a8]",
+        // ViuTV keeps brand blue; slight lift on dark for punch against night mesh.
+        tone === "viutv" && "border-transparent text-white dark:border-white/10",
         className,
       )}
-      style={tone === "viutv" ? { backgroundColor: VIUTV_BLUE } : undefined}
+      style={
+        tone === "viutv"
+          ? { backgroundColor: VIUTV_BLUE }
+          : undefined
+      }
     >
       {children}
     </div>
@@ -91,22 +100,22 @@ function CardShell({
 function CurrentCardBody() {
   return (
     <div className="flex h-full flex-col items-center px-6 pb-7 pt-7 text-center">
-      <Avatar className="size-20 border border-black/5 shadow-[0_10px_30px_rgba(15,23,42,0.1)]">
+      <Avatar className="size-20 border border-black/5 shadow-[0_10px_30px_rgba(15,23,42,0.1)] dark:border-white/15 dark:shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
         <AvatarImage src={extLinkConfig.icon} alt={siteConfig.name} />
         <AvatarFallback>JK</AvatarFallback>
       </Avatar>
       <div className="mt-3.5 flex flex-col gap-1">
         <p className="font-heading text-3xl font-semibold tracking-tight">{siteConfig.brand}</p>
-        <p className="text-sm text-foreground/70">
+        <p className="text-sm text-foreground/70 dark:text-[#eef1f7]/70">
           {siteConfig.name} · {siteConfig.title} · {siteConfig.location}
         </p>
       </div>
 
-      <Separator className="my-5 bg-foreground/10" />
+      <Separator className="my-5 bg-foreground/10 dark:bg-white/10" />
 
       <Button
         size="lg"
-        className="h-10 min-w-[10.5rem] rounded-full border-transparent bg-foreground px-6 text-background hover:bg-foreground/90"
+        className="h-10 min-w-[10.5rem] rounded-full border-transparent bg-foreground px-6 text-background hover:bg-foreground/90 dark:bg-[#eef1f7] dark:text-[#0b0d14] dark:hover:bg-white"
         nativeButton={false}
         render={<Link href="/" />}
       >
@@ -123,6 +132,7 @@ function CurrentCardBody() {
               className={cn(
                 "size-11 shrink-0 rounded-full border-black/10 bg-white text-foreground",
                 "hover:bg-muted hover:text-foreground",
+                "dark:border-white/15 dark:bg-white/5 dark:text-[#eef1f7] dark:hover:bg-white/10",
               )}
               nativeButton={false}
               render={
@@ -162,7 +172,7 @@ function RoleCardBody({
         <p
           className={cn(
             "text-[0.7rem] font-medium uppercase tracking-[0.16em]",
-            onBlue ? "text-white/70" : "text-foreground/40",
+            onBlue ? "text-white/70" : "text-foreground/40 dark:text-[#8b93a8]/70",
           )}
         >
           {onBlue ? "Current role" : "Past employment"}
@@ -170,16 +180,23 @@ function RoleCardBody({
         <p
           className={cn(
             "font-heading text-2xl font-semibold tracking-tight md:text-[1.75rem]",
-            onBlue ? "text-white" : "text-foreground/60",
+            onBlue ? "text-white" : "text-foreground/60 dark:text-[#a7afc2]",
           )}
         >
           {role}
         </p>
-        <p className={cn("text-base leading-relaxed", onBlue ? "text-white/85" : "text-foreground/45")}>
+        <p
+          className={cn(
+            "text-base leading-relaxed",
+            onBlue ? "text-white/85" : "text-foreground/45 dark:text-[#8b93a8]",
+          )}
+        >
           {company}
         </p>
       </div>
-      <p className={cn("pt-6 text-sm", onBlue ? "text-white/65" : "text-foreground/35")}>{period}</p>
+      <p className={cn("pt-6 text-sm", onBlue ? "text-white/65" : "text-foreground/35 dark:text-[#6f778c]")}>
+        {period}
+      </p>
     </div>
   );
 }
@@ -298,7 +315,11 @@ export function ContactNameCard() {
                   <div
                     className={cn(
                       "absolute inset-x-0 bottom-0 flex h-[58px] items-center justify-between gap-3 px-5",
-                      card.tone === "viutv" ? "text-white" : "text-foreground",
+                      card.tone === "viutv"
+                        ? "text-white"
+                        : card.tone === "muted"
+                          ? "text-foreground/70 dark:text-[#8b93a8]"
+                          : "text-foreground dark:text-[#eef1f7]",
                     )}
                   >
                     <div className="min-w-0">
@@ -308,7 +329,11 @@ export function ContactNameCard() {
                       <p
                         className={cn(
                           "truncate text-xs",
-                          card.tone === "viutv" ? "text-white/75" : "text-foreground/50",
+                          card.tone === "viutv"
+                            ? "text-white/75"
+                            : card.tone === "muted"
+                              ? "text-foreground/50 dark:text-[#6f778c]"
+                              : "text-foreground/50 dark:text-[#eef1f7]/55",
                         )}
                       >
                         {card.peekMeta}
@@ -317,7 +342,11 @@ export function ContactNameCard() {
                     <span
                       className={cn(
                         "shrink-0 text-[0.65rem] uppercase tracking-[0.14em]",
-                        card.tone === "viutv" ? "text-white/60" : "text-foreground/40",
+                        card.tone === "viutv"
+                          ? "text-white/60"
+                          : card.tone === "muted"
+                            ? "text-foreground/40 dark:text-[#6f778c]"
+                            : "text-foreground/40 dark:text-[#eef1f7]/45",
                       )}
                     >
                       {card.id === "ha" ? "Past" : card.id === "viutv" ? "Role" : "Now"}
