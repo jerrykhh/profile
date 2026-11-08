@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 export default function ExtLinkPage() {
   return (
-    <section className="relative isolate -mt-16 flex min-h-[min(100vh,58rem)] items-center justify-center overflow-hidden px-4 pb-16 pt-24 md:px-8">
+    <section className="relative isolate -mt-16 flex min-h-[min(100vh,58rem)] items-center justify-center overflow-x-hidden px-4 pb-16 pt-24 md:px-8">
       <HeroShader />
-      <div className="relative z-10 flex w-full justify-center">
+      <div className="relative z-10 flex w-full justify-center py-4">
         <ContactNameCard />
       </div>
       <span className="sr-only">{extLinkConfig.intro}</span>

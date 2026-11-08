@@ -1,25 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import {
-  useMemo,
-  useState,
-  type ComponentType,
-  type KeyboardEvent,
-  type ReactNode,
-  type SVGProps,
-} from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { type ComponentType, type ReactNode, type SVGProps } from "react";
+import { motion, useReducedMotion } from "motion/react";
 
 import { GitHubIcon, LinkedInIcon, MailIcon, YouTubeIcon } from "@/components/social-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { extLinkConfig, profileConfig, siteConfig } from "@/config/profile";
-import { glassShell } from "@/lib/glass";
 import { cn } from "@/lib/utils";
 
 type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
+
+const VIUTV_BLUE = "#0180f5";
 
 const iconById: Record<string, IconComponent> = {
   github: GitHubIcon,
@@ -47,126 +41,71 @@ const socialIcons = ["github", "linkedin", "youtube", "email"].flatMap((id) => {
   ];
 });
 
-type WalletCardId = "current" | "viutv" | "ha";
-
-type WalletCard = {
-  id: WalletCardId;
-  peekLabel: string;
-  peekMeta: string;
-  muted?: boolean;
-  accent?: string;
-};
-
-const PEEK = 56;
-const EXPANDED_CURRENT = 392;
-const EXPANDED_ROLE = 188;
-
-const spring = { type: "spring" as const, stiffness: 420, damping: 34, mass: 0.78 };
-
-function walletCardsFromProfile(): WalletCard[] {
-  const viutv =
-    profileConfig.experience.find((item) => /viu/i.test(item.company)) ?? profileConfig.experience[0];
-  const ha =
-    profileConfig.experience.find((item) => /hospital authority/i.test(item.company)) ??
-    profileConfig.experience.at(-1);
-
-  return [
-    {
-      id: "current",
-      peekLabel: siteConfig.brand,
-      peekMeta: `${siteConfig.name} · ${siteConfig.location}`,
-    },
-    {
-      id: "viutv",
-      peekLabel: "ViuTV",
-      peekMeta: viutv?.role ?? siteConfig.title,
-      accent: "from-sky-500/25 via-white/10 to-transparent",
-    },
-    {
-      id: "ha",
-      peekLabel: "Hospital Authority",
-      peekMeta: ha?.role ?? "Student Programmer",
-      muted: true,
-    },
-  ];
-}
+type CardTone = "white" | "viutv" | "muted";
 
 function CardShell({
-  muted,
-  className,
+  tone,
+  cardId,
   children,
+  className,
 }: {
-  muted?: boolean;
-  className?: string;
+  tone: CardTone;
+  cardId: "current" | "viutv" | "ha";
   children: ReactNode;
+  className?: string;
 }) {
   return (
     <div
+      data-wallet-card={cardId}
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] text-foreground",
-        muted
-          ? "border border-white/25 bg-[linear-gradient(160deg,rgba(148,163,184,0.28)_0%,rgba(100,116,139,0.18)_50%,rgba(71,85,105,0.28)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_12px_36px_rgba(15,23,42,0.14)] backdrop-blur-[18px] backdrop-saturate-125 ring-1 ring-inset ring-white/15"
-          : cn(glassShell, "shadow-none"),
-        muted && "text-foreground/70",
+        "flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border shadow-[0_12px_36px_rgba(15,23,42,0.1)]",
+        tone === "white" && "border-black/5 bg-white text-foreground",
+        tone === "muted" && "border-black/5 bg-white text-foreground/55",
+        tone === "viutv" && "border-transparent text-white",
         className,
       )}
+      style={tone === "viutv" ? { backgroundColor: VIUTV_BLUE } : undefined}
     >
       {children}
     </div>
   );
 }
 
-function PeekStrip({ card }: { card: WalletCard }) {
-  return (
-    <div className="flex h-14 items-center justify-between gap-3 px-5">
-      <div className="min-w-0">
-        <p className="truncate font-heading text-sm font-semibold tracking-tight">{card.peekLabel}</p>
-        <p className="truncate text-xs text-foreground/60">{card.peekMeta}</p>
-      </div>
-      <span className="shrink-0 text-[0.65rem] uppercase tracking-[0.14em] text-foreground/45">
-        {card.muted ? "Past" : card.id === "current" ? "Now" : "Role"}
-      </span>
-    </div>
-  );
-}
-
 function CurrentCardBody() {
   return (
-    <div className="flex h-full flex-col items-center px-6 pb-7 pt-6 text-center">
-      <Avatar className="size-20 border border-white/60 shadow-[0_10px_30px_rgba(15,23,42,0.12)] md:size-24">
+    <div className="flex h-full flex-col items-center px-5 pb-6 pt-7 text-center md:px-6 md:pb-7">
+      <Avatar className="size-16 border border-black/5 shadow-[0_10px_30px_rgba(15,23,42,0.1)] md:size-20">
         <AvatarImage src={extLinkConfig.icon} alt={siteConfig.name} />
         <AvatarFallback>JK</AvatarFallback>
       </Avatar>
-      <div className="mt-3.5 flex flex-col gap-1">
-        <p className="font-heading text-3xl font-semibold tracking-tight md:text-[2.1rem]">
-          {siteConfig.brand}
-        </p>
-        <p className="text-sm text-foreground/70 md:text-[0.95rem]">
+      <div className="mt-3 flex flex-col gap-1">
+        <p className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">{siteConfig.brand}</p>
+        <p className="text-sm leading-relaxed text-foreground/70">
           {siteConfig.name} · {siteConfig.title} · {siteConfig.location}
         </p>
       </div>
 
-      <Separator className="my-5 bg-foreground/10" />
+      <Separator className="my-4 bg-foreground/10 md:my-5" />
 
       <Button
         size="lg"
-        className="h-10 min-w-[10.5rem] rounded-full border-transparent bg-foreground px-6 text-background hover:bg-foreground/90"
+        className="h-10 min-w-[9.5rem] rounded-full border-transparent bg-foreground px-6 text-background hover:bg-foreground/90"
         nativeButton={false}
         render={<Link href="/" />}
       >
         Website
       </Button>
 
-      <div className="mt-5 flex w-full justify-center">
-        <div className="inline-flex items-center justify-center gap-2.5" aria-label="Connect">
+      <div className="mt-4 flex w-full flex-1 items-end justify-center md:mt-5">
+        <div className="inline-flex items-center justify-center gap-2" aria-label="Connect">
           {socialIcons.map(({ id, label, href, external, Icon }) => (
             <Button
               key={id}
               size="icon"
               variant="outline"
               className={cn(
-                "size-11 shrink-0 rounded-full border-white/55 bg-white/35 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]",
-                "backdrop-blur-md hover:bg-white/55 hover:text-foreground",
+                "size-10 shrink-0 rounded-full border-black/10 bg-white text-foreground md:size-11",
+                "hover:bg-muted hover:text-foreground",
               )}
               nativeButton={false}
               render={
@@ -191,163 +130,98 @@ function RoleCardBody({
   company,
   role,
   period,
-  muted,
+  tone,
 }: {
   company: string;
   role: string;
   period: string;
-  muted?: boolean;
+  tone: Extract<CardTone, "viutv" | "muted">;
 }) {
+  const onBlue = tone === "viutv";
+
   return (
-    <div className="flex h-full flex-col justify-between px-6 pb-6 pt-5">
-      <div className="flex flex-col gap-2">
+    <div className="flex h-full flex-col justify-between px-5 pb-6 pt-7 md:px-6 md:pb-7">
+      <div className="flex flex-col gap-2.5">
         <p
           className={cn(
             "text-[0.7rem] font-medium uppercase tracking-[0.16em]",
-            muted ? "text-foreground/45" : "text-foreground/55",
+            onBlue ? "text-white/70" : "text-foreground/40",
           )}
         >
-          {muted ? "Past employment" : "Current role"}
+          {onBlue ? "Current role" : "Past employment"}
         </p>
-        <p className="font-heading text-2xl font-semibold tracking-tight text-foreground">{role}</p>
-        <p className={cn("text-base", muted ? "text-foreground/55" : "text-foreground/75")}>{company}</p>
+        <p
+          className={cn(
+            "font-heading text-2xl font-semibold tracking-tight md:text-[1.7rem]",
+            onBlue ? "text-white" : "text-foreground/60",
+          )}
+        >
+          {role}
+        </p>
+        <p className={cn("text-sm leading-relaxed md:text-base", onBlue ? "text-white/85" : "text-foreground/45")}>
+          {company}
+        </p>
       </div>
-      <p className="pt-4 text-sm text-foreground/50">{period}</p>
+      <p className={cn("pt-6 text-sm", onBlue ? "text-white/65" : "text-foreground/35")}>{period}</p>
     </div>
   );
 }
 
-/** Apple Wallet–style stacked / collapsing name cards for /ext/link. */
+/** Three equal, always-visible wallet-style name cards for /ext/link. */
 export function ContactNameCard() {
-  const cards = useMemo(() => walletCardsFromProfile(), []);
-  const [activeId, setActiveId] = useState<WalletCardId>("current");
   const reduceMotion = useReducedMotion();
-
   const viutv =
     profileConfig.experience.find((item) => /viu/i.test(item.company)) ?? profileConfig.experience[0];
   const ha =
     profileConfig.experience.find((item) => /hospital authority/i.test(item.company)) ??
     profileConfig.experience.at(-1)!;
 
-  const activeIndex = cards.findIndex((card) => card.id === activeId);
+  const transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const };
 
-  const stackHeight = useMemo(() => {
-    return cards.reduce((total, card, index) => {
-      if (index === activeIndex) {
-        return total + (card.id === "current" ? EXPANDED_CURRENT : EXPANDED_ROLE);
-      }
-      return total + PEEK;
-    }, 12);
-  }, [activeIndex, cards]);
-
-  const transition = reduceMotion ? { duration: 0 } : spring;
-
-  let offset = 0;
+  const cards = [
+    { id: "current" as const, tone: "white" as const },
+    { id: "viutv" as const, tone: "viutv" as const },
+    { id: "ha" as const, tone: "muted" as const },
+  ];
 
   return (
-    <div className="w-full max-w-md">
-      <div className="relative w-full" style={{ height: stackHeight }} role="list" aria-label="Name cards">
-        {cards.map((card, index) => {
-          const isActive = card.id === activeId;
-          const expandedHeight = card.id === "current" ? EXPANDED_CURRENT : EXPANDED_ROLE;
-          const height = isActive ? expandedHeight : PEEK;
-          const top = offset;
-          offset += isActive ? expandedHeight : PEEK;
-
-          const zIndex = isActive ? 30 : 10 + index;
-          const scale = isActive ? 1 : 0.985 - index * 0.004;
-
-          const selectCard = () => setActiveId(card.id);
-          const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-            if (isActive) return;
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              selectCard();
-            }
-          };
-
-          return (
-            <motion.div
-              key={card.id}
-              role="listitem"
-              data-wallet-card={card.id}
-              aria-current={isActive ? "true" : undefined}
-              tabIndex={isActive ? -1 : 0}
-              aria-label={`${card.peekLabel}${isActive ? " (selected)" : " — select"}`}
-              onClick={isActive ? undefined : selectCard}
-              onKeyDown={onKeyDown}
-              className={cn(
-                "absolute inset-x-0 overflow-hidden rounded-[1.35rem] text-left outline-none",
-                "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-                !isActive && "cursor-pointer",
-              )}
-              initial={false}
-              animate={{
-                top,
-                height,
-                scale,
-                zIndex,
-              }}
-              transition={transition}
-              style={{ transformOrigin: "50% 0%" }}
-            >
-              <CardShell muted={card.muted} className="relative">
-                {card.accent && isActive ? (
-                  <div
-                    aria-hidden
-                    className={cn("pointer-events-none absolute inset-0 bg-gradient-to-br", card.accent)}
-                  />
-                ) : null}
-
-                <div className="relative z-[1] h-full">
-                  <AnimatePresence initial={false} mode="popLayout">
-                    {isActive ? (
-                      <motion.div
-                        key={`${card.id}-body`}
-                        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}
-                        transition={
-                          reduceMotion ? { duration: 0 } : { duration: 0.22, ease: [0.22, 1, 0.36, 1] }
-                        }
-                        className="h-full"
-                      >
-                        {card.id === "current" ? (
-                          <CurrentCardBody />
-                        ) : card.id === "viutv" ? (
-                          <RoleCardBody
-                            company="HK Television Entertainment Co Ltd (ViuTV)"
-                            role={viutv.role}
-                            period={viutv.period}
-                          />
-                        ) : (
-                          <RoleCardBody
-                            company="Hospital Authority · Storage & Backup Team"
-                            role={ha.role}
-                            period={ha.period}
-                            muted
-                          />
-                        )}
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key={`${card.id}-peek`}
-                        initial={reduceMotion ? false : { opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={reduceMotion ? undefined : { opacity: 0 }}
-                        transition={{ duration: reduceMotion ? 0 : 0.15 }}
-                      >
-                        <PeekStrip card={card} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </CardShell>
-            </motion.div>
-          );
-        })}
-      </div>
-      <p className="mt-3 text-center text-xs text-foreground/50">Tap a card to bring it forward</p>
+    <div
+      className="grid w-full max-w-5xl grid-cols-1 items-stretch gap-4 md:grid-cols-3 md:gap-5"
+      role="list"
+      aria-label="Name cards"
+    >
+      {cards.map((card, index) => (
+        <motion.div
+          key={card.id}
+          role="listitem"
+          className="h-full min-h-[22rem] md:min-h-[24rem]"
+          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...transition, delay: reduceMotion ? 0 : index * 0.06 }}
+        >
+          <CardShell tone={card.tone} cardId={card.id} className="h-full">
+            {card.id === "current" ? (
+              <CurrentCardBody />
+            ) : card.id === "viutv" ? (
+              <RoleCardBody
+                company="HK Television Entertainment Co Ltd (ViuTV)"
+                role={viutv.role}
+                period={viutv.period}
+                tone="viutv"
+              />
+            ) : (
+              <RoleCardBody
+                company="Hospital Authority · Storage & Backup Team"
+                role={ha.role}
+                period={ha.period}
+                tone="muted"
+              />
+            )}
+          </CardShell>
+        </motion.div>
+      ))}
     </div>
   );
 }
