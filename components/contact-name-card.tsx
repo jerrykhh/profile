@@ -63,7 +63,7 @@ export function ContactNameCard() {
         </div>
       </CardHeader>
 
-      <CardContent className="flex flex-col items-center gap-5 px-6 pb-8">
+      <CardContent className="flex w-full flex-col items-center gap-5 px-6 pb-8">
         <Separator className="bg-foreground/10" />
 
         <Button
@@ -75,30 +75,36 @@ export function ContactNameCard() {
           Website
         </Button>
 
-        <div className="flex items-center justify-center gap-2.5" role="list" aria-label="Connect">
-          {socialIcons.map(({ id, label, href, external, Icon }) => (
-            <Button
-              key={id}
-              size="icon"
-              variant="outline"
-              className={cn(
-                "size-11 rounded-full border-white/55 bg-white/35 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]",
-                "backdrop-blur-md hover:bg-white/55 hover:text-foreground",
-              )}
-              nativeButton={false}
-              render={
-                <Link
-                  href={href}
-                  target={external ? "_blank" : undefined}
-                  rel={external ? "noreferrer" : undefined}
-                  aria-label={label}
-                  role="listitem"
-                />
-              }
-            >
-              <Icon className="size-4" />
-            </Button>
-          ))}
+        <div className="flex w-full justify-center">
+          <div
+            className="inline-flex items-center justify-center gap-2.5"
+            role="list"
+            aria-label="Connect"
+          >
+            {socialIcons.map(({ id, label, href, external, Icon }) => (
+              <Button
+                key={id}
+                size="icon"
+                variant="outline"
+                className={cn(
+                  "size-11 shrink-0 rounded-full border-white/55 bg-white/35 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]",
+                  "backdrop-blur-md hover:bg-white/55 hover:text-foreground",
+                )}
+                nativeButton={false}
+                render={
+                  <Link
+                    href={href}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noreferrer" : undefined}
+                    aria-label={label}
+                    role="listitem"
+                  />
+                }
+              >
+                <Icon className="size-4" />
+              </Button>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>
