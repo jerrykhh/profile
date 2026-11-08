@@ -126,7 +126,9 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Instant jump on route change (blog/project detail). Smooth CSS scroll
+       animated Next/vinext scroll-to-top and felt laggy. */
+    scroll-behavior: auto;
   }
 
   body {
@@ -136,11 +138,5 @@
 
   ::selection {
     background: color-mix(in oklab, var(--primary) 28%, transparent);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
   }
 }
