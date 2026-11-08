@@ -1,49 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ContactNameCard } from "@/components/contact-name-card";
+import { HeroShader } from "@/components/hero-shader";
 import { extLinkConfig, siteConfig } from "@/config/profile";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: extLinkConfig.intro,
+  description: `Connect with ${siteConfig.name} — ${siteConfig.title} in ${siteConfig.location}.`,
 };
 
 export default function ExtLinkPage() {
   return (
-    <div className="mx-auto flex w-full max-w-md px-4 py-10">
-      <Card className="w-full">
-        <CardHeader className="items-center text-center">
-          <Avatar className="size-28">
-            <AvatarImage src={extLinkConfig.icon} alt={siteConfig.name} />
-            <AvatarFallback>JK</AvatarFallback>
-          </Avatar>
-          <CardTitle className="text-2xl">{siteConfig.brand}</CardTitle>
-          <CardDescription>{extLinkConfig.intro}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
-          <p className="text-center text-sm text-muted-foreground">{extLinkConfig.prompt}</p>
-          {extLinkConfig.links.map((link) => (
-            <Button
-              key={link.id}
-              variant="outline"
-              className="w-full"
-              nativeButton={false}
-              render={
-                <Link
-                  href={link.href}
-                  target={link.href.startsWith("/") ? undefined : "_blank"}
-                  rel={link.href.startsWith("/") ? undefined : "noreferrer"}
-                />
-              }
-            >
-              {link.label}
-            </Button>
-          ))}
-        </CardContent>
-      </Card>
-    </div>
+    <section className="relative isolate -mt-16 flex min-h-[min(100vh,58rem)] items-center justify-center overflow-hidden px-4 pb-16 pt-24 md:px-8">
+      <HeroShader />
+      <div className="relative z-10 flex w-full justify-center">
+        <ContactNameCard />
+      </div>
+      <span className="sr-only">{extLinkConfig.intro}</span>
+    </section>
   );
 }
