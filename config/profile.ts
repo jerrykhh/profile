@@ -18,8 +18,11 @@ export type ExperienceItem = {
   role: string;
   company: string;
   period: string;
+  /** One short paragraph — no bullet lists. */
   summary: string;
-  highlights: string[];
+  /** Optimized company mark under /public/profile/companies */
+  logo?: string;
+  link?: { label: string; href: string };
 };
 
 export type EducationItem = {
@@ -62,36 +65,29 @@ export const profileConfig = {
       role: "Senior Software Engineer",
       company: "HK Television Entertainment Co Ltd (ViuTV) · Digital Team",
       period: "Nov 2025 – Present",
+      logo: "/profile/companies/viutv.png",
       summary:
-        "Partner with product and design on solution options, delivery approaches, and vendor technical reviews. Continue DevOps/SRE and in-house web platform ownership.",
-      highlights: [
-        "Reduced AWS cost by about 20% through architecture and resource optimisation",
-        "Introduced AI agent tools such as Cursor, DevOps Agent, and Amazon Quick to automate development, security patching, and analysis workflows",
-        "Support engineering recruitment through screening and interviews",
-      ],
+        "Partner with PM/design on needs and delivery; ~20% AWS cost cut via architecture/optimisation; introduced Cursor/DevOps Agent for automation; continued DevOps/SRE + in-house web + vendor TV/mobile coordination after promotion.",
     },
     {
       role: "Software Engineer",
       company: "HK Television Entertainment Co Ltd (ViuTV) · Digital Team",
       period: "Nov 2023 – Nov 2025",
+      logo: "/profile/companies/viutv.png",
       summary:
-        "Primary focus on DevOps/SRE and cloud platform engineering, with hands-on Next.js development and vendor coordination for TV and mobile apps.",
-      highlights: [
-        "Designed AWS and Terraform stacks for a React SPA to Next.js SSR migration with zero disruption above 10M requests/hour",
-        "Built Fastify APIs, recommendation pipelines, MongoDB Atlas semantic search, prize-claim, voting, and Live/VOD reaction systems",
-        "Hardened AWS accounts, OIDC GitHub Actions, CI quality gates, multi-AZ ECS migrations, load testing, and live-stream disaster recovery",
-      ],
+        "Designed AWS/Terraform for React→Next.js SSR (CloudFront, peaks >10M req/h); built viu.tv Next.js + Fastify APIs + MongoDB Atlas semantic search; prize-claim (Kinesis/SQS FIFO/Lambda) and voting (>200 rps) + Live/VOD reactions; AWS Identity Center/OIDC, GitHub Actions quality gates, multi-AZ ECS migrations, k6 load tests, Elemental DR; vendor QA/CNAPP (Orca); campaigns incl. Olympics 2024, National Games 2025, FIFA 2026, Chill Club, ViuTV 10th.",
+      link: {
+        label: "LinkedIn case study",
+        href: "https://www.linkedin.com/pulse/hosting-high-traffic-nextjs-ssr-application-aws-case-study-jerry-kwok-xl5nc",
+      },
     },
     {
       role: "Student Programmer",
       company: "Hospital Authority · Storage & Backup Team",
       period: "Jul 2021 – Jun 2022",
+      logo: "/profile/companies/ha.png",
       summary:
-        "Placement work across Linux/AIX verification scripts, SQL Server Agent to Bash migration, and Flask apps on OpenShift.",
-      highlights: [
-        "Revamped an ASP.NET webpage into a Python Flask internal application on OpenShift",
-        "Built reporting, web crawler, and REST API gateway utilities from user requirements",
-      ],
+        "Shell verification on AIX/RHEL/Linux; SQL Server Agent→Bash migration; ASP.NET→Flask on OpenShift; Python reporting/crawler/API gateway.",
     },
   ] satisfies ExperienceItem[],
   education: [

@@ -1,4 +1,6 @@
-import { BriefcaseBusiness, Clock3 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight, BriefcaseBusiness, Clock3 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,13 +20,25 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
         <span className="text-sm text-muted-foreground">{items.length} roles</span>
       </CardHeader>
       <CardContent className="pt-2">
-        <ol className="relative ms-3 flex flex-col border-s border-border/80 ps-8">
+        <ol className="relative ms-4 border-s border-border/80">
           {items.map((job, index) => {
             const latest = index === 0;
             return (
-              <li key={`${job.role}-${job.period}`} className="relative py-6 first:pt-4 last:pb-2">
-                <span className="absolute -start-[2.6rem] top-7 flex size-9 items-center justify-center rounded-full border border-border bg-muted text-foreground">
-                  <BriefcaseBusiness className="size-4" aria-hidden />
+              <li key={`${job.role}-${job.period}`} className="relative py-6 ps-10 first:pt-4 last:pb-2">
+                {/* Node centered on the vertical border via -translate-x-1/2 */}
+                <span className="absolute start-0 top-7 flex size-9 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border border-border bg-white p-1.5 text-foreground dark:bg-card">
+                  {job.logo ? (
+                    <Image
+                      src={job.logo}
+                      alt=""
+                      width={28}
+                      height={28}
+                      unoptimized={job.logo.endsWith(".svg")}
+                      className="size-full object-contain"
+                    />
+                  ) : (
+                    <BriefcaseBusiness className="size-4" aria-hidden />
+                  )}
                 </span>
                 <div className="flex flex-col gap-2">
                   <div className="flex flex-wrap items-center gap-2">
@@ -32,7 +46,10 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
                       {job.role}
                     </h3>
                     {latest ? (
-                      <Badge variant="secondary" className="rounded-full border border-border/80 bg-muted font-normal text-foreground">
+                      <Badge
+                        variant="secondary"
+                        className="rounded-full border border-border/80 bg-muted font-normal text-foreground"
+                      >
                         Latest
                       </Badge>
                     ) : null}
@@ -43,11 +60,17 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
                     <span>{job.period}</span>
                   </p>
                   <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">{job.summary}</p>
-                  <ul className="mt-1 flex list-disc flex-col gap-1.5 ps-4 text-sm leading-relaxed text-muted-foreground">
-                    {job.highlights.map((highlight) => (
-                      <li key={highlight}>{highlight}</li>
-                    ))}
-                  </ul>
+                  {job.link ? (
+                    <Link
+                      href={job.link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex w-fit items-center gap-1 text-sm font-medium text-foreground underline-offset-4 hover:underline"
+                    >
+                      {job.link.label}
+                      <ArrowUpRight className="size-3.5" aria-hidden />
+                    </Link>
+                  ) : null}
                 </div>
               </li>
             );
