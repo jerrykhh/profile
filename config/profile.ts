@@ -10,7 +10,7 @@ export type TechGroup = {
   label: string;
   items: Array<{
     name: string;
-    icon: string;
+    icon?: string;
   }>;
 };
 
@@ -159,29 +159,95 @@ export const profileConfig = {
   ] satisfies SocialLink[],
   techs: [
     {
-      id: "languages",
-      label: "Languages & apps",
+      id: "cloud-infra",
+      label: "Cloud & Infra",
       items: [
-        { name: "TypeScript", icon: "/profile/tech/typescript.jpg" },
-        { name: "JavaScript", icon: "/profile/tech/javascript.jpg" },
-        { name: "Node.js", icon: "/profile/tech/node_js.png" },
-        { name: "Python", icon: "/profile/tech/python.png" },
-        { name: "PHP", icon: "/profile/tech/php.jpg" },
-        { name: "Next.js", icon: "/profile/tech/nextjs.png" },
-        { name: "React", icon: "/profile/tech/react.png" },
-        { name: "Tailwind CSS", icon: "/profile/tech/tailwindcss.png" },
-        { name: "Flask", icon: "/profile/tech/flask.png" },
-        { name: "GraphQL", icon: "/profile/tech/graphQL.png" },
+        { name: "AWS" },
+        { name: "VPC" },
+        { name: "EC2" },
+        { name: "ECS" },
+        { name: "Lambda" },
+        { name: "API Gateway" },
+        { name: "ALB/NLB" },
+        { name: "S3" },
+        { name: "RDS" },
+        { name: "ElastiCache" },
+        { name: "CloudFront" },
+        { name: "WAF" },
+        { name: "EventBridge" },
+        { name: "SQS" },
+        { name: "Kinesis" },
+        { name: "GuardDuty" },
+        { name: "CloudTrail" },
+        { name: "Docker" },
       ],
     },
     {
-      id: "cloud",
-      label: "Cloud & data",
+      id: "databases",
+      label: "Databases",
       items: [
-        { name: "AWS", icon: "/profile/tech/aws.jpg" },
-        { name: "AWS CDK", icon: "/profile/tech/aws_cdk.png" },
-        { name: "GitHub", icon: "/profile/tech/github.jpg" },
-        { name: "MySQL", icon: "/profile/tech/mysql.png" },
+        { name: "MongoDB" },
+        { name: "MySQL" },
+        { name: "Redis" },
+        { name: "Valkey" },
+        { name: "Firebase" },
+      ],
+    },
+    {
+      id: "iac",
+      label: "Infrastructure as Code (IaC)",
+      items: [{ name: "Terraform" }, { name: "AWS SAM" }, { name: "Serverless FM" }],
+    },
+    {
+      id: "languages",
+      label: "Programming Languages",
+      items: [
+        { name: "TypeScript" },
+        { name: "Node.js" },
+        { name: "Python" },
+        { name: "Bash" },
+        { name: "SQL" },
+        { name: "PHP" },
+      ],
+    },
+    {
+      id: "frameworks",
+      label: "Frameworks & Libraries",
+      items: [
+        { name: "Next.js" },
+        { name: "React" },
+        { name: "TailwindCSS" },
+        { name: "Fastify" },
+        { name: "Express" },
+        { name: "Mongoose" },
+        { name: "nestjs" },
+        { name: "aws-sdk" },
+        { name: "aws-cli" },
+        { name: "jest" },
+        { name: "vitest" },
+        { name: "playwright" },
+        { name: "k6" },
+      ],
+    },
+    {
+      id: "cicd",
+      label: "CI/CD",
+      items: [{ name: "GitHub Actions" }, { name: "Git" }],
+    },
+    {
+      id: "analytics",
+      label: "Analytics & Reporting",
+      items: [{ name: "Looker Studio" }, { name: "Google Analytics" }],
+    },
+    {
+      id: "ai-tools",
+      label: "AI Tools",
+      items: [
+        { name: "Cursor" },
+        { name: "Kiro" },
+        { name: "OpenCode" },
+        { name: "AI skills" },
+        { name: "MCP" },
       ],
     },
   ] satisfies TechGroup[],

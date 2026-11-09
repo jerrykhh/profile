@@ -65,7 +65,9 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
                     </p>
                   </div>
 
-                  <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">{job.summary}</p>
+                  <p className="max-w-prose text-justify text-sm leading-relaxed text-muted-foreground">
+                    {job.summary}
+                  </p>
                   {job.link ? (
                     <Link
                       href={job.link.href}
