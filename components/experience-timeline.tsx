@@ -39,25 +39,32 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
                     <BriefcaseBusiness className="size-4" aria-hidden />
                   )}
                 </span>
+
                 <div className="flex flex-col gap-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="font-heading text-base font-semibold tracking-tight md:text-lg">
-                      {job.role}
-                    </h3>
-                    {latest ? (
-                      <Badge
-                        variant="secondary"
-                        className="rounded-full border border-border/80 bg-muted font-normal text-foreground"
-                      >
-                        Latest
-                      </Badge>
-                    ) : null}
+                  {/* Left: title + company · Right: period */}
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-heading text-base font-semibold tracking-tight md:text-lg">
+                          {job.role}
+                        </h3>
+                        {latest ? (
+                          <Badge
+                            variant="secondary"
+                            className="rounded-full border border-border/80 bg-muted font-normal text-foreground"
+                          >
+                            Latest
+                          </Badge>
+                        ) : null}
+                      </div>
+                      <p className="mt-1 text-sm font-medium text-foreground/85">{job.company}</p>
+                    </div>
+                    <p className="inline-flex shrink-0 items-center gap-1.5 text-sm text-muted-foreground sm:justify-end sm:pt-0.5 sm:text-end">
+                      <Clock3 className="size-3.5 shrink-0" aria-hidden />
+                      <span>{job.period}</span>
+                    </p>
                   </div>
-                  <p className="text-sm font-medium text-foreground/85">{job.company}</p>
-                  <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-                    <Clock3 className="size-3.5 shrink-0" aria-hidden />
-                    <span>{job.period}</span>
-                  </p>
+
                   <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">{job.summary}</p>
                   {job.link ? (
                     <Link
