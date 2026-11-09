@@ -60,7 +60,7 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
                     <span>{job.period}</span>
                   </p>
 
-                  <p className="max-w-prose text-justify text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-justify text-sm leading-relaxed text-muted-foreground">
                     {job.summary}
                   </p>
                   {job.link ? (
