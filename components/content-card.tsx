@@ -31,26 +31,30 @@ export function ContentCard({ item }: { item: ContentItem }) {
       className={cn(
         "group relative flex h-full flex-col overflow-hidden rounded-xl bg-card text-card-foreground",
         "ring-1 ring-border/70 outline-none",
-        // Tailwind v4 uses translate/scale properties — transition those explicitly.
-        "transition-[translate,box-shadow,background-color,ring-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-        // data-hovered bypasses @media (hover: hover) so lift always shows for fine pointers.
-        "data-[hovered=true]:-translate-y-2 data-[hovered=true]:bg-muted/35",
-        "data-[hovered=true]:shadow-[0_20px_44px_rgba(15,23,42,0.14)] data-[hovered=true]:ring-foreground/20",
-        "dark:data-[hovered=true]:shadow-[0_20px_44px_rgba(0,0,0,0.5)] dark:data-[hovered=true]:ring-white/20",
+        // Color / light only — no translateY or cover scale (no layout shift).
+        "transition-[background-color,box-shadow,ring-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        "data-[hovered=true]:bg-muted/30 data-[hovered=true]:ring-foreground/25",
+        "data-[hovered=true]:shadow-[0_0_0_1px_rgba(15,23,42,0.04),0_12px_32px_rgba(15,23,42,0.08)]",
+        "dark:data-[hovered=true]:ring-white/25",
+        "dark:data-[hovered=true]:shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_12px_32px_rgba(0,0,0,0.35)]",
         "focus-visible:ring-2 focus-visible:ring-ring",
       )}
     >
       {cover ? (
-        <div className="overflow-hidden">
+        <div className="relative overflow-hidden">
           <Image
             src={cover}
             alt=""
             width={800}
             height={500}
             unoptimized={cover.endsWith(".svg")}
+            className="aspect-[16/10] w-full bg-accent object-cover"
+          />
+          <div
+            aria-hidden
             className={cn(
-              "aspect-[16/10] w-full bg-accent object-cover transition-[scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-              hovered && "scale-105",
+              "pointer-events-none absolute inset-0 bg-foreground/0 transition-colors duration-300",
+              hovered && "bg-foreground/[0.04]",
             )}
           />
         </div>
@@ -76,7 +80,7 @@ export function ContentCard({ item }: { item: ContentItem }) {
         <span
           className={cn(
             "ms-auto inline-flex h-7 items-center rounded-lg border border-border bg-background px-2.5 text-[0.8rem] font-medium text-foreground transition-colors duration-300",
-            hovered && "border-foreground/25 bg-card",
+            hovered && "border-foreground/30 bg-card text-foreground",
           )}
         >
           {opensExternally ? "Open" : "Read"}
