@@ -1,34 +1,45 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ContentItem } from "@/lib/content/types";
 import { cn } from "@/lib/utils";
 
 const EXTERNAL_PLACEHOLDER = "/blog/external-placeholder.svg";
 
 export function ContentCard({ item }: { item: ContentItem }) {
+  const [hovered, setHovered] = useState(false);
   const sourcedExternally = item.external && Boolean(item.externalUrl);
   const opensExternally = item.href.startsWith("http://") || item.href.startsWith("https://");
   const cover = item.cover || (sourcedExternally ? EXTERNAL_PLACEHOLDER : undefined);
 
   return (
-    <Card
+    <Link
+      href={item.href}
+      target={opensExternally ? "_blank" : undefined}
+      rel={opensExternally ? "noreferrer" : undefined}
+      data-card-link
+      data-hovered={hovered ? "true" : "false"}
+      aria-label={`${opensExternally ? "Open" : "Read"} ${item.title}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
       className={cn(
-        "group relative h-full overflow-hidden border-border/80 bg-card shadow-none ring-1 ring-border/70",
-        "transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-        "hover:-translate-y-1 hover:bg-muted/25 hover:shadow-[0_14px_36px_rgba(15,23,42,0.08)]",
-        "dark:hover:shadow-[0_14px_36px_rgba(0,0,0,0.35)]",
+        "group relative flex h-full flex-col overflow-hidden rounded-xl bg-card text-card-foreground",
+        "ring-1 ring-border/70 outline-none",
+        // Tailwind v4 uses translate/scale properties — transition those explicitly.
+        "transition-[translate,box-shadow,background-color,ring-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        // data-hovered bypasses @media (hover: hover) so lift always shows for fine pointers.
+        "data-[hovered=true]:-translate-y-2 data-[hovered=true]:bg-muted/35",
+        "data-[hovered=true]:shadow-[0_20px_44px_rgba(15,23,42,0.14)] data-[hovered=true]:ring-foreground/20",
+        "dark:data-[hovered=true]:shadow-[0_20px_44px_rgba(0,0,0,0.5)] dark:data-[hovered=true]:ring-white/20",
+        "focus-visible:ring-2 focus-visible:ring-ring",
       )}
     >
-      <Link
-        href={item.href}
-        target={opensExternally ? "_blank" : undefined}
-        rel={opensExternally ? "noreferrer" : undefined}
-        className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        aria-label={`${opensExternally ? "Open" : "Read"} ${item.title}`}
-      />
       {cover ? (
         <div className="overflow-hidden">
           <Image
@@ -37,28 +48,40 @@ export function ContentCard({ item }: { item: ContentItem }) {
             width={800}
             height={500}
             unoptimized={cover.endsWith(".svg")}
-            className="aspect-[16/10] w-full bg-accent object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+            className={cn(
+              "aspect-[16/10] w-full bg-accent object-cover transition-[scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              hovered && "scale-105",
+            )}
           />
         </div>
       ) : null}
-      <CardHeader>
-        <CardDescription>{item.date}</CardDescription>
-        <CardTitle className="text-lg transition-colors duration-300 group-hover:text-foreground">
-          {item.title}
-        </CardTitle>
-        <CardDescription className="line-clamp-3">{item.description}</CardDescription>
-      </CardHeader>
-      <CardFooter className="mt-auto flex flex-wrap gap-2">
-        {sourcedExternally ? <Badge variant="secondary">External</Badge> : null}
+
+      <div className="flex flex-1 flex-col gap-1 px-4 pt-4">
+        <p className="text-sm text-muted-foreground">{item.date}</p>
+        <h3 className="font-heading text-lg font-medium leading-snug">{item.title}</h3>
+        <p className="line-clamp-3 text-sm text-muted-foreground">{item.description}</p>
+      </div>
+
+      <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-border/70 bg-muted/50 px-4 py-4">
+        {sourcedExternally ? (
+          <span className="inline-flex h-5 items-center rounded-4xl bg-secondary px-2 text-xs font-medium">
+            External
+          </span>
+        ) : null}
         {item.tags.slice(0, 3).map((tag) => (
           <Badge key={tag} variant="outline">
             {tag}
           </Badge>
         ))}
-        <span className="ms-auto inline-flex h-7 items-center rounded-lg border border-border px-2.5 text-[0.8rem] font-medium text-foreground transition-colors duration-300 group-hover:bg-muted">
+        <span
+          className={cn(
+            "ms-auto inline-flex h-7 items-center rounded-lg border border-border bg-background px-2.5 text-[0.8rem] font-medium text-foreground transition-colors duration-300",
+            hovered && "border-foreground/25 bg-card",
+          )}
+        >
           {opensExternally ? "Open" : "Read"}
         </span>
-      </CardFooter>
-    </Card>
+      </div>
+    </Link>
   );
 }

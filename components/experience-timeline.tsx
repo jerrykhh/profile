@@ -26,15 +26,14 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
             return (
               <li key={`${job.role}-${job.period}`} className="relative py-6 ps-10 first:pt-4 last:pb-2">
                 {/* Node centered on the vertical border via -translate-x-1/2 */}
-                <span className="absolute start-0 top-7 flex size-9 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border border-border bg-white p-1.5 text-foreground dark:bg-card">
+                <span className="absolute start-0 top-7 flex size-9 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border border-border bg-white text-foreground shadow-sm dark:border-border dark:bg-white">
                   {job.logo ? (
                     <Image
                       src={job.logo}
                       alt=""
-                      width={28}
-                      height={28}
-                      unoptimized={job.logo.endsWith(".svg")}
-                      className="size-full object-contain"
+                      width={36}
+                      height={36}
+                      className="size-full object-cover"
                     />
                   ) : (
                     <BriefcaseBusiness className="size-4" aria-hidden />
