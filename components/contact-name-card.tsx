@@ -50,12 +50,14 @@ const socialIcons = ["github", "linkedin", "youtube", "email"].flatMap((id) => {
   ];
 });
 
-type CardId = "current" | "viutv" | "ha";
+type CardId = "current" | "viutv" | "viutv-past" | "ha";
 type CardTone = "white" | "viutv" | "muted";
 
 type WalletCard = {
   id: CardId;
   tone: CardTone;
+  /** Same ViuTV blue with a black opacity veil — reads as past/inactive. */
+  inactive?: boolean;
   peekTitle: string;
   peekMeta: string;
 };
@@ -63,19 +65,22 @@ type WalletCard = {
 function CardShell({
   tone,
   cardId,
+  inactive,
   children,
   className,
 }: {
   tone: CardTone;
   cardId: CardId;
+  inactive?: boolean;
   children: ReactNode;
   className?: string;
 }) {
   return (
     <div
       data-wallet-card={cardId}
+      data-inactive={inactive ? "true" : undefined}
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border shadow-[0_14px_40px_rgba(15,23,42,0.14)] dark:shadow-[0_18px_48px_rgba(0,0,0,0.55)]",
+        "relative flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border shadow-[0_14px_40px_rgba(15,23,42,0.14)] dark:shadow-[0_18px_48px_rgba(0,0,0,0.55)]",
         // Personal pass: white by day, cool ink plate by night (not flat grey).
         tone === "white" &&
           "border-black/5 bg-white text-foreground dark:border-white/12 dark:bg-[#171c2a] dark:text-[#eef1f7]",
@@ -92,7 +97,13 @@ function CardShell({
           : undefined
       }
     >
-      {children}
+      <div className="relative flex h-full w-full flex-col">{children}</div>
+      {inactive ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] bg-black/45 dark:bg-black/55"
+        />
+      ) : null}
     </div>
   );
 }
@@ -158,13 +169,16 @@ function RoleCardBody({
   role,
   period,
   tone,
+  inactive,
 }: {
   company: string;
   role: string;
   period: string;
   tone: Extract<CardTone, "viutv" | "muted">;
+  inactive?: boolean;
 }) {
   const onBlue = tone === "viutv";
+  const eyebrow = inactive ? "Past role" : onBlue ? "Current role" : "Past employment";
 
   return (
     <div className="flex h-full flex-col justify-between px-6 pb-7 pt-7">
@@ -175,7 +189,7 @@ function RoleCardBody({
             onBlue ? "text-white/70" : "text-foreground/40 dark:text-[#8b93a8]/70",
           )}
         >
-          {onBlue ? "Current role" : "Past employment"}
+          {eyebrow}
         </p>
         <p
           className={cn(
@@ -206,8 +220,9 @@ export function ContactNameCard() {
   const reduceMotion = useReducedMotion();
   const [frontId, setFrontId] = useState<CardId>("current");
 
-  const viutv =
-    profileConfig.experience.find((item) => /viu/i.test(item.company)) ?? profileConfig.experience[0];
+  const viutvRoles = profileConfig.experience.filter((item) => /viu/i.test(item.company));
+  const viutv = viutvRoles[0] ?? profileConfig.experience[0];
+  const viutvPast = viutvRoles[1] ?? viutv;
   const ha =
     profileConfig.experience.find((item) => /hospital authority/i.test(item.company)) ??
     profileConfig.experience.at(-1)!;
@@ -227,13 +242,20 @@ export function ContactNameCard() {
         peekMeta: viutv.role,
       },
       {
+        id: "viutv-past",
+        tone: "viutv",
+        inactive: true,
+        peekTitle: "ViuTV",
+        peekMeta: viutvPast.role,
+      },
+      {
         id: "ha",
         tone: "muted",
         peekTitle: "Hospital Authority",
         peekMeta: ha.role,
       },
     ],
-    [ha.role, viutv.role],
+    [ha.role, viutv.role, viutvPast.role],
   );
 
   // Front card sits on top; remaining cards keep original relative order for peeks below.
@@ -289,7 +311,7 @@ export function ContactNameCard() {
               animate={{ top, zIndex }}
               transition={spring}
             >
-              <CardShell tone={card.tone} cardId={card.id} className="h-full">
+              <CardShell tone={card.tone} cardId={card.id} inactive={card.inactive} className="h-full">
                 {isFront ? (
                   <div className="h-full">
                     {card.id === "current" ? (
@@ -300,6 +322,14 @@ export function ContactNameCard() {
                         role={viutv.role}
                         period={viutv.period}
                         tone="viutv"
+                      />
+                    ) : card.id === "viutv-past" ? (
+                      <RoleCardBody
+                        company="HK Television Entertainment Co Ltd (ViuTV)"
+                        role={viutvPast.role}
+                        period={viutvPast.period}
+                        tone="viutv"
+                        inactive
                       />
                     ) : (
                       <RoleCardBody
@@ -349,7 +379,11 @@ export function ContactNameCard() {
                             : "text-foreground/40 dark:text-[#eef1f7]/45",
                       )}
                     >
-                      {card.id === "ha" ? "Past" : card.id === "viutv" ? "Role" : "Now"}
+                      {card.id === "ha" || card.inactive
+                        ? "Past"
+                        : card.id === "viutv"
+                          ? "Role"
+                          : "Now"}
                     </span>
                   </div>
                 )}
