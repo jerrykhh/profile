@@ -31,7 +31,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-  return { title: project.title, description: project.description };
+  return {
+    title: project.title,
+    description: project.description,
+    alternates: { canonical: `/project/${project.slug}` },
+    openGraph: {
+      title: project.title,
+      description: project.description,
+      type: "article",
+      url: `/project/${project.slug}`,
+      images: project.cover ? [{ url: project.cover, alt: project.title }] : undefined,
+    },
+    twitter: {
+      card: project.cover ? "summary_large_image" : "summary",
+      title: project.title,
+      description: project.description,
+      images: project.cover ? [{ url: project.cover, alt: project.title }] : undefined,
+    },
+  };
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
@@ -76,7 +93,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             {project.cover ? (
               <Image
                 src={project.cover}
-                alt=""
+                alt={project.title}
                 width={1200}
                 height={720}
                 className="aspect-[16/10] w-full object-cover"

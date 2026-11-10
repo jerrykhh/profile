@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight, BriefcaseBusiness, Clock3 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { ExperienceItem } from "@/config/profile";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
   return (
     <Card className={cn("border-border/80 bg-card shadow-none ring-1 ring-border/70", className)}>
       <CardHeader className="flex flex-row items-center justify-between gap-3 border-b border-border/70 pb-4">
-        <CardTitle className="font-heading text-xl font-semibold tracking-tight">Experience</CardTitle>
+        <h2 className="font-heading text-xl font-semibold tracking-tight">Experience</h2>
         <span className="text-sm text-muted-foreground">{items.length} roles</span>
       </CardHeader>
       <CardContent className="pt-2">
@@ -30,7 +30,7 @@ export function ExperienceTimeline({ items, className }: ExperienceTimelineProps
                   {job.logo ? (
                     <Image
                       src={job.logo}
-                      alt=""
+                      alt={`${job.company} logo`}
                       width={36}
                       height={36}
                       className="size-full object-cover"

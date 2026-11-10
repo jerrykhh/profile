@@ -30,7 +30,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const blog = getBlog(slug);
   if (!blog) return {};
-  return { title: blog.title, description: blog.description };
+  return {
+    title: blog.title,
+    description: blog.description,
+    alternates: { canonical: `/blog/${blog.slug}` },
+    openGraph: {
+      title: blog.title,
+      description: blog.description,
+      type: "article",
+      url: `/blog/${blog.slug}`,
+      images: blog.cover ? [{ url: blog.cover, alt: blog.title }] : undefined,
+    },
+    twitter: {
+      card: blog.cover ? "summary_large_image" : "summary",
+      title: blog.title,
+      description: blog.description,
+      images: blog.cover ? [{ url: blog.cover, alt: blog.title }] : undefined,
+    },
+  };
 }
 
 function BlogCrumb({ title }: { title: string }) {
@@ -64,7 +81,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
         {blog.cover ? (
           <Image
             src={blog.cover}
-            alt=""
+            alt={blog.title}
             width={1600}
             height={256}
             unoptimized={blog.cover.endsWith(".svg")}

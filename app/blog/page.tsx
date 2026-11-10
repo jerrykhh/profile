@@ -3,7 +3,11 @@ import type { Metadata } from "next";
 import { ContentCard } from "@/components/content-card";
 import { getBlogs } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Blog" };
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Writing on systems, experiments, and things I learned while building.",
+  alternates: { canonical: "/blog" },
+};
 
 export default function BlogIndexPage() {
   const blogs = getBlogs();

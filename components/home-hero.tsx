@@ -35,12 +35,12 @@ export function HomeHero() {
             />
           </div>
 
-          <p className="font-heading text-5xl font-semibold tracking-tight text-foreground md:text-7xl lg:text-8xl">
+          <h1 className="font-heading text-5xl font-semibold tracking-tight text-foreground md:text-7xl lg:text-8xl">
             {siteConfig.brand}
-          </p>
-          <h1 className="font-heading text-2xl font-medium tracking-tight text-foreground md:text-4xl">
-            {profileConfig.headline}
           </h1>
+          <p className="font-heading text-2xl font-medium tracking-tight text-foreground md:text-4xl">
+            {profileConfig.headline}
+          </p>
           <p className="max-w-xl text-base leading-relaxed text-foreground/75 md:text-lg">
             {profileConfig.tagline}
           </p>

@@ -3,7 +3,11 @@ import type { Metadata } from "next";
 import { ContentCard } from "@/components/content-card";
 import { getProjects } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Projects" };
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "Prototype products, hackathon systems, and automation tools.",
+  alternates: { canonical: "/project" },
+};
 
 export default function ProjectIndexPage() {
   const projects = getProjects();

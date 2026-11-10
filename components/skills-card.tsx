@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { TechGroup } from "@/config/profile";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ export function SkillsCard({ groups, className }: SkillsCardProps) {
   return (
     <Card className={cn("border-border/80 bg-card shadow-none ring-1 ring-border/70", className)}>
       <CardHeader className="pb-3">
-        <CardTitle className="font-heading text-xl font-semibold tracking-tight">Skills</CardTitle>
+        <h2 className="font-heading text-xl font-semibold tracking-tight">Skills</h2>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         {groups.map((group) => (

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,10 +8,20 @@ import { HomeHero } from "@/components/home-hero";
 import { SkillsCard } from "@/components/skills-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { profileConfig } from "@/config/profile";
 import { getFeaturedBlogs, getFeaturedProjects } from "@/lib/content";
 import { GraduationCap } from "lucide-react";
+
+/** Exact homepage document title — do not inherit a section suffix. */
+export const metadata: Metadata = {
+  title: {
+    absolute: "Profile | Jerry Kwok",
+  },
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function HomePage() {
   const projects = getFeaturedProjects(3);
@@ -28,7 +39,7 @@ export default function HomePage() {
         <section className="grid gap-6 lg:grid-cols-2">
           <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
             <CardHeader>
-              <CardTitle className="font-heading text-xl font-semibold tracking-tight">Education</CardTitle>
+              <h2 className="font-heading text-xl font-semibold tracking-tight">Education</h2>
               <CardDescription>Degrees and academic background.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col">
@@ -43,7 +54,7 @@ export default function HomePage() {
                     {item.logo ? (
                       <Image
                         src={item.logo}
-                        alt=""
+                        alt={`${item.school} logo`}
                         width={32}
                         height={32}
                         unoptimized={item.logo.endsWith(".svg")}
@@ -67,7 +78,7 @@ export default function HomePage() {
 
           <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
             <CardHeader>
-              <CardTitle className="font-heading text-xl font-semibold tracking-tight">Certifications</CardTitle>
+              <h2 className="font-heading text-xl font-semibold tracking-tight">Certifications</h2>
               <CardDescription>Cloud credentials and competition awards.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col">
