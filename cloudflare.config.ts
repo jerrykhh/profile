@@ -2,7 +2,7 @@ import { bindings, defineConfig, defineWorker } from "cf/config";
 
 export default defineConfig({
   worker: defineWorker({
-    name: "open-profile",
+    name: "jerrykhh-profile",
     entrypoint: "vinext/server/fetch-handler",
     compatibilityDate: "2026-11-03",
     compatibilityFlags: ["nodejs_compat"],
