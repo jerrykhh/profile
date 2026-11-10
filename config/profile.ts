@@ -48,6 +48,27 @@ export const siteConfig = {
   description:
     "Senior Software Engineer working across DevOps/SRE, cloud platform engineering, and hands-on application development.",
   profileIcon: "/profile/icon.jpg",
+  /** Site-wide `<meta name="keywords">` — grounded in profile copy, not stuffed. */
+  keywords: [
+    "swe",
+    "jerry",
+    "Jerry Kwok",
+    "jerrykhh",
+    "devops",
+    "engineer",
+    "software engineer",
+    "senior software engineer",
+    "SRE",
+    "site reliability",
+    "cloud",
+    "cloud platforms",
+    "platform engineering",
+    "AWS",
+    "Next.js",
+    "Terraform",
+    "Hong Kong",
+    "ViuTV",
+  ],
 } as const;
 
 export const profileConfig = {

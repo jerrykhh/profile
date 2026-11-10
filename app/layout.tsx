@@ -30,6 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Jerry Kwok",
   },
   description: siteConfig.description,
+  keywords: [...siteConfig.keywords],
   applicationName: "Profile | Jerry Kwok",
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
