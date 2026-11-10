@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ContentCard } from "@/components/content-card";
-import { ExperienceAside } from "@/components/experience-aside";
 import { ExperienceTimeline } from "@/components/experience-timeline";
 import { HomeHero } from "@/components/home-hero";
 import { SkillsCard } from "@/components/skills-card";
@@ -22,10 +21,7 @@ export default function HomePage() {
       <HomeHero />
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-12 md:gap-16 md:px-8 md:py-16">
-        <section className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(260px,0.7fr)]">
-          <ExperienceTimeline items={profileConfig.experience} />
-          <ExperienceAside />
-        </section>
+        <ExperienceTimeline items={profileConfig.experience} />
 
         <SkillsCard groups={profileConfig.techs} />
 
