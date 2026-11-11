@@ -22,21 +22,15 @@ The job of the site never changed. The stack did.
 
 ## Version history
 
-### V1. Bootstrap (master’s homework)
+Newest first.
 
-V1 was a Bootstrap static site I built while studying for my master’s. The archive still loads `styles/bootstrap.css` and uses a Bootstrap navbar and grid. The page reads like a CV: About Me, experience, education, plus Projects, Blog, and Gallery.
+### V4. Next.js (vinext) on Cloudflare Workers
 
-Live archive: [owner-v1-backup.bytesio.net](https://owner-v1-backup.bytesio.net/)
+V4 is the current site. It returns to a Next.js App Router shape, runs on Cloudflare Workers through vinext, and keeps blog and project posts as static markdown in git again. The first viewport is a cobalt frost shader hero with glass nav, role line, and Get in Touch / View Projects actions.
 
-![V1 homepage](/project/profile/v1-home.png)
+Live site: [owner.bytesio.net](https://owner.bytesio.net/)
 
-### V2. Next.js on Vercel
-
-V2 moved the profile onto Next.js and hosted it on Vercel. Content lived as markdown in the repo. The homepage used a light shadcn-style layout: photo and socials on the left, bio and a pinned todo list on the right, then project cards below.
-
-Live archive: [profile-jerrykhh.vercel.app](https://profile-jerrykhh.vercel.app/)
-
-![V2 homepage](/project/profile/v2-home.png)
+![V4 homepage](/project/profile/v4-home.png)
 
 ### V3. Remix
 
@@ -48,13 +42,21 @@ Live archive: [owner-v3-backup.bytesio.net](https://owner-v3-backup.bytesio.net/
 
 ![V3 homepage](/project/profile/v3-home.png)
 
-### V4. Next.js (vinext) on Cloudflare Workers
+### V2. Next.js on Vercel
 
-V4 is the current site. It returns to a Next.js App Router shape, runs on Cloudflare Workers through vinext, and keeps blog and project posts as static markdown in git again. The first viewport is a cobalt frost shader hero with glass nav, role line, and Get in Touch / View Projects actions.
+V2 moved the profile onto Next.js and hosted it on Vercel. Content lived as markdown in the repo. The homepage used a light shadcn-style layout: photo and socials on the left, bio and a pinned todo list on the right, then project cards below.
 
-Live site: [owner.bytesio.net](https://owner.bytesio.net/)
+Live archive: [profile-jerrykhh.vercel.app](https://profile-jerrykhh.vercel.app/)
 
-![V4 homepage](/project/profile/v4-home.png)
+![V2 homepage](/project/profile/v2-home.png)
+
+### V1. Bootstrap (master’s homework)
+
+V1 was a Bootstrap static site I built while studying for my master’s. The archive still loads `styles/bootstrap.css` and uses a Bootstrap navbar and grid. The page reads like a CV: About Me, experience, education, plus Projects, Blog, and Gallery.
+
+Live archive: [owner-v1-backup.bytesio.net](https://owner-v1-backup.bytesio.net/)
+
+![V1 homepage](/project/profile/v1-home.png)
 
 ## What V4 is made of
 
@@ -109,4 +111,4 @@ Shared layout metadata covers:
 
 ## What stayed the same
 
-Across the rewrites I still want the same outcome: introduce Jerry Kwok, show projects and writing, and give a clean way to connect. Bootstrap homework became Vercel Next.js, then Remix with Notion, then vinext on Workers with git-backed markdown. The archives above are the proof trail.
+Across the rewrites I still want the same outcome: introduce Jerry Kwok, show projects and writing, and give a clean way to connect. vinext on Workers with git-backed markdown sits on top of Remix with Notion, Vercel Next.js, and Bootstrap homework. The archives in the version history are the proof trail.
