@@ -14,9 +14,8 @@ jobs:
     steps:
       - uses: googleapis/release-please-action@v4
         with:
-          # this assumes that you have created a personal access token
-          # (PAT) and configured it as a GitHub action secret named
-          # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
-          token: ${{ secrets.GH_RELEASE_PLEASE_TOKEN }}
+          # Use the built-in Actions token. A custom PAT secret
+          # (GH_RELEASE_PLEASE_TOKEN) was returning "Bad credentials".
+          token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
           target-branch: ${{ github.ref_name }}
