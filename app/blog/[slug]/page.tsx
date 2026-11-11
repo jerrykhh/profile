@@ -103,7 +103,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
             ))}
           </div>
           {blog.external && blog.externalUrl ? (
-            <Button className="w-fit" nativeButton={false} render={<Link href={blog.externalUrl} target="_blank" rel="noreferrer" />}>
+            <Button className="w-fit" nativeButton={false} render={<Link href={blog.externalUrl} target="_blank" rel="noopener noreferrer" />}>
               Read on LinkedIn
             </Button>
           ) : (

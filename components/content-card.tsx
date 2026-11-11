@@ -20,7 +20,7 @@ export function ContentCard({ item }: { item: ContentItem }) {
     <Link
       href={item.href}
       target={opensExternally ? "_blank" : undefined}
-      rel={opensExternally ? "noreferrer" : undefined}
+      rel={opensExternally ? "noopener noreferrer" : undefined}
       data-card-link
       data-hovered={hovered ? "true" : "false"}
       aria-label={`${opensExternally ? "Open" : "Read"} ${item.title}`}
