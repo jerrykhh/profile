@@ -37,7 +37,7 @@ The openwin(URL) method:
 
 <img src="/blog/lcsd/system-review-open-method.png" class="rounded"/>
 
-The open() method of the Window interface loads a specified resource into a new or existing browsing context (that is, tab, window, or &lt;iframe&gt;) under a specified name. (ref: [Window.open() - Web APIs | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/API/Window/open)
+The open() method of the Window interface loads a specified resource into a new or existing browsing context (that is, tab, window, or iframe) under a specified name. (ref: [Window.open() - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/open))
 
 We can paste the URL to the browser simply, and no popup window because there is no other action that will be triggered in openwin() method just pop up the window.
 

@@ -31,4 +31,4 @@ npm run start   # local Worker preview
 npm run deploy  # vinext-cloudflare deploy
 ```
 
-Worker name: `open-profile` (see `cloudflare.config.ts`).
+Worker name: `jerrykhh-profile` (see `cloudflare.config.ts`).

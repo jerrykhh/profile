@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IVE">
+  <rect width="64" height="64" rx="32" fill="#fff"/>
+  <g transform="translate(10,14)">
+    <circle cx="6" cy="18" r="4.2" fill="#2ea3e0"/>
+    <circle cx="12" cy="12" r="3.6" fill="#7ec4ea"/>
+    <circle cx="8" cy="8" r="2.8" fill="#9a9c9f"/>
+    <circle cx="15" cy="18" r="3.2" fill="#2ea3e0"/>
+    <circle cx="18" cy="10" r="2.4" fill="#9a9c9f"/>
+    <circle cx="4" cy="13" r="2.2" fill="#7ec4ea"/>
+    <text x="24" y="20" font-family="Arial Black, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#111">IVE</text>
+  </g>
+</svg>

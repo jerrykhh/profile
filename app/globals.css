@@ -7,73 +7,74 @@
 
 :root {
   color-scheme: light;
-  --background: #f4f0e8;
-  --foreground: #1c1917;
-  --card: #fffdf8;
-  --card-foreground: #1c1917;
-  --popover: #fffdf8;
-  --popover-foreground: #1c1917;
-  --primary: #111111;
+  --background: #f6f6f4;
+  --foreground: #141414;
+  --card: #ffffff;
+  --card-foreground: #141414;
+  --popover: #ffffff;
+  --popover-foreground: #141414;
+  --primary: #141414;
   --primary-foreground: #fafafa;
-  --secondary: #ebe4d6;
-  --secondary-foreground: #1c1917;
-  --muted: #ebe4d6;
-  --muted-foreground: #5e574e;
-  --accent: #ece7dd;
-  --accent-foreground: #111111;
+  --secondary: #efefed;
+  --secondary-foreground: #141414;
+  --muted: #efefed;
+  --muted-foreground: #6a6a66;
+  --accent: #efefed;
+  --accent-foreground: #141414;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #e3dacb;
-  --input: #e3dacb;
-  --ring: #111111;
-  --radius: 1.15rem;
-  --chart-1: #111111;
-  --chart-2: #c2410c;
-  --chart-3: #1c1917;
-  --chart-4: #a8a29e;
-  --chart-5: #f4f0e8;
-  --sidebar: #fffdf8;
-  --sidebar-foreground: #1c1917;
-  --sidebar-primary: #111111;
+  --border: #e4e4e1;
+  --input: #e4e4e1;
+  --ring: #141414;
+  --radius: 1rem;
+  --chart-1: #141414;
+  --chart-2: #6a6a66;
+  --chart-3: #141414;
+  --chart-4: #a3a39e;
+  --chart-5: #f6f6f4;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #141414;
+  --sidebar-primary: #141414;
   --sidebar-primary-foreground: #fafafa;
-  --sidebar-accent: #ece7dd;
-  --sidebar-accent-foreground: #111111;
-  --sidebar-border: #e3dacb;
-  --sidebar-ring: #111111;
+  --sidebar-accent: #efefed;
+  --sidebar-accent-foreground: #141414;
+  --sidebar-border: #e4e4e1;
+  --sidebar-ring: #141414;
 }
 
 .dark {
+  /* Night cobalt kinship — ink ground slightly cooler than flat charcoal. */
   color-scheme: dark;
-  --background: #12110f;
-  --foreground: #f6f1e8;
-  --card: #1d1b18;
-  --card-foreground: #f6f1e8;
-  --popover: #1d1b18;
-  --popover-foreground: #f6f1e8;
-  --primary: #f6f1e8;
-  --primary-foreground: #12110f;
-  --secondary: #2a2723;
-  --secondary-foreground: #f6f1e8;
-  --muted: #2a2723;
-  --muted-foreground: #c9c0b4;
-  --accent: #2a2723;
-  --accent-foreground: #f6f1e8;
+  --background: #0b0d14;
+  --foreground: #eef1f7;
+  --card: #141824;
+  --card-foreground: #eef1f7;
+  --popover: #141824;
+  --popover-foreground: #eef1f7;
+  --primary: #eef1f7;
+  --primary-foreground: #0b0d14;
+  --secondary: #1c2230;
+  --secondary-foreground: #eef1f7;
+  --muted: #1c2230;
+  --muted-foreground: #9aa3b5;
+  --accent: #1c2230;
+  --accent-foreground: #eef1f7;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: #322e29;
-  --input: #322e29;
-  --ring: #f6f1e8;
-  --chart-1: #f6f1e8;
-  --chart-2: #f0a05a;
-  --chart-3: #f6f1e8;
-  --chart-4: #8a8176;
-  --chart-5: #1d1b18;
-  --sidebar: #1d1b18;
-  --sidebar-foreground: #f6f1e8;
-  --sidebar-primary: #f6f1e8;
-  --sidebar-primary-foreground: #12110f;
-  --sidebar-accent: #2a2723;
-  --sidebar-accent-foreground: #f6f1e8;
-  --sidebar-border: #322e29;
-  --sidebar-ring: #f6f1e8;
+  --border: #2a3142;
+  --input: #2a3142;
+  --ring: #eef1f7;
+  --chart-1: #eef1f7;
+  --chart-2: #9aa3b5;
+  --chart-3: #eef1f7;
+  --chart-4: #6b7388;
+  --chart-5: #141824;
+  --sidebar: #141824;
+  --sidebar-foreground: #eef1f7;
+  --sidebar-primary: #eef1f7;
+  --sidebar-primary-foreground: #0b0d14;
+  --sidebar-accent: #1c2230;
+  --sidebar-accent-foreground: #eef1f7;
+  --sidebar-border: #2a3142;
+  --sidebar-ring: #eef1f7;
 }
 
 @theme inline {
@@ -125,7 +126,9 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    /* Instant jump on route change (blog/project detail). Smooth CSS scroll
+       animated Next/vinext scroll-to-top and felt laggy. */
+    scroll-behavior: auto;
   }
 
   body {
@@ -138,8 +141,20 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Author markdown embeds (YouTube) — 16:9 shell used across blog/project bodies. */
+.iframe-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  background: color-mix(in oklab, var(--muted) 80%, transparent);
+}
+
+.iframe-container iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
