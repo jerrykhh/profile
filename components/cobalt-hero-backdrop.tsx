@@ -9,7 +9,9 @@ import { HeroShader } from "@/components/hero-shader";
  */
 export function CobaltHeroBackdrop() {
   return (
-    <div className="absolute inset-x-0 top-0 z-0 h-[min(100vh,58rem)] overflow-hidden">
+    // Pull up under the fixed header (main has pt-16) so frost fills the top
+    // edge — no body-colored bar behind the glass nav.
+    <div className="absolute inset-x-0 -top-16 z-0 h-[min(100vh,58rem)] overflow-hidden">
       <HeroShader />
     </div>
   );
