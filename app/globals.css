@@ -5,8 +5,171 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Register theme colors so html.theme-transition can interpolate them. */
+@property --background {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f6f6f4;
+}
+@property --foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --card {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --card-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --popover {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --popover-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --primary {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --primary-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fafafa;
+}
+@property --secondary {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #efefed;
+}
+@property --secondary-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --muted {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #efefed;
+}
+@property --muted-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6a6a66;
+}
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #efefed;
+}
+@property --accent-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --destructive {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e54d2e;
+}
+@property --border {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e4e4e1;
+}
+@property --input {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e4e4e1;
+}
+@property --ring {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --chart-1 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --chart-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6a6a66;
+}
+@property --chart-3 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --chart-4 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #a3a39e;
+}
+@property --chart-5 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f6f6f4;
+}
+@property --sidebar {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --sidebar-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --sidebar-primary {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --sidebar-primary-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #fafafa;
+}
+@property --sidebar-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #efefed;
+}
+@property --sidebar-accent-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --sidebar-border {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e4e4e1;
+}
+@property --sidebar-ring {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141414;
+}
+@property --hero-grid-line {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(100, 116, 139, 0.22);
+}
+
 :root {
   color-scheme: light;
+  --hero-grid-line: rgba(100, 116, 139, 0.22);
   --background: #f6f6f4;
   --foreground: #141414;
   --card: #ffffff;
@@ -44,6 +207,7 @@
 .dark {
   /* Night cobalt kinship — ink ground slightly cooler than flat charcoal. */
   color-scheme: dark;
+  --hero-grid-line: rgba(148, 163, 184, 0.16);
   --background: #0b0d14;
   --foreground: #eef1f7;
   --card: #141824;
@@ -75,6 +239,84 @@
   --sidebar-accent-foreground: #eef1f7;
   --sidebar-border: #2a3142;
   --sidebar-ring: #eef1f7;
+}
+
+/*
+ * Tasteful theme easing (~400ms). ThemeToggle adds .theme-transition briefly.
+ * 1) Registered tokens interpolate on <html> (body/surfaces using vars).
+ * 2) Soft color/opacity transitions on descendants cover hardcoded dark: utilities
+ *    without a permanent * { transition } (avoids fighting hover/focus motion).
+ * 3) When View Transitions API is used by ThemeToggle, root crossfade below
+ *    covers glass gradients + frost that tokens cannot interpolate.
+ */
+html.theme-transition {
+  transition:
+    --background 400ms ease,
+    --foreground 400ms ease,
+    --card 400ms ease,
+    --card-foreground 400ms ease,
+    --popover 400ms ease,
+    --popover-foreground 400ms ease,
+    --primary 400ms ease,
+    --primary-foreground 400ms ease,
+    --secondary 400ms ease,
+    --secondary-foreground 400ms ease,
+    --muted 400ms ease,
+    --muted-foreground 400ms ease,
+    --accent 400ms ease,
+    --accent-foreground 400ms ease,
+    --destructive 400ms ease,
+    --border 400ms ease,
+    --input 400ms ease,
+    --ring 400ms ease,
+    --chart-1 400ms ease,
+    --chart-2 400ms ease,
+    --chart-3 400ms ease,
+    --chart-4 400ms ease,
+    --chart-5 400ms ease,
+    --sidebar 400ms ease,
+    --sidebar-foreground 400ms ease,
+    --sidebar-primary 400ms ease,
+    --sidebar-primary-foreground 400ms ease,
+    --sidebar-accent 400ms ease,
+    --sidebar-accent-foreground 400ms ease,
+    --sidebar-border 400ms ease,
+    --sidebar-ring 400ms ease,
+    --hero-grid-line 400ms ease;
+}
+
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition-property: color, background-color, border-color, outline-color,
+    box-shadow, fill, stroke, opacity, text-decoration-color, caret-color !important;
+  transition-duration: 400ms !important;
+  transition-timing-function: ease !important;
+}
+
+/* Muted root crossfade when ThemeToggle uses document.startViewTransition. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 400ms;
+  animation-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-transition {
+    transition: none;
+  }
+
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: none !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 @theme inline {

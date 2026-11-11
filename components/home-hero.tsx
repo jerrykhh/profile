@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 
-import { HeroShader } from "@/components/hero-shader";
 import { Button } from "@/components/ui/button";
 import { profileConfig, siteConfig } from "@/config/profile";
 
@@ -15,11 +14,10 @@ export function HomeHero() {
     : { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
-    <section className="relative isolate -mt-16 min-h-[min(100vh,58rem)] overflow-hidden border-b border-border/60 pt-16">
-      <HeroShader />
-      <div className="relative z-10 mx-auto flex min-h-[min(calc(100vh-4rem),54rem)] w-full max-w-6xl items-center justify-center px-4 pb-24 pt-12 md:px-8 md:pb-28 md:pt-16">
+    <section className="pointer-events-none relative z-10 -mt-16 min-h-[min(100vh,58rem)] overflow-hidden border-b border-border/60 pt-16">
+      <div className="relative mx-auto flex min-h-[min(calc(100vh-4rem),54rem)] w-full max-w-6xl items-center justify-center px-4 pb-24 pt-12 md:px-8 md:pb-28 md:pt-16">
         <motion.div
-          className="flex w-full max-w-2xl flex-col items-center gap-5 text-center text-foreground"
+          className="pointer-events-auto flex w-full max-w-2xl flex-col items-center gap-5 text-center text-foreground"
           initial={reduceMotion ? false : { opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={transition}
