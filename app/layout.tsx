@@ -21,23 +21,59 @@ const body = Manrope({
   weight: ["400", "500", "600", "700"],
 });
 
+const documentTitle = "Profile | Jerry Kwok";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.brand} · ${siteConfig.title}`,
-    template: `%s · ${siteConfig.brand}`,
+    default: documentTitle,
+    template: "%s | Jerry Kwok",
   },
   description: siteConfig.description,
+  keywords: [...siteConfig.keywords],
+  applicationName: "Profile | Jerry Kwok",
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   icons: {
     icon: siteConfig.profileIcon,
   },
   openGraph: {
-    title: siteConfig.brand,
+    title: documentTitle,
     description: siteConfig.description,
     url: siteConfig.url,
-    siteName: siteConfig.brand,
-    images: [{ url: siteConfig.profileIcon }],
+    siteName: documentTitle,
+    locale: "en_HK",
     type: "website",
+    images: [
+      {
+        url: siteConfig.profileIcon,
+        width: 512,
+        height: 512,
+        alt: siteConfig.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: documentTitle,
+    description: siteConfig.description,
+    images: [
+      {
+        url: siteConfig.profileIcon,
+        alt: siteConfig.name,
+      },
+    ],
   },
 };
 
@@ -47,7 +83,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="font-[family-name:var(--font-body)]">
         <ThemeScript />
         <SiteHeader />
-        <main className="min-h-[70vh]">{children}</main>
+        <main className="min-h-[70vh] pt-16">{children}</main>
         <SiteFooter />
       </body>
     </html>

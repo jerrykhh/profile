@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/profile";
+import { glassShell } from "@/lib/glass";
+import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Home" },
@@ -18,32 +19,43 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 md:px-8">
-        <Button variant="ghost" nativeButton={false} render={<Link href="/" />}>
-          {siteConfig.brand}
-        </Button>
-        <div className="flex items-center gap-2">
-          <nav className="flex max-w-[min(70vw,28rem)] items-center gap-1 overflow-x-auto">
-            {links.map((link) => {
-              const active =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname === link.href || pathname.startsWith(`${link.href}/`);
-              return (
-                <Button
-                  key={link.href}
-                  size="sm"
-                  variant={active ? "default" : "ghost"}
-                  nativeButton={false}
-                  render={<Link href={link.href} />}
-                >
-                  {link.label}
-                </Button>
-              );
-            })}
-          </nav>
-          <ThemeToggle />
+    <header className="fixed inset-x-0 top-0 z-40 bg-transparent">
+      <div className="mx-auto grid h-16 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 md:px-8">
+        <div aria-hidden className="min-w-0" />
+        <nav
+          className={cn(
+            "flex max-w-[min(92vw,34rem)] items-center justify-center gap-0.5 overflow-x-auto rounded-full px-1.5 py-1",
+            glassShell,
+          )}
+        >
+          {links.map((link) => {
+            const active =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname === link.href || pathname.startsWith(`${link.href}/`);
+            return (
+              <Button
+                key={link.href}
+                size="sm"
+                variant={active ? "default" : "ghost"}
+                className={cn(
+                  "rounded-full",
+                    active
+                      ? "bg-foreground/90 text-background shadow-sm hover:bg-foreground"
+                      : "bg-transparent text-foreground/80 hover:bg-white/30 hover:text-foreground dark:hover:bg-white/10",
+                )}
+                nativeButton={false}
+                render={<Link href={link.href} />}
+              >
+                {link.label}
+              </Button>
+            );
+          })}
+        </nav>
+        <div className="flex justify-end">
+          <div className={cn("rounded-full p-0.5", glassShell)}>
+            <ThemeToggle variant="ghost" />
+          </div>
         </div>
       </div>
     </header>

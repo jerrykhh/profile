@@ -21,14 +21,17 @@ function modulesToItems(
     .map(([filepath, source]) => {
       const filename = filepath.split("/").pop() || filepath;
       const { meta, body } = parseMarkdownFile(kind, filename, source);
+      // External blog posts open off-site; internal posts stay on /blog/[slug].
+      const href =
+        meta.external && meta.externalUrl
+          ? meta.externalUrl
+          : `/${kind === "blog" ? "blog" : "project"}/${meta.slug}`;
+
       return {
         ...meta,
         kind,
         body,
-        href:
-          meta.external && meta.externalUrl
-            ? meta.externalUrl
-            : `/${kind === "blog" ? "blog" : "project"}/${meta.slug}`,
+        href,
       } satisfies ContentItem;
     })
     .sort((a, b) => b.date.localeCompare(a.date));

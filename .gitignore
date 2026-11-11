@@ -15,3 +15,6 @@ node_modules
 .vinext
 .vite
 .wrangler
+.agents/
+.agent/
+skills-lock.json
