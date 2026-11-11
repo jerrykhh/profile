@@ -33,6 +33,14 @@ export function HeroShader({ className }: HeroShaderProps) {
   const [dark, setDark] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
+  // Reset shader readiness during render when theme flips so the new mesh
+  // never paints one frame at full opacity before the fade-in effect runs.
+  const [themePaint, setThemePaint] = useState(dark);
+  if (dark !== themePaint) {
+    setThemePaint(dark);
+    if (ready) setReady(false);
+  }
+
   useEffect(() => {
     setMounted(true);
     const syncTheme = () => setDark(readDark());
@@ -55,11 +63,6 @@ export function HeroShader({ className }: HeroShaderProps) {
       mq.removeEventListener("change", onMotion);
     };
   }, []);
-
-  // Remounting the mesh for theme must not briefly show an unfinished canvas.
-  useEffect(() => {
-    setReady(false);
-  }, [dark]);
 
   const palette = dark ? cobaltFrostDark : cobaltFrostLight;
   const showShader = mounted && available;
@@ -95,13 +98,14 @@ export function HeroShader({ className }: HeroShaderProps) {
   return (
     <div className={cn("absolute inset-0 overflow-hidden", className)} aria-hidden>
       {/* First paint: theme-correct CSS atmosphere (no JS). Soft target for WebGPU parity. */}
-      <div className="absolute inset-0 bg-[#e8eef8] transition-colors duration-500 dark:bg-[#070b16]" />
-      <div className="contents dark:hidden">
+      <div className="absolute inset-0 bg-[#e8eef8] transition-colors duration-400 motion-reduce:transition-none dark:bg-[#070b16]" />
+      {/* Opacity crossfade (not display swap) so light↔dark frost orbs ease with the theme flip. */}
+      <div className="absolute inset-0 opacity-100 transition-opacity duration-400 motion-reduce:transition-none dark:opacity-0">
         {cobaltFrostLight.orbs.map((orb) => (
           <div key={`light-${orb.className}`} className={orb.className} />
         ))}
       </div>
-      <div className="hidden dark:contents">
+      <div className="absolute inset-0 opacity-0 transition-opacity duration-400 motion-reduce:transition-none dark:opacity-100">
         {cobaltFrostDark.orbs.map((orb) => (
           <div key={`dark-${orb.className}`} className={orb.className} />
         ))}
@@ -144,7 +148,7 @@ export function HeroShader({ className }: HeroShaderProps) {
       ) : null}
 
       <div
-        className="pointer-events-none absolute inset-0 opacity-30 dark:opacity-25"
+        className="pointer-events-none absolute inset-0 opacity-30 transition-opacity duration-400 motion-reduce:transition-none dark:opacity-25"
         style={{
           backgroundImage: `linear-gradient(to right, var(--hero-grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--hero-grid-line) 1px, transparent 1px)`,
           backgroundSize: "56px 56px",
