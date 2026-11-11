@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-label="External article">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ece7dd"/>
+      <stop offset="100%" stop-color="#e3dacb"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#g)"/>
+  <rect x="40" y="40" width="720" height="420" rx="28" fill="#fffdf8" stroke="#111111" stroke-width="3"/>
+  <circle cx="180" cy="210" r="54" fill="#111111"/>
+  <path d="M158 210h44M180 188v44" stroke="#fafafa" stroke-width="8" stroke-linecap="round"/>
+  <rect x="280" y="178" width="300" height="22" rx="11" fill="#111111" opacity="0.9"/>
+  <rect x="280" y="220" width="240" height="16" rx="8" fill="#111111" opacity="0.35"/>
+  <rect x="280" y="252" width="180" height="16" rx="8" fill="#111111" opacity="0.22"/>
+  <text x="400" y="360" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" fill="#111111">External article</text>
+</svg>
