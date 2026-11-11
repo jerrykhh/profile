@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/jerrykhh/profile/compare/v4.0.1...v4.0.2) (2026-11-11)
+
+
+### Bug Fixes
+
+* version backups, external tabs, static cache TTLs ([#26](https://github.com/jerrykhh/profile/issues/26)) ([78a3b49](https://github.com/jerrykhh/profile/commit/78a3b492f6b2e2c1a36bb8f6e972eeff4c93de18))
+
 ## [4.0.1](https://github.com/jerrykhh/profile/compare/v4.0.0...v4.0.1) (2026-11-11)
 
 
