@@ -1,36 +1,24 @@
 {
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/.server/**/*.ts",
-    "src/**/.server/**/*.tsx",
-    "src/**/.client/**/*.ts",
-    "src/**/.client/**/*.tsx"
-  ],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": [
-      "@remix-run/cloudflare",
-      "vite/client",
-      "./process.env.d.ts",
-      "./remix.env.d.ts"
-    ],
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "resolveJsonModule": true,
-    "target": "ES2022",
-    "strict": true,
-    "allowJs": true,
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "types": ["vinext/types", "vite/client", "node"],
     "paths": {
-      "@/*": ["./src/*"]
-    },
-    // Vite takes care of building everything, not tsc.
-    "noEmit": true
-  }
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".cloudflare/types"],
+  "exclude": ["node_modules"]
 }
