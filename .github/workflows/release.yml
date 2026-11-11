@@ -25,11 +25,15 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+      # Manifest mode: release-please-config.json + .release-please-manifest.json
+      # pin last released version at 4.0.0 (tag v4.0.0 exists; GitHub Releases still
+      # only list through v3.0.1, which caused a bogus 3.1.0 release PR).
       - uses: googleapis/release-please-action@v5
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: node
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
           target-branch: ${{ github.ref_name }}
 
   deploy:
