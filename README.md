@@ -32,3 +32,14 @@ npm run deploy  # vinext-cloudflare deploy
 ```
 
 Worker name: `jerrykhh-profile` (see `cloudflare.config.ts`).
+
+### GitHub Actions secrets
+
+CI (`.github/workflows/release.yml`) deploys with `npm run deploy`. Set these repository secrets (Settings → Secrets and variables → Actions):
+
+| Secret | Purpose |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | API token with Workers edit (e.g. template **Edit Cloudflare Workers**) |
+| `CLOUDFLARE_ACCOUNT_ID` | Account ID that owns worker `jerrykhh-profile` |
+
+`GITHUB_TOKEN` is provided by Actions for release-please; no PAT secret is required.

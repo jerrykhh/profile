@@ -1,21 +1,56 @@
+# Requires repo Actions secrets (set by Jerry; values are not in git):
+#   CLOUDFLARE_API_TOKEN  — API token with Workers edit (e.g. "Edit Cloudflare Workers")
+#   CLOUDFLARE_ACCOUNT_ID — Cloudflare account ID for worker jerrykhh-profile
 on:
   push:
     branches:
       - main
+      - development
 
-permissions:
-  contents: write
-  pull-requests: write
+name: release-and-deploy
 
-name: release-please
 jobs:
   release-please:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: actions/checkout@v6
         with:
-          # Use the built-in Actions token. A custom PAT secret
-          # (GH_RELEASE_PLEASE_TOKEN) was returning "Bad credentials".
+          fetch-depth: 0
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
           target-branch: ${{ github.ref_name }}
+
+  deploy:
+    needs: release-please
+    # development: release-please is skipped → deploy
+    # main: deploy only when release-please created a GitHub release
+    if: >-
+      always() &&
+      (needs.release-please.result == 'skipped' ||
+       needs.release-please.outputs.release_created == 'true')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Deploy Worker jerrykhh-profile
+        run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
