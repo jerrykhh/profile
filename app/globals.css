@@ -7,6 +7,7 @@
 
 :root {
   color-scheme: light;
+  --hero-grid-line: rgba(100, 116, 139, 0.22);
   --background: #f6f6f4;
   --foreground: #141414;
   --card: #ffffff;
@@ -44,6 +45,7 @@
 .dark {
   /* Night cobalt kinship — ink ground slightly cooler than flat charcoal. */
   color-scheme: dark;
+  --hero-grid-line: rgba(148, 163, 184, 0.16);
   --background: #0b0d14;
   --foreground: #eef1f7;
   --card: #141824;
