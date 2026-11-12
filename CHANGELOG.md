@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.0.2](https://github.com/jerrykhh/profile/compare/v4.0.1...v4.0.2) (2026-11-11)
+
+
+### Bug Fixes
+
+* version backups, external tabs, static cache TTLs ([#26](https://github.com/jerrykhh/profile/issues/26)) ([78a3b49](https://github.com/jerrykhh/profile/commit/78a3b492f6b2e2c1a36bb8f6e972eeff4c93de18))
+
+## [4.0.1](https://github.com/jerrykhh/profile/compare/v4.0.0...v4.0.1) (2026-11-11)
+
+
+### Bug Fixes
+
+* **ci:** pin release-please last version at 4.0.0 ([#25](https://github.com/jerrykhh/profile/issues/25)) ([cd34465](https://github.com/jerrykhh/profile/commit/cd34465dad40ad9ec4c787e636e2385e0c2a2c24))
+* **hero:** soften cursor ripples and kill home↔contact flash ([#21](https://github.com/jerrykhh/profile/issues/21)) ([38d492b](https://github.com/jerrykhh/profile/commit/38d492bd0962bb2175df9e4915943a22c2cd6104))
+* **theme:** smooth light to dark mode transition ([#22](https://github.com/jerrykhh/profile/issues/22)) ([903fcca](https://github.com/jerrykhh/profile/commit/903fccae686e355c6d4883441deef0c31d28118a))
+
 ## [3.0.1](https://github.com/jerrykhh/profile/compare/v3.0.0...v3.0.1) (2025-05-17)
 
 

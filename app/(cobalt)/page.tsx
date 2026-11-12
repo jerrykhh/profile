@@ -125,17 +125,27 @@ export default function HomePage() {
               ))}
             </div>
             <div className="flex flex-wrap gap-2 pt-2">
-              {profileConfig.versions.map((version) => (
-                <Badge
-                  key={version.name}
-                  variant={version.current ? "default" : "outline"}
-                  className="rounded-full"
-                  render={<Link href={version.url} />}
-                >
-                  {version.name}
-                  {version.current ? " now" : ""}
-                </Badge>
-              ))}
+              {profileConfig.versions.map((version) => {
+                const opensExternally =
+                  version.url.startsWith("http://") || version.url.startsWith("https://");
+                return (
+                  <Badge
+                    key={version.name}
+                    variant={version.current ? "default" : "outline"}
+                    className="rounded-full"
+                    render={
+                      <Link
+                        href={version.url}
+                        target={opensExternally ? "_blank" : undefined}
+                        rel={opensExternally ? "noopener noreferrer" : undefined}
+                      />
+                    }
+                  >
+                    {version.name}
+                    {version.current ? " now" : ""}
+                  </Badge>
+                );
+              })}
             </div>
           </section>
         </div>
