@@ -1,34 +1,30 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
 import { profileConfig, siteConfig } from "@/config/profile";
 
+/**
+ * Server-rendered hero copy + LCP avatar.
+ * Entrance uses CSS only (no motion/react on the critical path).
+ */
 export function HomeHero() {
-  const reduceMotion = useReducedMotion();
-  const transition = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
-
   return (
     <section className="pointer-events-none relative z-10 -mt-16 min-h-[min(100vh,58rem)] overflow-hidden border-b border-border/60 pt-16">
+      {/* Hoisted preload — unoptimized Image does not emit one automatically. */}
+      <link rel="preload" as="image" href="/profile/icon-288.webp" type="image/webp" fetchPriority="high" />
       <div className="relative mx-auto flex min-h-[min(calc(100vh-4rem),54rem)] w-full max-w-6xl items-center justify-center px-4 pb-24 pt-12 md:px-8 md:pb-28 md:pt-16">
-        <motion.div
-          className="pointer-events-auto flex w-full max-w-2xl flex-col items-center gap-5 text-center text-foreground"
-          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={transition}
-        >
+        <div className="hero-enter pointer-events-auto flex w-full max-w-2xl flex-col items-center gap-5 text-center text-foreground">
           <div className="relative size-28 overflow-hidden rounded-full border border-white/55 bg-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_18px_48px_rgba(15,23,42,0.16)] ring-1 ring-black/5 backdrop-blur-md dark:border-white/20 dark:bg-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_18px_48px_rgba(0,0,0,0.45)] dark:ring-white/10 md:size-36">
             <Image
-              src={siteConfig.profileIcon}
+              // Pre-sized WebP (~11KB) — skip /_next/image hop for faster LCP.
+              src="/profile/icon-288.webp"
               alt={siteConfig.name}
               width={288}
               height={288}
+              sizes="(min-width: 768px) 144px, 112px"
               priority
+              unoptimized
               className="size-full object-cover"
             />
           </div>
@@ -61,7 +57,7 @@ export function HomeHero() {
               View Projects
             </Button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
