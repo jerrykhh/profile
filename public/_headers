@@ -1,0 +1,12 @@
+# Static assets served by Workers Static Assets (vinext/Cloudflare deploy).
+# Browser TTL 300s, CDN TTL 3600s, stale-while-revalidate 30s.
+# Hashed /_next/static/* keeps long immutable cache (prefer long cache for fingerprints).
+
+/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=30
+  CDN-Cache-Control: public, max-age=3600, stale-while-revalidate=30
+
+/_next/static/*
+  ! Cache-Control
+  ! CDN-Cache-Control
+  Cache-Control: public, max-age=31536000, immutable

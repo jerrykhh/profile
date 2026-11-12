@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "include-component-in-tag": false,
+  "bootstrap-sha": "828d05ba87b0685bc993a02d558da1223d222159",
+  "packages": {
+    ".": {
+      "package-name": "profile",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}

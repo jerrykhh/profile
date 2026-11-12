@@ -149,7 +149,7 @@ export const profileConfig = {
   versions: [
     { name: "v1.0.0", url: "https://owner-v1-backup.bytesio.net/", current: false },
     { name: "v2.0.0", url: "https://profile-jerrykhh.vercel.app/", current: false },
-    { name: "v3.0.0", url: "https://owner.bytesio.net/", current: false },
+    { name: "v3.0.0", url: "https://owner-v3-backup.bytesio.net/", current: false },
     { name: "v4.0.0", url: "/", current: true },
   ],
   socials: [
