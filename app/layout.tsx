@@ -12,13 +12,16 @@ import "./globals.css";
 const display = Outfit({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
+  // Hero uses medium + semibold; skip unused 400/700 faces for mobile weight.
+  weight: ["500", "600"],
+  display: "swap",
 });
 
 const body = Manrope({
   subsets: ["latin"],
   variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 const documentTitle = "Profile | Jerry Kwok";
@@ -46,7 +49,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: siteConfig.profileIcon,
+    icon: [{ url: "/favicon-32.png", sizes: "32x32", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     title: documentTitle,

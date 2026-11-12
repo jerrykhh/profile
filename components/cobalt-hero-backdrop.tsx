@@ -4,8 +4,9 @@ import { HeroShader } from "@/components/hero-shader";
 
 /**
  * Viewport-tall hero atmosphere shared by home and contact.
- * Lives in the (cobalt) layout so WebGPU/CSS orbs persist across those routes.
- * Sibling sections use pointer-events-none so ripples still receive the cursor.
+ * Lives in the (cobalt) layout so CSS frost (+ deferred WebGPU) persists across
+ * those routes. Sibling sections use pointer-events-none so ripples still receive
+ * the cursor after the mesh chunk loads.
  */
 export function CobaltHeroBackdrop() {
   return (

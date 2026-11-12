@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Blur, CursorRipples, Grid, MeshGradient, Shader } from "shaders/react";
+import { useEffect, useState, type ComponentType } from "react";
 
 import { cobaltFrostDark, cobaltFrostLight } from "@/lib/cobalt-frost";
 import { cn } from "@/lib/utils";
 
 type HeroShaderProps = {
   className?: string;
+};
+
+type MeshProps = {
+  dark: boolean;
+  reduceMotion: boolean;
 };
 
 function readDark() {
@@ -20,29 +24,36 @@ function readReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function hasWebGpu() {
+  return typeof navigator !== "undefined" && "gpu" in navigator;
+}
+
+function scheduleDeferred(cb: () => void) {
+  if (typeof window === "undefined") return () => {};
+
+  // Prefer idle so CSS hero paints and hydrates first; cap wait for slow phones.
+  if (typeof window.requestIdleCallback === "function") {
+    const id = window.requestIdleCallback(() => cb(), { timeout: 2200 });
+    return () => window.cancelIdleCallback(id);
+  }
+
+  const t = window.setTimeout(cb, 1);
+  return () => window.clearTimeout(t);
+}
+
 /**
  * Soft cobalt frost hero.
  * CSS orbs paint first (theme via html.dark) so home↔contact and hydration
- * never flash the wrong base color; WebGPU fades in only after onReady.
- * Ripples are low-intensity + blurred for calmer, GPU-stable motion.
+ * never flash the wrong base color. The WebGPU mesh chunk (~2.5MB) is
+ * dynamically imported only after idle + WebGPU support — critical for
+ * iPhone Safari first paint / LCP.
  */
 export function HeroShader({ className }: HeroShaderProps) {
-  const [mounted, setMounted] = useState(false);
-  const [available, setAvailable] = useState(true);
-  const [ready, setReady] = useState(false);
   const [dark, setDark] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
-
-  // Reset shader readiness during render when theme flips so the new mesh
-  // never paints one frame at full opacity before the fade-in effect runs.
-  const [themePaint, setThemePaint] = useState(dark);
-  if (dark !== themePaint) {
-    setThemePaint(dark);
-    if (ready) setReady(false);
-  }
+  const [Mesh, setMesh] = useState<ComponentType<MeshProps> | null>(null);
 
   useEffect(() => {
-    setMounted(true);
     const syncTheme = () => setDark(readDark());
     const syncMotion = () => setReduceMotion(readReducedMotion());
     syncTheme();
@@ -64,40 +75,29 @@ export function HeroShader({ className }: HeroShaderProps) {
     };
   }, []);
 
-  const palette = dark ? cobaltFrostDark : cobaltFrostLight;
-  const showShader = mounted && available;
+  useEffect(() => {
+    if (!hasWebGpu()) return;
 
-  const mesh = (
-    <>
-      <MeshGradient
-        colorA={palette.colorA}
-        colorB={palette.colorB}
-        stops={[...palette.stops]}
-        colorSpace="oklch"
-        count={5}
-        smoothness={2.7}
-        variation={reduceMotion ? 0.14 : 0.2}
-        swirl={reduceMotion ? 0 : 0.06}
-        drift={reduceMotion ? 0 : 0.22}
-        wrapping={0}
-        speed={reduceMotion ? 0 : 0.1}
-        seed={dark ? 41 : 27}
-      />
-      <Grid
-        color={palette.grid}
-        cellColor="transparent"
-        cells={16}
-        thickness={0.03}
-        softness={0.45}
-        opacity={dark ? 0.16 : 0.14}
-        blendMode={dark ? "screen" : "multiply"}
-      />
-    </>
-  );
+    let cancelled = false;
+    const cancelSchedule = scheduleDeferred(() => {
+      void import("@/components/hero-webgpu-mesh")
+        .then((mod) => {
+          if (!cancelled) setMesh(() => mod.HeroWebGpuMesh);
+        })
+        .catch(() => {
+          // Keep CSS atmosphere if the chunk fails (offline / flaky mobile).
+        });
+    });
+
+    return () => {
+      cancelled = true;
+      cancelSchedule();
+    };
+  }, []);
 
   return (
     <div className={cn("absolute inset-0 overflow-hidden", className)} aria-hidden>
-      {/* First paint: theme-correct CSS atmosphere (no JS). Soft target for WebGPU parity. */}
+      {/* First paint: theme-correct CSS atmosphere (no JS / no WebGPU). */}
       <div className="absolute inset-0 bg-[#e8eef8] transition-colors duration-400 motion-reduce:transition-none dark:bg-[#070b16]" />
       {/* Opacity crossfade (not display swap) so light↔dark frost orbs ease with the theme flip. */}
       <div className="absolute inset-0 opacity-100 transition-opacity duration-400 motion-reduce:transition-none dark:opacity-0">
@@ -111,41 +111,7 @@ export function HeroShader({ className }: HeroShaderProps) {
         ))}
       </div>
 
-      {showShader ? (
-        <div
-          className={cn(
-            "absolute inset-0 size-full transition-opacity duration-700 ease-out will-change-[opacity]",
-            ready ? "opacity-[0.88]" : "opacity-0",
-          )}
-          // Extra CSS blur softens GPU/browser differences in the interaction field.
-          style={{ filter: "blur(2px)" }}
-        >
-          <Shader
-            key={dark ? "mesh-dark" : "mesh-light"}
-            className="absolute inset-0 size-full"
-            colorSpace="srgb"
-            toneMapping="neutral"
-            onUnavailable={() => setAvailable(false)}
-            onReady={() => setReady(true)}
-          >
-            {reduceMotion ? (
-              mesh
-            ) : (
-              <Blur intensity={24}>
-                <CursorRipples
-                  intensity={3}
-                  decay={15}
-                  radius={0.32}
-                  chromaticSplit={0}
-                  edges="stretch"
-                >
-                  {mesh}
-                </CursorRipples>
-              </Blur>
-            )}
-          </Shader>
-        </div>
-      ) : null}
+      {Mesh ? <Mesh dark={dark} reduceMotion={reduceMotion} /> : null}
 
       <div
         className="pointer-events-none absolute inset-0 opacity-30 transition-opacity duration-400 motion-reduce:transition-none dark:opacity-25"

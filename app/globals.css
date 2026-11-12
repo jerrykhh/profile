@@ -383,6 +383,28 @@ html.theme-transition *::after {
   }
 }
 
+/* Home hero entrance — CSS only so motion/react stays off the first-load path. */
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-enter {
+  animation: hero-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter {
+    animation: none;
+  }
+}
+
 /* Author markdown embeds (YouTube) — 16:9 shell used across blog/project bodies. */
 .iframe-container {
   position: relative;

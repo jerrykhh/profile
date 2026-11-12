@@ -31,7 +31,7 @@ export default function HomePage() {
     <div className="flex w-full flex-col">
       <HomeHero />
 
-      <div className="relative z-10 bg-background">
+      <div className="relative z-10 bg-background [content-visibility:auto] [contain-intrinsic-size:1px_2400px]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-12 md:gap-16 md:px-8 md:py-16">
           <ExperienceTimeline items={profileConfig.experience} />
 
