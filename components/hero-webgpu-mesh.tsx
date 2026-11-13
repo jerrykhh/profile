@@ -20,6 +20,7 @@ export function HeroWebGpuMesh({ dark, reduceMotion, className }: HeroWebGpuMesh
   const [ready, setReady] = useState(false);
   const [available, setAvailable] = useState(true);
   const [themePaint, setThemePaint] = useState(dark);
+  const [coarsePointer, setCoarsePointer] = useState(false);
 
   // Reset readiness during render when theme flips so the new mesh never
   // paints one frame at full opacity before the fade-in effect runs.
@@ -29,9 +30,8 @@ export function HeroWebGpuMesh({ dark, reduceMotion, className }: HeroWebGpuMesh
   }
 
   useEffect(() => {
-    // Theme flips remount via key from parent; keep ready false until onReady.
-    setReady(false);
-  }, [dark]);
+    setCoarsePointer(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   if (!available) return null;
 
@@ -68,12 +68,12 @@ export function HeroWebGpuMesh({ dark, reduceMotion, className }: HeroWebGpuMesh
   return (
     <div
       className={cn(
-        "absolute inset-0 size-full transition-opacity duration-700 ease-out will-change-[opacity]",
+        "absolute inset-0 size-full transition-opacity duration-700 ease-out",
         ready ? "opacity-[0.88]" : "opacity-0",
         className,
       )}
-      // Extra CSS blur softens GPU/browser differences in the interaction field.
-      style={{ filter: "blur(2px)" }}
+      // Extra CSS blur softens GPU/browser differences; skip on coarse (expensive paint).
+      style={coarsePointer ? undefined : { filter: "blur(2px)" }}
       aria-hidden
     >
       <Shader
@@ -81,6 +81,7 @@ export function HeroWebGpuMesh({ dark, reduceMotion, className }: HeroWebGpuMesh
         className="absolute inset-0 size-full"
         colorSpace="srgb"
         toneMapping="neutral"
+        disableTelemetry
         onUnavailable={() => setAvailable(false)}
         onReady={() => setReady(true)}
       >

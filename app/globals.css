@@ -383,14 +383,12 @@ html.theme-transition *::after {
   }
 }
 
-/* Home hero entrance — CSS only so motion/react stays off the first-load path. */
+/* Home hero entrance — transform-only so LCP (avatar/title) stays visible. */
 @keyframes hero-enter {
   from {
-    opacity: 0;
     transform: translateY(1.25rem);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }

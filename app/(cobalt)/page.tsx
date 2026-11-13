@@ -31,13 +31,17 @@ export default function HomePage() {
     <div className="flex w-full flex-col">
       <HomeHero />
 
-      <div className="relative z-10 bg-background [content-visibility:auto] [contain-intrinsic-size:1px_2400px]">
+      <div className="relative z-10 bg-background">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-12 md:gap-16 md:px-8 md:py-16">
-          <ExperienceTimeline items={profileConfig.experience} />
+          <div className="[content-visibility:auto] [contain-intrinsic-size:auto_720px]">
+            <ExperienceTimeline items={profileConfig.experience} />
+          </div>
 
-          <SkillsCard groups={profileConfig.techs} />
+          <div className="[content-visibility:auto] [contain-intrinsic-size:auto_560px]">
+            <SkillsCard groups={profileConfig.techs} />
+          </div>
 
-          <section className="grid gap-6 lg:grid-cols-2">
+          <section className="grid gap-6 [content-visibility:auto] [contain-intrinsic-size:auto_420px] lg:grid-cols-2">
             <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
               <CardHeader>
                 <h2 className="font-heading text-xl font-semibold tracking-tight">Education</h2>
@@ -98,7 +102,7 @@ export default function HomePage() {
             </Card>
           </section>
 
-          <section className="flex flex-col gap-5">
+          <section className="flex flex-col gap-5 [content-visibility:auto] [contain-intrinsic-size:auto_480px]">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-heading text-2xl font-semibold tracking-tight">Projects</h2>
               <Button variant="link" className="text-muted-foreground" nativeButton={false} render={<Link href="/project" />}>
@@ -112,7 +116,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="flex flex-col gap-5">
+          <section className="flex flex-col gap-5 [content-visibility:auto] [contain-intrinsic-size:auto_520px]">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-heading text-2xl font-semibold tracking-tight">Blog</h2>
               <Button variant="link" className="text-muted-foreground" nativeButton={false} render={<Link href="/blog" />}>

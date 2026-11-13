@@ -28,25 +28,65 @@ function hasWebGpu() {
   return typeof navigator !== "undefined" && "gpu" in navigator;
 }
 
+/** Phones / data-saver / reduced-motion stay on CSS frost — skip the ~2.5MB mesh chunk. */
+function shouldSkipMesh() {
+  if (typeof window === "undefined") return true;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
+  if (window.matchMedia("(pointer: coarse)").matches) return true;
+  const connection = (
+    navigator as Navigator & { connection?: { saveData?: boolean } }
+  ).connection;
+  if (connection?.saveData) return true;
+  return false;
+}
+
+async function hasGpuAdapter() {
+  try {
+    const gpu = navigator.gpu;
+    if (!gpu) return false;
+    const adapter = await gpu.requestAdapter();
+    return adapter != null;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Defer mesh import until after first paint / LCP.
+ * Safari often lacks requestIdleCallback — never fall back to setTimeout(1).
+ */
 function scheduleDeferred(cb: () => void) {
   if (typeof window === "undefined") return () => {};
 
-  // Prefer idle so CSS hero paints and hydrates first; cap wait for slow phones.
   if (typeof window.requestIdleCallback === "function") {
     const id = window.requestIdleCallback(() => cb(), { timeout: 2200 });
     return () => window.cancelIdleCallback(id);
   }
 
-  const t = window.setTimeout(cb, 1);
-  return () => window.clearTimeout(t);
+  // No rIC: wait for window load, then a short post-LCP delay.
+  let timeoutId: number | undefined;
+  const runAfterLoad = () => {
+    timeoutId = window.setTimeout(cb, 2000);
+  };
+
+  if (document.readyState === "complete") {
+    runAfterLoad();
+  } else {
+    window.addEventListener("load", runAfterLoad, { once: true });
+  }
+
+  return () => {
+    window.removeEventListener("load", runAfterLoad);
+    if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+  };
 }
 
 /**
  * Soft cobalt frost hero.
  * CSS orbs paint first (theme via html.dark) so home↔contact and hydration
  * never flash the wrong base color. The WebGPU mesh chunk (~2.5MB) is
- * dynamically imported only after idle + WebGPU support — critical for
- * iPhone Safari first paint / LCP.
+ * dynamically imported only after a Safari-safe defer + adapter check —
+ * critical for iPhone Safari first paint / LCP.
  */
 export function HeroShader({ className }: HeroShaderProps) {
   const [dark, setDark] = useState(false);
@@ -77,16 +117,20 @@ export function HeroShader({ className }: HeroShaderProps) {
 
   useEffect(() => {
     if (!hasWebGpu()) return;
+    if (shouldSkipMesh()) return;
 
     let cancelled = false;
     const cancelSchedule = scheduleDeferred(() => {
-      void import("@/components/hero-webgpu-mesh")
-        .then((mod) => {
+      void (async () => {
+        const ok = await hasGpuAdapter();
+        if (cancelled || !ok) return;
+        try {
+          const mod = await import("@/components/hero-webgpu-mesh");
           if (!cancelled) setMesh(() => mod.HeroWebGpuMesh);
-        })
-        .catch(() => {
+        } catch {
           // Keep CSS atmosphere if the chunk fails (offline / flaky mobile).
-        });
+        }
+      })();
     });
 
     return () => {

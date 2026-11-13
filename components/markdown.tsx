@@ -53,7 +53,7 @@ export function Markdown({ content, className }: MarkdownProps) {
     <div
       className={cn(
         "prose prose-stone max-w-none dark:prose-invert",
-        "prose-headings:font-[family-name:var(--font-display)]",
+        "prose-headings:font-[family-name:var(--font-display)] prose-headings:font-semibold",
         "prose-a:text-primary prose-img:rounded-2xl prose-pre:rounded-2xl",
         "prose-iframe:my-0",
         className,
