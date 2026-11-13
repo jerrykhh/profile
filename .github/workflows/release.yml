@@ -55,6 +55,10 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      # Gate-first: typecheck + vitest before deploy. Playwright E2E intentionally omitted
+      # (over-engineering for this surface — see tests/README.md).
+      - run: npm run typecheck
+      - run: npm test
       # vinext + cloudflare.config.ts deploys via `cf` (`npm run deploy`), not wrangler.toml.
       # wrangler-action injects CLOUDFLARE_* for preCommands; whoami avoids a bare wrangler deploy.
       - name: Deploy Worker
