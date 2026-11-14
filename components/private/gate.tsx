@@ -3,20 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 
-import { DetailFrame } from "@/components/detail-frame";
 import { AntiExfilShell } from "@/components/private/anti-exfil";
 import { PrivateArticle } from "@/components/private/article";
+import { OtpPinInput } from "@/components/private/otp-pin";
 import { PrivateReveal } from "@/components/private/reveal";
 import { Button } from "@/components/ui/button";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { derivePinKeys, parseSixDigitPin } from "@/lib/private/kdf";
 import { privateSlugPath } from "@/lib/private/routes";
 import {
@@ -29,9 +20,8 @@ import {
 } from "@/lib/private/types";
 
 /**
- * PIN gate — Detail split variant (chosen over compact card).
+ * Locked gate — OTP Variant C on plain white/black full-bleed (not project-detail split).
  * Prefill may come from ?pin=; Enter is always required.
- * First request with ?pin= may appear in access logs.
  */
 export function PinGate({ locked, slug }: { locked: LockedView; slug: PrivateSlug }) {
   const [pin, setPin] = useState(locked.prefillPin ?? "");
@@ -70,8 +60,10 @@ export function PinGate({ locked, slug }: { locked: LockedView; slug: PrivateSlu
         return;
       }
       setNotice(result.notice);
+      setPin("");
     } catch {
       setNotice("rejected");
+      setPin("");
     } finally {
       setPending(false);
     }
@@ -89,105 +81,60 @@ export function PinGate({ locked, slug }: { locked: LockedView; slug: PrivateSlu
 
   const canEnter = terms && locked.kdf !== null && pin.length === 6 && !pending;
 
-  const aside = (
-    <Card className="overflow-hidden border-border/80 bg-card shadow-none ring-1 ring-border/70">
-      <CardHeader>
-        <CardDescription>Private note</CardDescription>
-        <CardTitle className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
-          PIN required
-        </CardTitle>
-        <CardDescription className="text-sm leading-relaxed">
-          This page is for invited readers only. Agreeing means you will not share the content, screenshots, or
-          the PIN.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-xs text-muted-foreground">Slug · {slug}</p>
-      </CardContent>
-    </Card>
-  );
-
-  const main = (
-    <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
-      <CardHeader>
-        <CardTitle className="font-heading text-xl font-semibold tracking-tight">Enter</CardTitle>
-        <CardDescription>
-          {locked.status === "empty"
-            ? "Nothing is published for this path yet."
-            : locked.status === "expired"
-              ? "This note has expired."
-              : notice === "heartbeat_lost"
-                ? "Your session could not be verified. Enter the PIN again."
-                : locked.kdf === null
-                  ? "This note cannot be unlocked right now."
-                  : "Six-digit PIN. Enter is required even if the PIN was in the link."}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-          {notice === "rejected" ? <p className="text-sm text-destructive">That PIN was not accepted.</p> : null}
-          {notice === "expired" ? <p className="text-sm text-destructive">This note has expired.</p> : null}
-          {notice === "rate_limited" ? (
-            <p className="text-sm text-destructive">Too many attempts. Try again later.</p>
-          ) : null}
-
-          {locked.status !== "empty" ? (
-            <>
-              <label className="flex flex-col gap-2 text-sm">
-                <span className="text-muted-foreground">PIN</span>
-                <input
-                  value={pin}
-                  onChange={(event) => setPin(event.target.value.replace(/\D/g, "").slice(0, 6))}
-                  inputMode="numeric"
-                  autoComplete="off"
-                  maxLength={6}
-                  pattern="[0-9]{6}"
-                  aria-label="Six digit PIN"
-                  className="rounded-lg border border-border bg-background px-3 py-2 font-mono tracking-[0.3em]"
-                  disabled={locked.kdf === null}
-                />
-              </label>
-              <label className="flex items-start gap-2 text-sm text-muted-foreground">
-                <input
-                  type="checkbox"
-                  checked={terms}
-                  onChange={(event) => setTerms(event.target.checked)}
-                  className="mt-1"
-                />
-                <span>{TERMS_CHECKBOX_LABEL}</span>
-              </label>
-              <Button type="submit" disabled={!canEnter}>
-                Enter
-              </Button>
-            </>
-          ) : null}
-
-          <Button variant="outline" nativeButton={false} render={<Link href="/" />}>
-            Back to home
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-  );
+  const statusCopy =
+    locked.status === "empty"
+      ? "Nothing is published for this path yet."
+      : locked.status === "expired"
+        ? "This note has expired."
+        : notice === "heartbeat_lost"
+          ? "Your session could not be verified. Enter the PIN again."
+          : locked.kdf === null
+            ? "This note cannot be unlocked right now."
+            : "Enter the six-digit PIN. Enter is required even if the PIN was in the link.";
 
   return (
-    <DetailFrame
-      backHref="/"
-      breadcrumb={
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink render={<Link href="/" />}>Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Private</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      }
-      main={main}
-      aside={aside}
-    />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white px-4 dark:bg-black">
+      <form
+        onSubmit={onSubmit}
+        className="flex w-full max-w-sm flex-col items-center gap-6 text-center"
+        aria-labelledby="private-gate-title"
+      >
+        <div className="flex flex-col gap-2">
+          <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">Private</p>
+          <h1 id="private-gate-title" className="font-heading text-2xl font-semibold tracking-tight text-foreground">
+            Enter PIN
+          </h1>
+          <p className="text-sm leading-relaxed text-muted-foreground">{statusCopy}</p>
+        </div>
+
+        {notice === "rejected" ? <p className="text-sm text-destructive">That PIN was not accepted.</p> : null}
+        {notice === "expired" ? <p className="text-sm text-destructive">This note has expired.</p> : null}
+        {notice === "rate_limited" ? (
+          <p className="text-sm text-destructive">Too many attempts. Try again later.</p>
+        ) : null}
+
+        {locked.status !== "empty" ? (
+          <>
+            <OtpPinInput value={pin} onChange={setPin} disabled={locked.kdf === null || pending} />
+            <label className="flex w-full items-start gap-2 text-left text-sm text-muted-foreground">
+              <input
+                type="checkbox"
+                checked={terms}
+                onChange={(event) => setTerms(event.target.checked)}
+                className="mt-1"
+              />
+              <span>{TERMS_CHECKBOX_LABEL}</span>
+            </label>
+            <Button type="submit" className="w-full" disabled={!canEnter}>
+              {pending ? "Unlocking…" : "Enter"}
+            </Button>
+          </>
+        ) : null}
+
+        <Button variant="ghost" className="w-full text-muted-foreground" nativeButton={false} render={<Link href="/" />}>
+          Back to home
+        </Button>
+      </form>
+    </div>
   );
 }
