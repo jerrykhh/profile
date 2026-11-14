@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Lock } from "lucide-react";
+import { FileLock2 } from "lucide-react";
 
 import { BackButton } from "@/components/back-button";
 import { Markdown } from "@/components/markdown";
@@ -13,8 +12,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { siteConfig } from "@/config/profile";
 import type { UnlockedArticle } from "@/lib/private/types";
 
 function formatExpiry(iso: string): string {
@@ -28,9 +25,9 @@ function formatExpiry(iso: string): string {
 }
 
 /**
- * Unlocked layout: project-like grid, but CMS description lives on the left.
- * Top meta module carries icon + title + audience (description) + expiry;
- * write-up follows. Right aside is a slim private rail (not the primary copy).
+ * Unlocked layout mirrors project detail:
+ * - Left: colored audience/description module only (no private chrome, no personal avatar) + write-up
+ * - Right: CMS metadata rail with envelope/project icon (not profile avatar)
  */
 export function PrivateArticle({ article }: { article: UnlockedArticle }) {
   return (
@@ -50,42 +47,11 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
         </Breadcrumb>
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(240px,0.75fr)]">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.9fr)]">
         <div className="order-2 flex flex-col gap-6 lg:order-1">
-          <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
-            <CardHeader className="gap-4">
-              <div className="flex flex-wrap items-start gap-4">
-                <Image
-                  src={siteConfig.profileIcon}
-                  alt=""
-                  width={72}
-                  height={72}
-                  className="size-[72px] shrink-0 rounded-2xl object-cover shadow-sm ring-1 ring-border/60"
-                  priority
-                />
-                <div className="min-w-0 flex-1 space-y-1.5">
-                  <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                    Private note
-                  </p>
-                  <CardTitle className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
-                    {article.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm">
-                    Expires {formatExpiry(article.expiresAt)}
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Separator />
-              <div className="space-y-1.5">
-                <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                  Audience
-                </p>
-                <p className="text-base leading-relaxed text-foreground">{article.description}</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="rounded-xl border border-sky-500/25 bg-sky-500/10 px-4 py-4 text-sky-950 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-50">
+            <p className="text-base leading-relaxed">{article.description}</p>
+          </div>
 
           <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
             <CardHeader>
@@ -99,21 +65,29 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
         </div>
 
         <aside className="order-1 lg:sticky lg:top-24 lg:order-2 lg:self-start">
-          <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
+          <Card className="overflow-hidden border-border/80 bg-card shadow-none ring-1 ring-border/70">
+            <div
+              className="flex aspect-[16/10] w-full items-center justify-center bg-gradient-to-br from-slate-800 via-slate-700 to-sky-900 text-sky-100"
+              aria-hidden
+            >
+              <FileLock2 className="size-16 opacity-90" strokeWidth={1.25} />
+            </div>
             <CardHeader>
-              <div className="mb-2 flex size-10 items-center justify-center rounded-xl bg-muted text-foreground">
-                <Lock className="size-4" aria-hidden />
-              </div>
-              <CardTitle className="font-heading text-lg font-semibold tracking-tight">Private</CardTitle>
+              <CardDescription>Expires {formatExpiry(article.expiresAt)}</CardDescription>
+              <CardTitle className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
+                {article.title}
+              </CardTitle>
               <CardDescription className="text-sm leading-relaxed">
-                Invited readers only. Do not share the PIN, screenshots, or this page.
+                Invited readers only. Do not share the PIN or this page.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-sm text-muted-foreground">
               <p>
                 Slug · <span className="font-mono text-foreground">{article.slug}</span>
               </p>
-              <p>Expires · {formatExpiry(article.expiresAt)}</p>
+              <p>
+                Expires · <span className="text-foreground">{formatExpiry(article.expiresAt)}</span>
+              </p>
             </CardContent>
           </Card>
         </aside>
