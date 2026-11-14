@@ -1,21 +1,33 @@
 import "server-only";
 
-/** Read only. True when this bucket is already at 5 failures inside a 15-minute window. */
-export async function isLimited(kind: "pin" | "cms", ip: string | null): Promise<boolean> {
-  throw new Error("not implemented");
-  void kind;
-  void ip;
+/** In-isolate rate limit until D1 attempt_window is wired. Not cross-isolate. */
+const windows = new Map<string, { start: number; failures: number }>();
+
+const WINDOW_MS = 15 * 60 * 1000;
+const MAX_FAILURES = 5;
+
+function bucket(kind: "pin" | "cms", ip: string | null): string {
+  return `${kind}:${ip ?? "missing"}`;
 }
 
-/** TODO: one INSERT ON CONFLICT that resets the count when the window has elapsed, otherwise increments. */
+export async function isLimited(kind: "pin" | "cms", ip: string | null): Promise<boolean> {
+  const row = windows.get(bucket(kind, ip));
+  if (!row) return false;
+  if (Date.now() - row.start > WINDOW_MS) return false;
+  return row.failures >= MAX_FAILURES;
+}
+
 export async function recordFailure(kind: "pin" | "cms", ip: string | null): Promise<void> {
-  throw new Error("not implemented");
-  void kind;
-  void ip;
+  const key = bucket(kind, ip);
+  const now = Date.now();
+  const row = windows.get(key);
+  if (!row || now - row.start > WINDOW_MS) {
+    windows.set(key, { start: now, failures: 1 });
+    return;
+  }
+  row.failures += 1;
 }
 
 export async function clearFailures(kind: "pin" | "cms", ip: string | null): Promise<void> {
-  throw new Error("not implemented");
-  void kind;
-  void ip;
+  windows.delete(bucket(kind, ip));
 }

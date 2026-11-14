@@ -35,7 +35,7 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
         <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
           <CardHeader>
             <CardTitle className="font-heading text-xl font-semibold tracking-tight">Private details</CardTitle>
-            <CardDescription>Write-up unlocked for this session.</CardDescription>
+            <CardDescription>Write-up unlocked for /private/{article.slug}.</CardDescription>
           </CardHeader>
           <CardContent>
             <Markdown content={article.markdown} />
