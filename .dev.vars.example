@@ -1,0 +1,5 @@
+# Copy to .dev.vars for local CMS + cookie sealing (never commit .dev.vars).
+# SESSION_KEY must be base64 for ≥32 raw bytes.
+CMS_USERNAME=jerry
+CMS_PASSWORD=local-demo-change-me
+SESSION_KEY=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
