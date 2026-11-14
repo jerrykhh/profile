@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Outfit } from "next/font/google";
 
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { ThemeScript } from "@/components/theme-script";
 import { siteConfig } from "@/config/profile";
 import { cn } from "@/lib/utils";
@@ -86,9 +84,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" suppressHydrationWarning className={cn(display.variable, body.variable)}>
       <body className="font-[family-name:var(--font-body)]">
         <ThemeScript />
-        <SiteHeader />
-        <main className="min-h-[70vh] pt-16">{children}</main>
-        <SiteFooter />
+        {children}
       </body>
     </html>
   );
