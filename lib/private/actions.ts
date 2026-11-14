@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 import { clearFailures, isLimited, recordFailure } from "@/lib/private/attempts";
@@ -8,15 +7,14 @@ import { b64ToBytes, decryptMarkdown } from "@/lib/private/cipher";
 import { getEnvelopeBySlug } from "@/lib/private/envelope";
 import { sha256B64, timingSafeEqualB64 } from "@/lib/private/kdf";
 import { logPrivateAccess } from "@/lib/private/access-log";
-import { privateSlugPath } from "@/lib/private/routes";
 import {
   clearPrivateCookie,
   readPrivateGrant,
   sealPrivateCookie,
 } from "@/lib/private/seal";
 import type {
-  EnterFailure,
   EnterPinInput,
+  EnterResult,
   HeartbeatResult,
   PrivateSlug,
 } from "@/lib/private/types";
@@ -26,7 +24,7 @@ async function clientIp(): Promise<string | null> {
   return h.get("cf-connecting-ip") ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
 }
 
-export async function enterPin(input: EnterPinInput): Promise<EnterFailure> {
+export async function enterPin(input: EnterPinInput): Promise<EnterResult> {
   const ip = await clientIp();
   if (await isLimited("pin", ip)) {
     return { ok: false, notice: "rate_limited" };
@@ -72,8 +70,9 @@ export async function enterPin(input: EnterPinInput): Promise<EnterFailure> {
     return { ok: false, notice: "rejected" };
   }
 
+  let markdown: string;
   try {
-    await decryptMarkdown(
+    markdown = await decryptMarkdown(
       encKey,
       envelope.contentId,
       b64ToBytes(envelope.aes.iv),
@@ -86,17 +85,31 @@ export async function enterPin(input: EnterPinInput): Promise<EnterFailure> {
 
   await clearFailures("pin", ip);
   const expUnix = Math.min(Math.floor(Date.now() / 1000) + 15 * 60, Math.floor(expiresMs / 1000));
-  await sealPrivateCookie({
-    slug: input.slug,
-    contentId: envelope.contentId,
-    encKey,
-    expUnix,
-  });
+  try {
+    await sealPrivateCookie({
+      slug: input.slug,
+      contentId: envelope.contentId,
+      encKey,
+      expUnix,
+    });
+  } catch (error) {
+    // vinext/vite may reject cookies().set in actions; unlocked paint still proceeds.
+    console.warn("sealPrivateCookie failed", error);
+  }
   await logPrivateAccess(
     { kind: "unlock_ok", slug: input.slug, outcome: "ok", pinInQuery: false, atMs: Date.now() },
     ip,
   );
-  redirect(privateSlugPath(input.slug));
+  return {
+    ok: true,
+    article: {
+      slug: input.slug,
+      title: envelope.title,
+      description: envelope.description,
+      markdown,
+      expiresAt: envelope.expiresAt,
+    },
+  };
 }
 
 export async function endPrivateSession(slug?: PrivateSlug): Promise<void> {

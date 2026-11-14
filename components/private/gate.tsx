@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 
 import { DetailFrame } from "@/components/detail-frame";
+import { AntiExfilShell } from "@/components/private/anti-exfil";
+import { PrivateArticle } from "@/components/private/article";
+import { PrivateReveal } from "@/components/private/reveal";
 import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
@@ -14,13 +17,15 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { enterPin } from "@/lib/private/actions";
 import { derivePinKeys, parseSixDigitPin } from "@/lib/private/kdf";
+import { privateSlugPath } from "@/lib/private/routes";
 import {
   TERMS_CHECKBOX_LABEL,
+  type EnterResult,
   type LockedView,
   type LockNotice,
   type PrivateSlug,
+  type UnlockedArticle,
 } from "@/lib/private/types";
 
 /**
@@ -33,6 +38,7 @@ export function PinGate({ locked, slug }: { locked: LockedView; slug: PrivateSlu
   const [terms, setTerms] = useState(true);
   const [notice, setNotice] = useState<LockNotice>(locked.notice);
   const [pending, setPending] = useState(false);
+  const [unlocked, setUnlocked] = useState<UnlockedArticle | null>(null);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -48,27 +54,37 @@ export function PinGate({ locked, slug }: { locked: LockedView; slug: PrivateSlu
     setPending(true);
     try {
       const keys = await derivePinKeys(parsed, locked.kdf);
-      const result = await enterPin({
-        slug,
-        authKeyB64: keys.authKeyB64,
-        encKeyB64: keys.encKeyB64,
-        termsAccepted: true,
+      const res = await fetch(`${privateSlugPath(slug)}/unlock`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          authKeyB64: keys.authKeyB64,
+          encKeyB64: keys.encKeyB64,
+          termsAccepted: true,
+        }),
       });
-      setNotice(result.notice);
-    } catch (error) {
-      // next/navigation redirect() throws; do not treat as a PIN failure
-      if (
-        typeof error === "object" &&
-        error &&
-        "digest" in error &&
-        String((error as { digest?: string }).digest).startsWith("NEXT_REDIRECT")
-      ) {
-        throw error;
+      const result = (await res.json()) as EnterResult;
+      if (result.ok) {
+        setUnlocked(result.article);
+        return;
       }
+      setNotice(result.notice);
+    } catch {
       setNotice("rejected");
     } finally {
       setPending(false);
     }
+  }
+
+  if (unlocked) {
+    return (
+      <PrivateReveal slug={slug} expiresAt={unlocked.expiresAt}>
+        <AntiExfilShell>
+          <PrivateArticle article={unlocked} />
+        </AntiExfilShell>
+      </PrivateReveal>
+    );
   }
 
   const canEnter = terms && locked.kdf !== null && pin.length === 6 && !pending;

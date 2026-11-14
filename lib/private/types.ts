@@ -52,6 +52,9 @@ export type EnterPinInput = {
 };
 
 export type EnterFailure = { readonly ok: false; readonly notice: Exclude<LockNotice, "none"> };
+/** Article is returned so the gate can paint unlocked UI even if vinext cookie round-trip is flaky. */
+export type EnterSuccess = { readonly ok: true; readonly article: UnlockedArticle };
+export type EnterResult = EnterFailure | EnterSuccess;
 
 export type PrepareIntent = {
   readonly slug: string;
