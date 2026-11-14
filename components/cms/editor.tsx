@@ -79,20 +79,24 @@ export function CmsEditor({ desk }: { desk: CmsDesk }) {
               />
             </label>
             <label className="flex flex-col gap-2 text-sm">
-              <span className="text-muted-foreground">Title</span>
+              <span className="text-muted-foreground">Title (meta module)</span>
               <input name="title" required maxLength={120} className="rounded-lg border border-border bg-background px-3 py-2" />
             </label>
             <label className="flex flex-col gap-2 text-sm">
-              <span className="text-muted-foreground">Description</span>
+              <span className="text-muted-foreground">Audience / left-rail description</span>
               <input
                 name="description"
                 required
                 maxLength={500}
+                placeholder="Who this note is for — shown above the write-up on the left"
                 className="rounded-lg border border-border bg-background px-3 py-2"
               />
+              <span className="text-xs text-muted-foreground">
+                Maps to the unlocked page left column (“Audience”), not the slim private aside.
+              </span>
             </label>
             <label className="flex flex-col gap-2 text-sm">
-              <span className="text-muted-foreground">Expires</span>
+              <span className="text-muted-foreground">Expires (meta module)</span>
               <input name="expiresAt" type="datetime-local" required className="rounded-lg border border-border bg-background px-3 py-2" />
             </label>
             <label className="flex flex-col gap-2 text-sm">
