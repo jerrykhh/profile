@@ -18,8 +18,10 @@ export async function readCmsDesk(): Promise<CmsDesk> {
     return {
       slug,
       title: env.title,
+      description: env.description,
       expiresAt: env.expiresAt,
       contentId: env.contentId,
+      filename: `${env.contentId}.enc.json` as const,
       pending: false,
     };
   });

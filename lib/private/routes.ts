@@ -18,6 +18,13 @@ export function privateSlugPath(slug: string): `${typeof PRIVATE_PATH}/${string}
   return `${PRIVATE_PATH}/${slug}`;
 }
 
+/** Share URL path; optional `?pin=` prefills OTP only (Enter still required). */
+export function privateSharePath(slug: string, pin?: string): string {
+  const base = privateSlugPath(slug);
+  if (!pin) return base;
+  return `${base}?pin=${encodeURIComponent(pin)}`;
+}
+
 /** Heartbeat check path for a slug. */
 export function privateCheckPath(slug: string): `${typeof PRIVATE_PATH}/${string}/check` {
   return `${PRIVATE_PATH}/${slug}/check`;

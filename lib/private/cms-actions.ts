@@ -12,10 +12,19 @@ import {
 } from "@/lib/private/cipher";
 import { b64ToBytes, derivePinKeys, parseSixDigitPin, sha256B64, timingSafeEqualB64 } from "@/lib/private/kdf";
 import { PBKDF2_ITERATIONS } from "@/lib/private/kdf";
+import { getEnvelopeBySlug, listEnvelopeSlugs } from "@/lib/private/envelope";
+import { privateSharePath } from "@/lib/private/routes";
 import { clearCmsCookie, readCmsGrant, sealCmsCookie } from "@/lib/private/seal";
 import { getCmsCredentials } from "@/lib/private/session-key";
 import { parsePrivateSlug } from "@/lib/private/slug";
-import type { CmsLoginState, PrepareIntent, PrepareResult } from "@/lib/private/types";
+import { siteConfig } from "@/config/profile";
+import type {
+  CmsLoginState,
+  MintShareIntent,
+  MintShareResult,
+  PrepareIntent,
+  PrepareResult,
+} from "@/lib/private/types";
 
 async function clientIp(): Promise<string | null> {
   const h = await headers();
@@ -58,8 +67,100 @@ export async function logoutCms(): Promise<void> {
 }
 
 /**
- * Encrypt markdown and return envelope JSON for git commit (Plan A).
- * Requires CMS session. D1 pending row is TODO when PRIVATE_DB is bound.
+ * Primary CMS job: mint a share link for an existing Plan A envelope.
+ * Verifies PIN against envelope verifier; optionally records D1 publication metadata when bound.
+ */
+export async function mintShareLink(intent: MintShareIntent): Promise<MintShareResult> {
+  const grant = await readCmsGrant();
+  if (!grant) return { ok: false, reason: "unauthorized" };
+
+  const pin = parseSixDigitPin(intent.pin);
+  if (!pin) return { ok: false, reason: "invalid" };
+  if (!intent.title.trim() || intent.title.length > 120) return { ok: false, reason: "invalid" };
+  if (!intent.description.trim() || intent.description.length > 500) return { ok: false, reason: "invalid" };
+
+  const expiresMs = Date.parse(intent.expiresAt);
+  if (Number.isNaN(expiresMs) || expiresMs < Date.now() + 60_000) return { ok: false, reason: "invalid" };
+
+  const envelope = listEnvelopeSlugs()
+    .map((slug) => getEnvelopeBySlug(slug))
+    .find((env) => env?.contentId === intent.contentId);
+  if (!envelope) return { ok: false, reason: "missing" };
+
+  const slug = parsePrivateSlug(envelope.slug);
+  if (!slug) return { ok: false, reason: "invalid" };
+
+  const keys = await derivePinKeys(pin, { iterations: PBKDF2_ITERATIONS, saltB64: envelope.kdf.salt });
+  const authOk = await timingSafeEqualB64(await sha256B64(b64ToBytes(keys.authKeyB64)), envelope.verifier);
+  if (!authOk) return { ok: false, reason: "bad_pin" };
+
+  const title = intent.title.trim();
+  const description = intent.description.trim();
+  const expiresAt = new Date(expiresMs).toISOString();
+  const envelopeSha = await sha256Hex(
+    // Prefer committed envelope bytes when available via canonical form of on-disk fields.
+    JSON.stringify({
+      contentId: envelope.contentId,
+      slug: envelope.slug,
+      verifier: envelope.verifier,
+    }),
+  );
+
+  let d1: "written" | "skipped_unbound" = "skipped_unbound";
+  try {
+    const { env } = await import("cloudflare:workers");
+    const db = (env as { PRIVATE_DB?: { prepare: (sql: string) => { bind: (...args: unknown[]) => { run: () => Promise<unknown> } } } }).PRIVATE_DB;
+    if (db) {
+      await db
+        .prepare(
+          `INSERT INTO publication (content_id, slug, title, description, expires_at, verifier, envelope_sha256, live, pending, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, 1, 0, ?)
+           ON CONFLICT(content_id) DO UPDATE SET
+             slug=excluded.slug, title=excluded.title, description=excluded.description,
+             expires_at=excluded.expires_at, verifier=excluded.verifier,
+             envelope_sha256=excluded.envelope_sha256, live=1, pending=0`,
+        )
+        .bind(
+          envelope.contentId,
+          slug,
+          title,
+          description,
+          expiresAt,
+          envelope.verifier,
+          envelopeSha,
+          new Date().toISOString(),
+        )
+        .run();
+      d1 = "written";
+    }
+  } catch {
+    d1 = "skipped_unbound";
+  }
+
+  console.info(
+    JSON.stringify({
+      type: "cms_share_mint",
+      contentId: envelope.contentId,
+      slug,
+      d1,
+      includePinInUrl: intent.includePinInUrl,
+      atMs: Date.now(),
+    }),
+  );
+
+  const sharePath = privateSharePath(slug, intent.includePinInUrl ? pin : undefined);
+  return {
+    ok: true,
+    slug,
+    sharePath,
+    shareUrl: `${siteConfig.url.replace(/\/$/, "")}${sharePath}`,
+    d1,
+  };
+}
+
+/**
+ * Secondary CMS path: encrypt new markdown → download envelope for git commit (Plan A).
+ * Requires CMS session. D1 write is optional when PRIVATE_DB is bound (prefer mintShareLink after commit).
  */
 export async function preparePublication(intent: PrepareIntent): Promise<PrepareResult> {
   const grant = await readCmsGrant();

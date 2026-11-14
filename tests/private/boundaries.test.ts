@@ -4,7 +4,13 @@ import { describe, expect, it } from "vitest";
 
 import { D1_BINDING, SECRET_BINDINGS } from "../../cloudflare.bindings";
 import robots from "../../app/robots";
-import { CMS_PREFIX, PRIVATE_PATH, ROBOTS_DISALLOW, isUnlistedPath } from "../../lib/private/routes";
+import {
+  CMS_PREFIX,
+  PRIVATE_PATH,
+  ROBOTS_DISALLOW,
+  isUnlistedPath,
+  privateSharePath,
+} from "../../lib/private/routes";
 import { SMOKE_ROUTES } from "../smoke/routes";
 
 describe("private route boundaries", () => {
@@ -36,5 +42,10 @@ describe("private route boundaries", () => {
   it("binding name list is documented for Phase D", () => {
     expect(SECRET_BINDINGS).toEqual(["CMS_USERNAME", "CMS_PASSWORD", "SESSION_KEY"]);
     expect(D1_BINDING).toBe("PRIVATE_DB");
+  });
+
+  it("privateSharePath optional pin prefill", () => {
+    expect(privateSharePath("demo-hello")).toBe("/private/demo-hello");
+    expect(privateSharePath("demo-hello", "123456")).toBe("/private/demo-hello?pin=123456");
   });
 });

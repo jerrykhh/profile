@@ -33,15 +33,39 @@ export type UnlockedArticle = {
 
 export type PrivateView = LockedView | { readonly status: "unlocked"; readonly article: UnlockedArticle };
 
-export type CmsDesk = {
-  readonly notes: readonly {
-    readonly slug: string;
-    readonly title: string;
-    readonly expiresAt: string;
-    readonly contentId: string;
-    readonly pending: boolean;
-  }[];
+export type CmsEnvelopeOption = {
+  readonly slug: string;
+  readonly title: string;
+  readonly description: string;
+  readonly expiresAt: string;
+  readonly contentId: string;
+  readonly filename: `${string}.enc.json`;
+  readonly pending: boolean;
 };
+
+export type CmsDesk = {
+  readonly notes: readonly CmsEnvelopeOption[];
+};
+
+export type MintShareIntent = {
+  readonly contentId: string;
+  readonly pin: string;
+  readonly title: string;
+  readonly description: string;
+  readonly expiresAt: string;
+  /** When true, append `?pin=` prefill to the share URL (Enter still required). */
+  readonly includePinInUrl: boolean;
+};
+
+export type MintShareResult =
+  | {
+      readonly ok: true;
+      readonly slug: PrivateSlug;
+      readonly sharePath: string;
+      readonly shareUrl: string;
+      readonly d1: "written" | "skipped_unbound";
+    }
+  | { readonly ok: false; readonly reason: "unauthorized" | "invalid" | "missing" | "bad_pin" };
 
 export type EnterPinInput = {
   readonly slug: PrivateSlug;
