@@ -4,17 +4,29 @@ import { useEffect, type ReactNode } from "react";
 
 /**
  * Best-effort anti-exfil deterrents. Not OS-proof.
- * - Blocks copy/cut and context menu on the shell
- * - user-select: none
- * - Soft warning on PrintScreen / visibility loss (does not stop OS screenshots)
+ * Ships: copy/cut preventDefault, contextmenu preventDefault, user-select:none,
+ * PrintScreen keydown preventDefault (still does not stop OS/browser capture).
+ * Does NOT ship: DevTools detection, debugger traps/loops, or visibility-change traps.
  */
+export function preventExfilClipboard(event: { preventDefault: () => void }): void {
+  event.preventDefault();
+}
+
+export function preventExfilContextMenu(event: { preventDefault: () => void }): void {
+  event.preventDefault();
+}
+
+/** Returns true when PrintScreen was handled (still best-effort only). */
+export function handleExfilKeyDown(event: { key: string; preventDefault: () => void }): boolean {
+  if (event.key !== "PrintScreen") return false;
+  event.preventDefault();
+  return true;
+}
+
 export function AntiExfilShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "PrintScreen") {
-        event.preventDefault();
-        // Deterrent only; OS capture may still succeed.
-      }
+      handleExfilKeyDown(event);
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -23,9 +35,9 @@ export function AntiExfilShell({ children }: { children: ReactNode }) {
   return (
     <div
       className="select-none"
-      onCopy={(event) => event.preventDefault()}
-      onCut={(event) => event.preventDefault()}
-      onContextMenu={(event) => event.preventDefault()}
+      onCopy={preventExfilClipboard}
+      onCut={preventExfilClipboard}
+      onContextMenu={preventExfilContextMenu}
       data-anti-exfil="best-effort"
     >
       {children}

@@ -39,6 +39,12 @@ export async function getCmsCredentials(): Promise<{ username: string; password:
   }
   username ??= process.env.CMS_USERNAME;
   password ??= process.env.CMS_PASSWORD;
-  if (!username || !password) return null;
+  if (!username || !password) {
+    // Local scaffold only — enable SECRET_BINDINGS in cloudflare.config.ts + real Worker secrets for prod.
+    if (process.env.NODE_ENV !== "production") {
+      return { username: "jerry", password: "local-demo" };
+    }
+    return null;
+  }
   return { username, password };
 }

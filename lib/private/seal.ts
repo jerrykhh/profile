@@ -119,16 +119,37 @@ export async function clearPrivateCookie(): Promise<void> {
   });
 }
 
-export async function sealCmsCookie(expUnix: number): Promise<void> {
+export type CmsCookieParts = {
+  name: string;
+  value: string;
+  options: {
+    httpOnly: boolean;
+    secure: boolean;
+    sameSite: "strict";
+    path: string;
+    expires: Date;
+  };
+};
+
+export async function mintCmsSessionCookie(expUnix: number): Promise<CmsCookieParts> {
   const value = await aesSeal(JSON.stringify({ typ: "cms", exp: expUnix }), CMS_COOKIE);
+  return {
+    name: CMS_COOKIE,
+    value,
+    options: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/cms",
+      expires: new Date(expUnix * 1000),
+    },
+  };
+}
+
+export async function sealCmsCookie(expUnix: number): Promise<void> {
+  const cookie = await mintCmsSessionCookie(expUnix);
   const jar = await cookies();
-  jar.set(CMS_COOKIE, value, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/cms",
-    expires: new Date(expUnix * 1000),
-  });
+  jar.set(cookie.name, cookie.value, cookie.options);
 }
 
 export async function readCmsGrant(): Promise<{ expUnix: number } | null> {
