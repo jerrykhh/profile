@@ -21,13 +21,4 @@ CREATE TABLE attempt_window (
   failures INTEGER NOT NULL
 );
 
--- Optional audit trail for access logging (Workers Logs may also capture URLs).
-CREATE TABLE access_log (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  kind TEXT NOT NULL,
-  slug TEXT NOT NULL,
-  outcome TEXT NOT NULL,
-  pin_in_query INTEGER NOT NULL DEFAULT 0,
-  ip_hash TEXT,
-  at_ms INTEGER NOT NULL
-);
+-- Access events are Workers Logs / ephemeral console only (Jerry: no D1 access_log table).
