@@ -26,13 +26,12 @@ function formatExpiry(iso: string): string {
 }
 
 /**
- * Unlocked layout mirrors project detail surfaces:
- * - Left: site Card with audience/description + write-up; stretched to right rail height
- * - Right: CMS metadata rail; contain icon top-flushed (pt-0 + oversized glyph)
+ * Unlocked private detail — project/blog Card composition, theme tokens only.
+ * Left: audience/description + markdown. Right: contained project icon + CMS meta.
  */
 export function PrivateArticle({ article }: { article: UnlockedArticle }) {
   return (
-    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 py-10 md:px-8">
+    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 py-10 text-foreground md:px-8">
       <div className="flex flex-wrap items-center gap-3">
         <BackButton fallbackHref="/" />
         <Breadcrumb>
@@ -48,45 +47,58 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
         </Breadcrumb>
       </div>
 
-      {/*
-        Stretch wrappers (not the Cards alone): flex line cross-size → h-full cards
-        so the left message card min-height matches the right column.
-      */}
       <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
         <div className="order-2 flex min-h-0 w-full lg:order-1 lg:min-w-0 lg:flex-[1.6]">
-          <Card className="flex h-full w-full flex-col border-border/80 bg-card shadow-none ring-1 ring-border/70">
-            <CardHeader className="gap-3">
-              <CardDescription className="text-sm leading-relaxed text-muted-foreground">
-                {article.description}
+          <Card className="flex h-full w-full flex-col border-border/80 bg-card text-card-foreground shadow-none ring-1 ring-border/70">
+            <CardHeader className="gap-2">
+              <p className="text-base leading-relaxed text-muted-foreground">{article.description}</p>
+            </CardHeader>
+            <Separator className="bg-border" />
+            <CardHeader>
+              <CardTitle className="font-heading text-xl font-semibold tracking-tight text-card-foreground">
+                Details
+              </CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Markdown body from the shared note.
               </CardDescription>
             </CardHeader>
-            <Separator />
-            <CardHeader>
-              <CardTitle className="font-heading text-xl font-semibold tracking-tight">Write-up</CardTitle>
-              <CardDescription>Notes from the CMS markdown.</CardDescription>
-            </CardHeader>
             <CardContent className="flex-1 pb-6">
-              <Markdown content={article.markdown} />
+              <Markdown
+                content={article.markdown}
+                className="text-foreground prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-a:text-primary"
+              />
             </CardContent>
           </Card>
         </div>
 
         <div className="order-1 flex min-h-0 w-full lg:order-2 lg:w-[min(100%,24rem)] lg:flex-[0.9] lg:shrink-0">
-          {/* pt-0 kills Card py above media (project cover pattern) */}
-          <Card className="flex h-full w-full flex-col overflow-hidden border-border/80 bg-card pt-0 shadow-none ring-1 ring-border/70">
-            <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted">
-              <FileLock2
-                className="pointer-events-none absolute left-1/2 top-[-6%] size-[150%] max-w-none -translate-x-1/2 object-contain object-top text-foreground/70"
-                strokeWidth={1.05}
-                aria-hidden
-              />
+          <Card className="flex h-full w-full flex-col overflow-hidden border-border/80 bg-card pt-0 text-card-foreground shadow-none ring-1 ring-border/70">
+            {/*
+              Contained icon art: inset flex + max 100% size (no oversized overflow).
+              items-start + object-contain keeps the glyph flush without top letterbox
+              beyond the frame padding.
+            */}
+            <div
+              className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted"
+              data-private-icon-frame
+              aria-hidden
+            >
+              <div className="absolute inset-0 flex items-start justify-center px-6 py-4">
+                <FileLock2
+                  size={220}
+                  className="!h-full !w-auto max-h-full max-w-[80%] object-contain object-top text-muted-foreground"
+                  strokeWidth={1.15}
+                />
+              </div>
             </div>
             <CardHeader>
-              <CardDescription>Expires {formatExpiry(article.expiresAt)}</CardDescription>
-              <CardTitle className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
+              <CardDescription className="text-muted-foreground">
+                Expires {formatExpiry(article.expiresAt)}
+              </CardDescription>
+              <CardTitle className="font-heading text-2xl font-semibold tracking-tight text-card-foreground md:text-3xl">
                 {article.title}
               </CardTitle>
-              <CardDescription className="text-sm leading-relaxed">
+              <CardDescription className="text-sm leading-relaxed text-muted-foreground">
                 Invited readers only. Do not share the PIN or this page.
               </CardDescription>
             </CardHeader>
