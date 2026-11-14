@@ -12,6 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import type { UnlockedArticle } from "@/lib/private/types";
 
 function formatExpiry(iso: string): string {
@@ -25,9 +26,9 @@ function formatExpiry(iso: string): string {
 }
 
 /**
- * Unlocked layout mirrors project detail:
- * - Left: colored audience/description module only (no private chrome, no personal avatar) + write-up
- * - Right: CMS metadata rail with envelope/project icon (not profile avatar)
+ * Unlocked layout mirrors project detail surfaces:
+ * - Left: site Card with audience/description + write-up; stretched to right rail height
+ * - Right: CMS metadata rail; contain icon top-flushed (pt-0 + oversized glyph)
  */
 export function PrivateArticle({ article }: { article: UnlockedArticle }) {
   return (
@@ -47,30 +48,38 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
         </Breadcrumb>
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.9fr)]">
-        <div className="order-2 flex flex-col gap-6 lg:order-1">
-          <div className="rounded-xl border border-sky-500/25 bg-sky-500/10 px-4 py-4 text-sky-950 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-50">
-            <p className="text-base leading-relaxed">{article.description}</p>
-          </div>
-
-          <Card className="border-border/80 bg-card shadow-none ring-1 ring-border/70">
+      {/*
+        Stretch wrappers (not the Cards alone): flex line cross-size → h-full cards
+        so the left message card min-height matches the right column.
+      */}
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
+        <div className="order-2 flex min-h-0 w-full lg:order-1 lg:min-w-0 lg:flex-[1.6]">
+          <Card className="flex h-full w-full flex-col border-border/80 bg-card shadow-none ring-1 ring-border/70">
+            <CardHeader className="gap-3">
+              <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+                {article.description}
+              </CardDescription>
+            </CardHeader>
+            <Separator />
             <CardHeader>
               <CardTitle className="font-heading text-xl font-semibold tracking-tight">Write-up</CardTitle>
-              <CardDescription>Markdown body from the CMS note.</CardDescription>
+              <CardDescription>Notes from the CMS markdown.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-1 pb-6">
               <Markdown content={article.markdown} />
             </CardContent>
           </Card>
         </div>
 
-        <aside className="order-1 lg:sticky lg:top-24 lg:order-2 lg:self-start">
-          <Card className="overflow-hidden border-border/80 bg-card shadow-none ring-1 ring-border/70">
-            <div
-              className="flex aspect-[16/10] w-full items-center justify-center bg-gradient-to-br from-slate-800 via-slate-700 to-sky-900 text-sky-100"
-              aria-hidden
-            >
-              <FileLock2 className="size-16 opacity-90" strokeWidth={1.25} />
+        <div className="order-1 flex min-h-0 w-full lg:order-2 lg:w-[min(100%,24rem)] lg:flex-[0.9] lg:shrink-0">
+          {/* pt-0 kills Card py above media (project cover pattern) */}
+          <Card className="flex h-full w-full flex-col overflow-hidden border-border/80 bg-card pt-0 shadow-none ring-1 ring-border/70">
+            <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted">
+              <FileLock2
+                className="pointer-events-none absolute left-1/2 top-[-6%] size-[150%] max-w-none -translate-x-1/2 object-contain object-top text-foreground/70"
+                strokeWidth={1.05}
+                aria-hidden
+              />
             </div>
             <CardHeader>
               <CardDescription>Expires {formatExpiry(article.expiresAt)}</CardDescription>
@@ -81,16 +90,13 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
                 Invited readers only. Do not share the PIN or this page.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <CardContent className="mt-auto pb-6 text-sm text-muted-foreground">
               <p>
                 Slug · <span className="font-mono text-foreground">{article.slug}</span>
               </p>
-              <p>
-                Expires · <span className="text-foreground">{formatExpiry(article.expiresAt)}</span>
-              </p>
             </CardContent>
           </Card>
-        </aside>
+        </div>
       </div>
     </div>
   );
