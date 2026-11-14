@@ -13,6 +13,11 @@ import {
 import { b64ToBytes, derivePinKeys, parseSixDigitPin, sha256B64, timingSafeEqualB64 } from "@/lib/private/kdf";
 import { PBKDF2_ITERATIONS } from "@/lib/private/kdf";
 import { getEnvelopeBySlug, listEnvelopeSlugs } from "@/lib/private/envelope";
+import {
+  deletePublication,
+  upsertPublication,
+  setPublicationLive,
+} from "@/lib/private/publication-store";
 import { privateSharePath } from "@/lib/private/routes";
 import { clearCmsCookie, readCmsGrant, sealCmsCookie } from "@/lib/private/seal";
 import { getCmsCredentials } from "@/lib/private/session-key";
@@ -24,6 +29,7 @@ import type {
   MintShareResult,
   PrepareIntent,
   PrepareResult,
+  ShareLinkActionResult,
 } from "@/lib/private/types";
 
 async function clientIp(): Promise<string | null> {
@@ -98,7 +104,6 @@ export async function mintShareLink(intent: MintShareIntent): Promise<MintShareR
   const description = intent.description.trim();
   const expiresAt = new Date(expiresMs).toISOString();
   const envelopeSha = await sha256Hex(
-    // Prefer committed envelope bytes when available via canonical form of on-disk fields.
     JSON.stringify({
       contentId: envelope.contentId,
       slug: envelope.slug,
@@ -106,43 +111,24 @@ export async function mintShareLink(intent: MintShareIntent): Promise<MintShareR
     }),
   );
 
-  let d1: "written" | "skipped_unbound" = "skipped_unbound";
-  try {
-    const { env } = await import("cloudflare:workers");
-    const db = (env as { PRIVATE_DB?: { prepare: (sql: string) => { bind: (...args: unknown[]) => { run: () => Promise<unknown> } } } }).PRIVATE_DB;
-    if (db) {
-      await db
-        .prepare(
-          `INSERT INTO publication (content_id, slug, title, description, expires_at, verifier, envelope_sha256, live, pending, created_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, 1, 0, ?)
-           ON CONFLICT(content_id) DO UPDATE SET
-             slug=excluded.slug, title=excluded.title, description=excluded.description,
-             expires_at=excluded.expires_at, verifier=excluded.verifier,
-             envelope_sha256=excluded.envelope_sha256, live=1, pending=0`,
-        )
-        .bind(
-          envelope.contentId,
-          slug,
-          title,
-          description,
-          expiresAt,
-          envelope.verifier,
-          envelopeSha,
-          new Date().toISOString(),
-        )
-        .run();
-      d1 = "written";
-    }
-  } catch {
-    d1 = "skipped_unbound";
-  }
+  const store = await upsertPublication({
+    contentId: envelope.contentId,
+    slug,
+    title,
+    description,
+    expiresAt,
+    verifier: envelope.verifier,
+    envelopeSha256: envelopeSha,
+    live: true,
+    createdAt: new Date().toISOString(),
+  });
 
   console.info(
     JSON.stringify({
       type: "cms_share_mint",
       contentId: envelope.contentId,
       slug,
-      d1,
+      store,
       includePinInUrl: intent.includePinInUrl,
       atMs: Date.now(),
     }),
@@ -154,8 +140,30 @@ export async function mintShareLink(intent: MintShareIntent): Promise<MintShareR
     slug,
     sharePath,
     shareUrl: `${siteConfig.url.replace(/\/$/, "")}${sharePath}`,
-    d1,
+    store,
   };
+}
+
+export async function disableShareLink(contentId: string): Promise<ShareLinkActionResult> {
+  const grant = await readCmsGrant();
+  if (!grant) return { ok: false, reason: "unauthorized" };
+  const ok = await setPublicationLive(contentId, false);
+  return ok ? { ok: true } : { ok: false, reason: "missing" };
+}
+
+export async function enableShareLink(contentId: string): Promise<ShareLinkActionResult> {
+  const grant = await readCmsGrant();
+  if (!grant) return { ok: false, reason: "unauthorized" };
+  const ok = await setPublicationLive(contentId, true);
+  return ok ? { ok: true } : { ok: false, reason: "missing" };
+}
+
+/** Deletes D1/memory publication only — ciphertext stays in git. */
+export async function deleteShareLink(contentId: string): Promise<ShareLinkActionResult> {
+  const grant = await readCmsGrant();
+  if (!grant) return { ok: false, reason: "unauthorized" };
+  const ok = await deletePublication(contentId);
+  return ok ? { ok: true } : { ok: false, reason: "missing" };
 }
 
 /**

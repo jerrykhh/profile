@@ -3,6 +3,7 @@ import "server-only";
 import { b64ToBytes, decryptMarkdown } from "@/lib/private/cipher";
 import { getEnvelopeBySlug } from "@/lib/private/envelope";
 import { parseSixDigitPin } from "@/lib/private/kdf";
+import { getPublicationBySlug } from "@/lib/private/publication-store";
 import { clearPrivateCookie, readPrivateGrant } from "@/lib/private/seal";
 import { logPrivateAccess } from "@/lib/private/access-log";
 import type { PrivateSlug, PrivateView } from "@/lib/private/types";
@@ -44,12 +45,25 @@ export async function openPrivatePage(input: {
     };
   }
 
+  const publication = await getPublicationBySlug(input.slug);
+  if (publication && !publication.live) {
+    await clearPrivateCookie();
+    return {
+      status: "disabled",
+      slug: input.slug,
+      prefillPin,
+      notice: "rejected",
+      kdf: null,
+    };
+  }
+
   const kdf = {
     iterations: 600000 as const,
     saltB64: envelope.kdf.salt,
   };
 
-  if (isExpired(envelope.expiresAt)) {
+  const effectiveExpiry = publication?.expiresAt ?? envelope.expiresAt;
+  if (isExpired(effectiveExpiry)) {
     await clearPrivateCookie();
     return {
       status: "expired",
@@ -78,10 +92,10 @@ export async function openPrivatePage(input: {
         status: "unlocked",
         article: {
           slug: input.slug,
-          title: envelope.title,
-          description: envelope.description,
+          title: publication?.title ?? envelope.title,
+          description: publication?.description ?? envelope.description,
           markdown,
-          expiresAt: envelope.expiresAt,
+          expiresAt: effectiveExpiry,
         },
       };
     } catch {

@@ -7,6 +7,7 @@ import { b64ToBytes, decryptMarkdown } from "@/lib/private/cipher";
 import { getEnvelopeBySlug } from "@/lib/private/envelope";
 import { sha256B64, timingSafeEqualB64 } from "@/lib/private/kdf";
 import { logPrivateAccess } from "@/lib/private/access-log";
+import { getPublicationBySlug } from "@/lib/private/publication-store";
 import {
   clearPrivateCookie,
   readPrivateGrant,
@@ -43,7 +44,12 @@ export async function enterPin(input: EnterPinInput): Promise<EnterResult> {
     return { ok: false, notice: "rejected" };
   }
 
-  const expiresMs = Date.parse(envelope.expiresAt);
+  const publication = await getPublicationBySlug(input.slug);
+  if (publication && !publication.live) {
+    return { ok: false, notice: "rejected" };
+  }
+
+  const expiresMs = Date.parse(publication?.expiresAt ?? envelope.expiresAt);
   if (Number.isNaN(expiresMs) || Date.now() >= expiresMs) {
     await clearPrivateCookie();
     await logPrivateAccess(
@@ -120,7 +126,16 @@ export async function endPrivateSession(slug?: PrivateSlug): Promise<void> {
 export async function checkPrivateSession(slug: PrivateSlug): Promise<HeartbeatResult> {
   const envelope = getEnvelopeBySlug(slug);
   if (!envelope) return { ok: false, reason: "missing" };
-  const expiresMs = Date.parse(envelope.expiresAt);
+  const publication = await getPublicationBySlug(slug);
+  if (publication && !publication.live) {
+    await clearPrivateCookie();
+    await logPrivateAccess(
+      { kind: "heartbeat_fail", slug, outcome: "disabled", pinInQuery: false, atMs: Date.now() },
+      null,
+    );
+    return { ok: false, reason: "unauthorized" };
+  }
+  const expiresMs = Date.parse(publication?.expiresAt ?? envelope.expiresAt);
   if (Number.isNaN(expiresMs) || Date.now() >= expiresMs) {
     await clearPrivateCookie();
     await logPrivateAccess(
@@ -141,5 +156,5 @@ export async function checkPrivateSession(slug: PrivateSlug): Promise<HeartbeatR
     { kind: "heartbeat_ok", slug, outcome: "ok", pinInQuery: false, atMs: Date.now() },
     null,
   );
-  return { ok: true, expiresAt: envelope.expiresAt };
+  return { ok: true, expiresAt: publication?.expiresAt ?? envelope.expiresAt };
 }

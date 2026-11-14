@@ -16,11 +16,23 @@ export type KdfPublic = {
  * `kdf: null` means Enter stays disabled (nothing live or bundle drift).
  */
 export type LockedView = {
-  readonly status: "locked" | "empty" | "expired";
+  readonly status: "locked" | "empty" | "expired" | "disabled";
   readonly slug: PrivateSlug;
   readonly prefillPin: SixDigitPin | null;
   readonly notice: LockNotice;
   readonly kdf: KdfPublic | null;
+};
+
+export type ShareLinkStatus = "live" | "disabled" | "expired";
+
+export type CmsShareLinkRow = {
+  readonly contentId: string;
+  readonly slug: string;
+  readonly title: string;
+  readonly expiresAt: string;
+  readonly status: ShareLinkStatus;
+  readonly sharePath: string;
+  readonly shareUrl: string;
 };
 
 export type UnlockedArticle = {
@@ -45,6 +57,8 @@ export type CmsEnvelopeOption = {
 
 export type CmsDesk = {
   readonly notes: readonly CmsEnvelopeOption[];
+  readonly links: readonly CmsShareLinkRow[];
+  readonly store: "d1" | "memory";
 };
 
 export type MintShareIntent = {
@@ -63,9 +77,13 @@ export type MintShareResult =
       readonly slug: PrivateSlug;
       readonly sharePath: string;
       readonly shareUrl: string;
-      readonly d1: "written" | "skipped_unbound";
+      readonly store: "d1" | "memory";
     }
   | { readonly ok: false; readonly reason: "unauthorized" | "invalid" | "missing" | "bad_pin" };
+
+export type ShareLinkActionResult =
+  | { readonly ok: true }
+  | { readonly ok: false; readonly reason: "unauthorized" | "missing" };
 
 export type EnterPinInput = {
   readonly slug: PrivateSlug;

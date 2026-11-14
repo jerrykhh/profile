@@ -5,6 +5,7 @@ import { b64ToBytes, decryptMarkdown } from "@/lib/private/cipher";
 import { getEnvelopeBySlug } from "@/lib/private/envelope";
 import { sha256B64, timingSafeEqualB64 } from "@/lib/private/kdf";
 import { logPrivateAccess } from "@/lib/private/access-log";
+import { getPublicationBySlug } from "@/lib/private/publication-store";
 import { sealPrivateCookie } from "@/lib/private/seal";
 import { parsePrivateSlug } from "@/lib/private/slug";
 import type { EnterResult } from "@/lib/private/types";
@@ -43,7 +44,12 @@ export async function POST(
     return NextResponse.json({ ok: false, notice: "rejected" } satisfies EnterResult, { status: 404 });
   }
 
-  const expiresMs = Date.parse(envelope.expiresAt);
+  const publication = await getPublicationBySlug(slug);
+  if (publication && !publication.live) {
+    return NextResponse.json({ ok: false, notice: "rejected" } satisfies EnterResult, { status: 403 });
+  }
+
+  const expiresMs = Date.parse(publication?.expiresAt ?? envelope.expiresAt);
   if (Number.isNaN(expiresMs) || Date.now() >= expiresMs) {
     return NextResponse.json({ ok: false, notice: "expired" } satisfies EnterResult, { status: 410 });
   }
@@ -92,10 +98,10 @@ export async function POST(
     ok: true,
     article: {
       slug,
-      title: envelope.title,
-      description: envelope.description,
+      title: publication?.title ?? envelope.title,
+      description: publication?.description ?? envelope.description,
       markdown,
-      expiresAt: envelope.expiresAt,
+      expiresAt: publication?.expiresAt ?? envelope.expiresAt,
     },
   };
   return NextResponse.json(body, {

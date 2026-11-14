@@ -84,13 +84,15 @@ export function PinGate({ locked, slug }: { locked: LockedView; slug: PrivateSlu
   const statusCopy =
     locked.status === "empty"
       ? "Nothing is published for this path yet."
-      : locked.status === "expired"
-        ? "This note has expired."
-        : notice === "heartbeat_lost"
-          ? "Your session could not be verified. Enter the PIN again."
-          : locked.kdf === null
-            ? "This note cannot be unlocked right now."
-            : "Enter the six-digit PIN. Enter is required even if the PIN was in the link.";
+      : locked.status === "disabled"
+        ? "This share link has been disabled."
+        : locked.status === "expired"
+          ? "This note has expired."
+          : notice === "heartbeat_lost"
+            ? "Your session could not be verified. Enter the PIN again."
+            : locked.kdf === null
+              ? "This note cannot be unlocked right now."
+              : "Enter the six-digit PIN. Enter is required even if the PIN was in the link.";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white px-4 dark:bg-black">
@@ -113,7 +115,7 @@ export function PinGate({ locked, slug }: { locked: LockedView; slug: PrivateSlu
           <p className="text-sm text-destructive">Too many attempts. Try again later.</p>
         ) : null}
 
-        {locked.status !== "empty" ? (
+        {locked.status !== "empty" && locked.status !== "disabled" ? (
           <>
             <OtpPinInput value={pin} onChange={setPin} disabled={locked.kdf === null || pending} />
             <label className="flex w-full items-start gap-2 text-left text-sm text-muted-foreground">

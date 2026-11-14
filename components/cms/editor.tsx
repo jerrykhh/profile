@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { ShareLinksPanel } from "@/components/cms/share-links";
 import { logoutCms, mintShareLink, preparePublication } from "@/lib/private/cms-actions";
 import { mintDraft } from "@/lib/private/draft";
 import type { CmsDesk } from "@/lib/private/types";
@@ -45,7 +46,7 @@ export function CmsEditor({ desk }: { desk: CmsDesk }) {
   const [includePin, setIncludePin] = useState(true);
   const [shareError, setShareError] = useState<string | null>(null);
   const [sharePending, setSharePending] = useState(false);
-  const [minted, setMinted] = useState<{ path: string; url: string; d1: string } | null>(null);
+  const [minted, setMinted] = useState<{ path: string; url: string; store: string } | null>(null);
 
   const [draft, setDraft] = useState(mintDraft);
   const [encryptError, setEncryptError] = useState<string | null>(null);
@@ -81,7 +82,8 @@ export function CmsEditor({ desk }: { desk: CmsDesk }) {
         setShareError(result.reason);
         return;
       }
-      setMinted({ path: result.sharePath, url: result.shareUrl, d1: result.d1 });
+      setMinted({ path: result.sharePath, url: result.shareUrl, store: result.store });
+      router.refresh();
     } catch {
       setShareError("failed");
     } finally {
@@ -233,7 +235,7 @@ export function CmsEditor({ desk }: { desk: CmsDesk }) {
                   <p className="mt-1 break-all font-mono text-xs text-foreground">{minted.path}</p>
                   <p className="mt-1 break-all font-mono text-xs text-muted-foreground">{minted.url}</p>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    D1 metadata: {minted.d1 === "written" ? "written" : "skipped (PRIVATE_DB unbound)"}
+                    Store: {minted.store === "d1" ? "D1 publication" : "in-memory (PRIVATE_DB unbound)"}
                   </p>
                 </div>
               ) : null}
@@ -241,6 +243,8 @@ export function CmsEditor({ desk }: { desk: CmsDesk }) {
           )}
         </CardContent>
       </Card>
+
+      <ShareLinksPanel links={desk.links} store={desk.store} />
 
       <details className="group rounded-xl border border-border/80 bg-card ring-1 ring-border/70 open:pb-4">
         <summary className="cursor-pointer list-none px-4 py-4 font-heading text-lg font-semibold tracking-tight">
