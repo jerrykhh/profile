@@ -12,7 +12,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import type { UnlockedArticle } from "@/lib/private/types";
 
 function formatExpiry(iso: string): string {
@@ -26,8 +25,7 @@ function formatExpiry(iso: string): string {
 }
 
 /**
- * Unlocked private detail — project/blog Card composition, theme tokens only.
- * Left: audience/description + markdown. Right: contained project icon + CMS meta.
+ * Unlocked private detail — separate left info Card + content Card; right meta rail.
  */
 export function PrivateArticle({ article }: { article: UnlockedArticle }) {
   return (
@@ -48,12 +46,18 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
       </div>
 
       <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
-        <div className="order-2 flex min-h-0 w-full lg:order-1 lg:min-w-0 lg:flex-[1.6]">
-          <Card className="flex h-full w-full flex-col border-border/80 bg-card text-card-foreground shadow-none ring-1 ring-border/70">
-            <CardHeader className="gap-2">
+        <div className="order-2 flex min-h-0 w-full flex-col lg:order-1 lg:min-w-0 lg:flex-[1.6]">
+          {/* Own Card — rounded on all 4 corners; not merged with content */}
+          <Card className="shrink-0 rounded-xl border-border/80 bg-card text-card-foreground shadow-none ring-1 ring-border/70">
+            <CardHeader>
               <p className="text-base leading-relaxed text-muted-foreground">{article.description}</p>
             </CardHeader>
-            <Separator className="bg-border" />
+          </Card>
+
+          {/* Padding below info Card before content module */}
+          <div className="h-5 shrink-0" aria-hidden />
+
+          <Card className="flex min-h-0 flex-1 flex-col border-border/80 bg-card text-card-foreground shadow-none ring-1 ring-border/70">
             <CardHeader>
               <CardTitle className="font-heading text-xl font-semibold tracking-tight text-card-foreground">
                 Details
@@ -73,11 +77,6 @@ export function PrivateArticle({ article }: { article: UnlockedArticle }) {
 
         <div className="order-1 flex min-h-0 w-full lg:order-2 lg:w-[min(100%,24rem)] lg:flex-[0.9] lg:shrink-0">
           <Card className="flex h-full w-full flex-col overflow-hidden border-border/80 bg-card pt-0 text-card-foreground shadow-none ring-1 ring-border/70">
-            {/*
-              Contained icon art: inset flex + max 100% size (no oversized overflow).
-              items-start + object-contain keeps the glyph flush without top letterbox
-              beyond the frame padding.
-            */}
             <div
               className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted"
               data-private-icon-frame
