@@ -25,6 +25,7 @@
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
     "remark-parse": "^11.0.0",
+    "server-only": "^0.0.1",
     "shadcn": "^4.23.0",
     "shaders": "^4.0.6",
     "tailwind-merge": "^3.7.0",

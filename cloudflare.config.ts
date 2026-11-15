@@ -1,5 +1,12 @@
 import { bindings, defineConfig, defineWorker } from "cf/config";
 
+/**
+ * Private page bindings (Phase D — not enabled in this scaffold deploy):
+ * - PRIVATE_DB: bindings.d1({ name: "profile-private" })  // see cloudflare.bindings.ts
+ * - CMS_USERNAME / CMS_PASSWORD / SESSION_KEY: bindings.secret()
+ * Upload secrets before enabling them or the first deploy after declare can fail closed.
+ * Plan B (R2 + Durable Object) needs worker/index.ts; see docs architecture.
+ */
 export default defineConfig({
   worker: defineWorker({
     name: "jerrykhh-profile",
@@ -16,3 +23,4 @@ export default defineConfig({
     },
   }),
 });
+

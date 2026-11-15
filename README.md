@@ -8,13 +8,18 @@ Personal portfolio and blog built with **Next.js (vinext)** on **Cloudflare Work
 - `/project`, `/project/[slug]`
 - `/blog`, `/blog/[slug]`
 - `/ext/link` — shareable contact card
+- `/private/[slug]` — PIN-gated notes (noindex; see encrypt guide)
+- `/cms/login` — operator CMS (Worker secrets)
 
 ## Content
 
 - Profile/home copy: `config/profile.ts`
 - Blog posts: `content/blog/*.md`
 - Projects: `content/projects/*.md`
+- Private envelopes (Plan A ciphertext): `content/private/*.enc.json`
 - Assets: `public/blog`, `public/project`, `public/profile`
+
+PIN private notes: encrypt guide is in the Project docs at `docs/pin-private-encrypt-guide.md` (agent store) / ask for `/private/demo-hello` with demo PIN `123456`. Regenerate the sample with `node scripts/make-demo-private.mjs`.
 
 ## Development
 
