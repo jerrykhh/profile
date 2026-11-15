@@ -18,7 +18,7 @@ export default function BlogIndexPage() {
         <h1 className="font-heading text-4xl font-semibold tracking-tight">Blog</h1>
         <p className="text-muted-foreground">Writing on systems, experiments, and things I learned while building.</p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="-m-3 grid gap-4 p-3 md:grid-cols-2 xl:grid-cols-3">
         {blogs.map((item) => (
           <ContentCard key={item.slug} item={item} />
         ))}
