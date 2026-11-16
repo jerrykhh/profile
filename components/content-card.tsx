@@ -29,11 +29,12 @@ export function ContentCard({ item }: { item: ContentItem }) {
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-xl bg-card text-card-foreground",
+        // Overflow lives on media/footer only so hover ring + soft glow are not clipped.
+        "group relative flex h-full flex-col rounded-xl bg-card text-card-foreground",
         "ring-1 ring-border/70 outline-none",
         // Color / light only — no translateY or cover scale (no layout shift).
         "transition-[background-color,box-shadow,ring-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-        "data-[hovered=true]:bg-muted/30 data-[hovered=true]:ring-foreground/25",
+        "data-[hovered=true]:z-10 data-[hovered=true]:bg-muted/30 data-[hovered=true]:ring-foreground/25",
         "data-[hovered=true]:shadow-[0_0_0_1px_rgba(15,23,42,0.04),0_12px_32px_rgba(15,23,42,0.08)]",
         "dark:data-[hovered=true]:ring-white/25",
         "dark:data-[hovered=true]:shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_12px_32px_rgba(0,0,0,0.35)]",
@@ -41,7 +42,7 @@ export function ContentCard({ item }: { item: ContentItem }) {
       )}
     >
       {cover ? (
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden rounded-t-xl">
           <Image
             src={cover}
             alt=""
@@ -66,7 +67,7 @@ export function ContentCard({ item }: { item: ContentItem }) {
         <p className="line-clamp-3 text-sm text-muted-foreground">{item.description}</p>
       </div>
 
-      <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-border/70 bg-muted/50 px-4 py-4">
+      <div className="mt-auto flex flex-wrap items-center gap-2 rounded-b-xl border-t border-border/70 bg-muted/50 px-4 py-4">
         {sourcedExternally ? (
           <span className="inline-flex h-5 items-center rounded-4xl bg-secondary px-2 text-xs font-medium">
             External

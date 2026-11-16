@@ -105,7 +105,8 @@ export default function HomePage() {
                 All projects
               </Button>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {/* -m/p keeps layout footprint; gives hover ring/glow room inside any paint containment */}
+            <div className="-m-3 grid gap-4 p-3 md:grid-cols-2 xl:grid-cols-3">
               {projects.map((item) => (
                 <ContentCard key={item.slug} item={item} />
               ))}
@@ -119,7 +120,7 @@ export default function HomePage() {
                 All posts
               </Button>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="-m-3 grid gap-4 p-3 md:grid-cols-2 xl:grid-cols-3">
               {blogs.map((item) => (
                 <ContentCard key={item.slug} item={item} />
               ))}

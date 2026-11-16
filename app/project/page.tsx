@@ -18,7 +18,7 @@ export default function ProjectIndexPage() {
         <h1 className="font-heading text-4xl font-semibold tracking-tight">Projects</h1>
         <p className="text-muted-foreground">Prototype products, hackathon systems, and automation tools.</p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="-m-3 grid gap-4 p-3 md:grid-cols-2 xl:grid-cols-3">
         {projects.map((item) => (
           <ContentCard key={item.slug} item={item} />
         ))}
