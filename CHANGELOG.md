@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.3](https://github.com/jerrykhh/profile/compare/v4.0.2...v4.0.3) (2026-11-16)
+
+
+### Bug Fixes
+
+* **home:** stop clipping project/blog card hover glow ([#34](https://github.com/jerrykhh/profile/issues/34)) ([b4b965a](https://github.com/jerrykhh/profile/commit/b4b965ae989ad9d01b0ae983cce4b73db3351a55))
+
 ## [4.0.2](https://github.com/jerrykhh/profile/compare/v4.0.1...v4.0.2) (2026-11-11)
 
 
