@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.4](https://github.com/jerrykhh/profile/compare/v4.0.3...v4.0.4) (2026-11-17)
+
+
+### Bug Fixes
+
+* **home:** stop content-visibility clipping card hover glow ([473e134](https://github.com/jerrykhh/profile/commit/473e134aa4528a08d15828d0632025698edae69d))
+* **home:** stop content-visibility clipping card hover glow ([2ae7e4b](https://github.com/jerrykhh/profile/commit/2ae7e4b4aceaa14503db1cf9495cff2789456d43))
+* **ui:** add content-card body bottom padding ([c7a21a4](https://github.com/jerrykhh/profile/commit/c7a21a4c7f0e4fe1588f4a55b0a65798f48bca2b))
+
 ## [4.0.3](https://github.com/jerrykhh/profile/compare/v4.0.2...v4.0.3) (2026-11-16)
 
 
