@@ -98,6 +98,7 @@ export default function HomePage() {
             </Card>
           </section>
 
+          {/* No content-visibility here: it paint-clips ContentCard hover ring/glow. */}
           <section className="flex flex-col gap-5">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-heading text-2xl font-semibold tracking-tight">Projects</h2>
@@ -113,6 +114,7 @@ export default function HomePage() {
             </div>
           </section>
 
+          {/* No content-visibility here: it paint-clips ContentCard hover ring/glow. */}
           <section className="flex flex-col gap-5">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-heading text-2xl font-semibold tracking-tight">Blog</h2>

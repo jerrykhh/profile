@@ -61,7 +61,7 @@ export function ContentCard({ item }: { item: ContentItem }) {
         </div>
       ) : null}
 
-      <div className="flex flex-1 flex-col gap-1 px-4 pt-4">
+      <div className="flex flex-1 flex-col gap-1 px-4 pb-4 pt-4">
         <p className="text-sm text-muted-foreground">{item.date}</p>
         <h3 className="font-heading text-lg font-medium leading-snug">{item.title}</h3>
         <p className="line-clamp-3 text-sm text-muted-foreground">{item.description}</p>
